@@ -38,7 +38,7 @@ const Navigation = ({ children }: NavigationProps) => {
         </Sidebar>
 
         <div className="flex-1 flex flex-col">
-          <header className="border-b bg-background px-4 sm:px-6 py-3">
+          <header className="border-b bg-background px-4 sm:px-6 py-3 sticky top-0 z-10">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2 sm:space-x-4">
                 <SidebarTrigger />
