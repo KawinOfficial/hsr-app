@@ -1,7 +1,9 @@
+import { PAGE_ROUTES } from "@/routers/page";
+
 export const NAVIGATION_ITEMS = [
   {
     title: "Dashboard",
-    url: "/",
+    url: PAGE_ROUTES.DASHBOARD,
     iconName: "Home",
   },
   {
@@ -10,17 +12,17 @@ export const NAVIGATION_ITEMS = [
     items: [
       {
         title: "Bidding & Budget",
-        url: "/project-management",
+        url: PAGE_ROUTES.PROJECT_MANAGEMENT,
         description: "Manage bidding and budget planning",
       },
       {
         title: "Project Overview",
-        url: "/projects",
+        url: PAGE_ROUTES.PROJECTS,
         description: "View all active projects",
       },
       {
         title: "Milestones",
-        url: "/milestones",
+        url: PAGE_ROUTES.MILESTONES,
         description: "Track project milestones and deliverables",
       },
     ],
@@ -31,17 +33,17 @@ export const NAVIGATION_ITEMS = [
     items: [
       {
         title: "Payments & Advances",
-        url: "/payments",
+        url: PAGE_ROUTES.PAYMENTS,
         description: "Process payments and advance requests",
       },
       {
         title: "Asset Management",
-        url: "/assets",
+        url: PAGE_ROUTES.ASSETS,
         description: "Register and manage project assets",
       },
       {
         title: "Liabilities",
-        url: "/liabilities",
+        url: PAGE_ROUTES.LIABILITIES,
         description: "Track project liabilities and obligations",
       },
     ],
@@ -52,17 +54,17 @@ export const NAVIGATION_ITEMS = [
     items: [
       {
         title: "Financial Reports",
-        url: "/reports/financial",
+        url: PAGE_ROUTES.REPORTS_FINANCIAL,
         description: "Income and expense reports",
       },
       {
         title: "Project Summary",
-        url: "/reports/summary",
+        url: PAGE_ROUTES.REPORTS_SUMMARY,
         description: "Comprehensive project reports",
       },
       {
         title: "Cost Analysis",
-        url: "/reports/cost-analysis",
+        url: PAGE_ROUTES.REPORTS_COST_ANALYSIS,
         description: "Detailed cost analysis and forecasting",
       },
     ],
@@ -73,17 +75,17 @@ export const NAVIGATION_ITEMS = [
     items: [
       {
         title: "Team Members",
-        url: "/users",
+        url: PAGE_ROUTES.USERS,
         description: "Manage team access and roles",
       },
       {
         title: "Departments",
-        url: "/departments",
+        url: PAGE_ROUTES.DEPARTMENTS,
         description: "QS, Engineering, Finance, Procurement",
       },
       {
         title: "Permissions",
-        url: "/permissions",
+        url: PAGE_ROUTES.PERMISSIONS,
         description: "Role-based access control",
       },
     ],

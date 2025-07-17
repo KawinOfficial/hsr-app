@@ -1,0 +1,15 @@
+export const PAGE_ROUTES = {
+  DASHBOARD: "/",
+  PROJECT_MANAGEMENT: "/project-management",
+  PROJECTS: "/projects",
+  MILESTONES: "/milestones",
+  PAYMENTS: "/payments",
+  ASSETS: "/assets",
+  LIABILITIES: "/liabilities",
+  REPORTS_FINANCIAL: "/reports/financial",
+  REPORTS_SUMMARY: "/reports/summary",
+  REPORTS_COST_ANALYSIS: "/reports/cost-analysis",
+  USERS: "/users",
+  DEPARTMENTS: "/departments",
+  PERMISSIONS: "/permissions",
+};
