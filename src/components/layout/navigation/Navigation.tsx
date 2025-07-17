@@ -1,6 +1,6 @@
 "use client";
 
-import NotificationSystem from "@/features/notification/NotificationSystem";
+import { NotificationSystem } from "@/features/notification/components/notification-system";
 import { Badge } from "@/components/ui/badge";
 import {
   Sidebar,
@@ -11,6 +11,7 @@ import {
 import { Train, Search } from "lucide-react";
 import SideBarMenu from "@/components/layout/navigation/SideBarMenu";
 import SideBarFooter from "@/components/layout/navigation/SideBarFooter";
+import { NotificationProvider } from "@/features/notification/components/notification-provider";
 
 interface NavigationProps extends React.PropsWithChildren {}
 
@@ -52,7 +53,9 @@ const Navigation = ({ children }: NavigationProps) => {
                 </div> */}
               </div>
               <div className="flex items-center space-x-2 sm:space-x-4">
-                <NotificationSystem />
+                <NotificationProvider>
+                  <NotificationSystem />
+                </NotificationProvider>
                 <Badge
                   variant="outline"
                   className="text-primary border-primary"
