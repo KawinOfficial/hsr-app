@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import AppProviders from "@/app/AppProviders";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Navigation from "@/components/layout/Navigation";
+import { Navigation } from "@/components/layout/navigation";
 import { Toaster } from "@/components/ui/toaster";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/assets/globals.css";
