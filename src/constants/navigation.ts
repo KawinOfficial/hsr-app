@@ -11,11 +11,6 @@ export const NAVIGATION_ITEMS = [
     iconName: "Building2",
     items: [
       {
-        title: "Bidding & Budget",
-        url: PAGE_ROUTES.PROJECT_MANAGEMENT,
-        description: "Manage bidding and budget planning",
-      },
-      {
         title: "Project Overview",
         url: PAGE_ROUTES.PROJECTS,
         description: "View all active projects",

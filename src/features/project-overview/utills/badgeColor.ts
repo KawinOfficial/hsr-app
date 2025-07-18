@@ -1,17 +1,15 @@
 export function getStatusColor(status: string) {
   switch (status) {
-    case "Open":
-      return "bg-rail-blue text-white";
-    case "Evaluation":
+    case "On Track":
+      return "bg-success-green text-white";
+    case "Delayed":
       return "bg-warning-amber text-white";
-    case "Awarded":
-      return "bg-success-green text-white";
-    case "Active":
-      return "bg-success-green text-white";
+    case "At Risk":
+      return "bg-destructive text-white";
     case "Planning":
+      return "bg-rail-blue text-white";
+    case "Completed":
       return "bg-rail-gold text-white";
-    case "Closed":
-      return "bg-muted text-muted-foreground";
     default:
       return "bg-muted text-muted-foreground";
   }
@@ -28,4 +26,10 @@ export function getRiskColor(level: string) {
     default:
       return "text-muted-foreground";
   }
+}
+
+export function getVarianceColor(variance: number) {
+  if (variance > 3) return "text-destructive";
+  if (variance >= 0) return "text-warning-amber";
+  return "text-success-green";
 }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "next": "15.4.1",
+    "path-to-regexp": "^8.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "use-context-selector": "^2.0.0",

@@ -1,7 +1,7 @@
 export const PAGE_ROUTES = {
   DASHBOARD: "/",
-  PROJECT_MANAGEMENT: "/project-management",
   PROJECTS: "/projects",
+  PROJECT_DETAIL: "/projects/:id",
   MILESTONES: "/milestones",
   PAYMENTS: "/payments",
   ASSETS: "/assets",
