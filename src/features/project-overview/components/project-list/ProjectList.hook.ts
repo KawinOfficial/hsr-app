@@ -1,13 +1,6 @@
 import { useContextSelector } from "use-context-selector";
 import { ProjectContext } from "@/features/project-overview/components/project-provider";
-
-const statusOptions = [
-  { label: "All Status", value: "all" },
-  { label: "On Track", value: "On Track" },
-  { label: "Delayed", value: "Delayed" },
-  { label: "At Risk", value: "At Risk" },
-  { label: "Planning", value: "Planning" },
-];
+import { STATUS_OPTIONS } from "@/features/project-overview/constants/options";
 
 export const useProjectList = () => {
   const projects = useContextSelector(
@@ -15,5 +8,5 @@ export const useProjectList = () => {
     (state) => state?.projects!
   );
 
-  return { statusOptions, projects };
+  return { statusOptions: STATUS_OPTIONS, projects };
 };

@@ -27,7 +27,7 @@ const ProjectList = () => {
               <Input placeholder="Search projects..." className="pl-10 w-64" />
             </div>
 
-            <Select>
+            <Select defaultValue={statusOptions[0].value}>
               <SelectTrigger className="w-40">
                 <SelectValue />
               </SelectTrigger>

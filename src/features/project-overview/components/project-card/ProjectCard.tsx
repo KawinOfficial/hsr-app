@@ -97,7 +97,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           </div>
 
           <div className="space-y-3">
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
+            <div className="text-center p-3 bg-muted rounded-lg">
               <p className="text-xs text-muted-foreground">Progress</p>
               <p className="text-2xl font-bold text-primary">
                 {project.progress}%
@@ -119,7 +119,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           </div>
 
           <div className="space-y-3 h-full">
-            <div className="text-center h-1/2 flex flex-col items-center justify-center bg-muted/50 rounded-lg">
+            <div className="text-center h-1/2 flex flex-col items-center justify-center bg-muted rounded-lg">
               <p className="text-xs text-muted-foreground">Cost Variance</p>
               <div className="flex items-center justify-center">
                 {!project.variance ? (
@@ -140,7 +140,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
               </div>
             </div>
 
-            <div className="text-center h-1/2 flex flex-col items-center justify-center bg-muted/50 rounded-lg">
+            <div className="text-center h-1/2 flex flex-col items-center justify-center bg-muted rounded-lg">
               <p className="text-xs text-muted-foreground">Remaining Budget</p>
               <p className="text-sm font-bold text-success-green">
                 {formatCurrency(project.budget - project.spent)}
