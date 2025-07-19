@@ -15,8 +15,13 @@ import { useOverview } from "./Overview.hook";
 import { Badge } from "@/components/ui/badge";
 
 const Overview = () => {
-  const { milestones, upcomingMilestones, delayedMilestones, projectProgress } =
-    useOverview();
+  const {
+    milestones,
+    upcomingMilestones,
+    delayedMilestones,
+    projectProgress,
+    handleViewMilestone,
+  } = useOverview();
 
   return (
     <>
@@ -38,7 +43,7 @@ const Overview = () => {
                 <div
                   key={`${milestone.id}-${index}`}
                   className="flex items-center space-x-4 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
-                  // onClick={() => handleViewMilestone(milestone)}
+                  onClick={() => handleViewMilestone?.(milestone)}
                 >
                   <div className="flex-shrink-0">
                     <Badge className={getStatusColor(milestone.status)}>
@@ -86,7 +91,7 @@ const Overview = () => {
                   <div
                     key={`${milestone.id}-${index}`}
                     className="flex items-start space-x-4 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
-                    // onClick={() => handleViewMilestone(milestone)}
+                    onClick={() => handleViewMilestone?.(milestone)}
                   >
                     <div className="flex-shrink-0 mt-1">
                       {milestone.status === "Delayed" ? (

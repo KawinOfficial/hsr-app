@@ -4,12 +4,14 @@ export function getStatusColor(status: string) {
       return "bg-success-green text-white";
     case "In Progress":
       return "bg-rail-blue text-white";
+    case "Pending":
+      return "bg-warning-amber text-white";
     case "Delayed":
       return "bg-construction-orange text-white";
-    case "At Risk":
-      return "bg-destructive text-white";
     case "Not Started":
       return "bg-muted text-muted-foreground";
+    case "At Risk":
+      return "bg-destructive text-white";
     default:
       return "bg-muted text-muted-foreground";
   }

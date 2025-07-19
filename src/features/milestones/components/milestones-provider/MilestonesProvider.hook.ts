@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
 
 const milestones: Milestone[] = [
@@ -215,6 +215,9 @@ const milestones: Milestone[] = [
 ];
 
 export const useMilestonesProvider = () => {
+  const [selectedMilestone, setSelectedMilestone] = useState<Milestone>();
+  const [detailViewOpen, setDetailViewOpen] = useState(false);
+
   const upcomingMilestones = useMemo(() => {
     return milestones
       .filter((m) => m.status === "Pending" || m.status === "In Progress")
@@ -256,10 +259,36 @@ export const useMilestonesProvider = () => {
     });
   }, [milestones]);
 
+  const projectOptions = useMemo(() => {
+    return projectIds.map((projectId) => {
+      const projectMilestones = milestones.find((m) => m.project === projectId);
+      return {
+        label: `${projectId} - ${projectMilestones?.projectName}`,
+        value: projectId,
+      };
+    });
+  }, [projectIds]);
+
+  function handleViewMilestone(milestone: Milestone) {
+    setSelectedMilestone(milestone);
+    setDetailViewOpen(true);
+  }
+
+  function handleCloseMilestone() {
+    setSelectedMilestone(undefined);
+    setDetailViewOpen(false);
+  }
+
   return {
     milestones,
     upcomingMilestones,
     delayedMilestones,
     projectProgress,
+    projectOptions,
+    selectedMilestone,
+    detailViewOpen,
+    setDetailViewOpen,
+    handleViewMilestone,
+    handleCloseMilestone,
   };
 };

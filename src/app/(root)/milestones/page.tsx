@@ -10,6 +10,8 @@ import { MILESTONE_TABS } from "@/features/milestones/constants/tabs";
 import { Overview } from "@/features/milestones/components/overview";
 import { MilestonesTimeline } from "@/features/milestones/components/milestones-timeline";
 import { TrackingList } from "@/features/milestones/components/tracking-list";
+import { CreateMilestoneDialog } from "@/features/milestones/components/create-milestone-dialog";
+import { MilestoneDialog } from "@/features/milestones/components/milestone-dialog";
 
 export default function MilestonesPage() {
   return (
@@ -19,10 +21,7 @@ export default function MilestonesPage() {
           title=" Project Milestones"
           subTitle="Track project milestones and deliverables across all HSR sections"
         >
-          <Button size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            New Milestone
-          </Button>
+          <CreateMilestoneDialog />
         </PageHeader>
 
         <div className="px-4 sm:px-6 py-8">
@@ -49,6 +48,8 @@ export default function MilestonesPage() {
           </Tabs>
         </div>
       </div>
+
+      <MilestoneDialog />
     </MilestonesProvider>
   );
 }

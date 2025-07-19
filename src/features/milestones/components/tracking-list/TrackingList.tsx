@@ -32,7 +32,7 @@ import { getStatusColor } from "@/features/milestones/utils/milestonesColor";
 import { formatCurrency } from "@/lib/format";
 
 const TrackingList = () => {
-  const { milestones } = useTrackingList();
+  const { milestones, handleViewMilestone } = useTrackingList();
 
   return (
     <Card>
@@ -82,7 +82,7 @@ const TrackingList = () => {
               <TableHead>Target Date</TableHead>
               <TableHead>Budget</TableHead>
               <TableHead>Assignee</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -132,8 +132,12 @@ const TrackingList = () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex space-x-1">
-                    <Button variant="ghost" size="sm">
+                  <div className="flex space-x-1 justify-center">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleViewMilestone?.(milestone)}
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
                     <Button variant="ghost" size="sm">

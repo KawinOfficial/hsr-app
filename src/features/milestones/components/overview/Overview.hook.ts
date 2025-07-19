@@ -18,11 +18,16 @@ export const useOverview = () => {
     MilestonesContext,
     (state) => state?.projectProgress
   );
+  const handleViewMilestone = useContextSelector(
+    MilestonesContext,
+    (state) => state?.handleViewMilestone
+  );
 
   return {
     milestones,
     upcomingMilestones,
     delayedMilestones,
     projectProgress,
+    handleViewMilestone,
   };
 };

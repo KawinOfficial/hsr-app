@@ -6,6 +6,10 @@ export const useTrackingList = () => {
     MilestonesContext,
     (state) => state?.milestones
   );
+  const handleViewMilestone = useContextSelector(
+    MilestonesContext,
+    (state) => state?.handleViewMilestone
+  );
 
-  return { milestones };
+  return { milestones, handleViewMilestone };
 };
