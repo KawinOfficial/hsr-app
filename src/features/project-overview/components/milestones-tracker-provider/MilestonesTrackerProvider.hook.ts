@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Milestone } from "@/features/project-overview/schemas/Milestones.schema";
+import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
 
 const milestones = [
   {

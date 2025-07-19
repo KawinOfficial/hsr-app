@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { getStatusColor } from "@/features/project-overview/utills/badgeColor";
+import { getStatusColor } from "@/features/project-overview/utils/badgeColor";
 import { useContextSelector } from "use-context-selector";
 import { ProjectDetailContext } from "@/features/project-overview/components/project-detail-provider";
 

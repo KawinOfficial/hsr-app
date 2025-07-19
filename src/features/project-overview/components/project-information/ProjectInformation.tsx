@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   getStatusColor,
   getRiskColor,
-} from "@/features/project-overview/utills/badgeColor";
+} from "@/features/project-overview/utils/badgeColor";
 import { useProjectInformation } from "./ProjectInformation.hook";
 import {
   RISK_OPTIONS,

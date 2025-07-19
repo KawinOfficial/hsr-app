@@ -29,3 +29,22 @@ export function getPriorityColor(priority: string) {
       return "text-muted-foreground";
   }
 }
+
+export function getVarianceColor(variance: number) {
+  if (variance > 5) return "text-destructive";
+  if (variance > 0) return "text-warning-amber";
+  return "text-success-green";
+}
+
+export function getMilestoneStatusColor(status: string) {
+  switch (status) {
+    case "Completed":
+      return "bg-success-green border-success-green";
+    case "In Progress":
+      return "bg-rail-blue border-rail-blue";
+    case "Delayed":
+      return "bg-construction-orange border-construction-orange";
+    default:
+      return "bg-background border-gray-200";
+  }
+}

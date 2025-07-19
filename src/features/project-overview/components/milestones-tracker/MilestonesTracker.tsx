@@ -21,7 +21,7 @@ import { useMilestonesTracker } from "./MilestonesTracker.hook";
 import {
   getPriorityColor,
   getStatusColor,
-} from "@/features/project-overview/utills/milestonesColor";
+} from "@/features/milestones/utils/milestonesColor";
 import { formatCurrency } from "@/lib/format";
 import { MilestonesDialog } from "@/features/project-overview/components/milestones-dialog";
 import Link from "next/link";

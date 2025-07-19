@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { getRiskColor } from "@/features/project-overview/utills/badgeColor";
+import { getRiskColor } from "@/features/project-overview/utils/badgeColor";
 
 const RiskList = () => {
   const projectDetails = useContextSelector(

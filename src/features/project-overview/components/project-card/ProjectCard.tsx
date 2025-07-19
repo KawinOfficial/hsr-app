@@ -17,7 +17,7 @@ import {
   getStatusColor,
   getRiskColor,
   getVarianceColor,
-} from "@/features/project-overview/utills/badgeColor";
+} from "@/features/project-overview/utils/badgeColor";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
