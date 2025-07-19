@@ -13,6 +13,7 @@ import { Timeline } from "@/features/project-overview/components/timeline";
 import { Team } from "@/features/project-overview/components/team";
 import { Document } from "@/features/project-overview/components/document";
 import { RiskList } from "@/features/project-overview/components/risk-list";
+import { MilestonesTracker } from "@/features/project-overview/components/milestones-tracker";
 
 export default function ProjectDetail() {
   const params = useParams();
@@ -67,6 +68,9 @@ export default function ProjectDetail() {
           </TabsContent>
           <TabsContent value="risks">
             <RiskList />
+          </TabsContent>
+          <TabsContent value="milestones">
+            <MilestonesTracker />
           </TabsContent>
         </Tabs>
       </div>
