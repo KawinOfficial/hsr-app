@@ -1,0 +1,18 @@
+import { useContextSelector } from "use-context-selector";
+import { DepartmentContext } from "../department-provider/DepartmentProvider";
+
+export const useDepartmentList = () => {
+  const departments = useContextSelector(
+    DepartmentContext,
+    (state) => state?.departments
+  );
+  const handleEditDepartment = useContextSelector(
+    DepartmentContext,
+    (state) => state?.handleEditDepartment
+  );
+
+  return {
+    departments,
+    handleEditDepartment,
+  };
+};
