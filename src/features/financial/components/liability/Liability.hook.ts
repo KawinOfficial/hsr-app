@@ -58,6 +58,10 @@ export const useLiability = () => {
     FinancialContext,
     (state) => state?.handleViewItem
   );
+  const handleCreateDocument = useContextSelector(
+    FinancialContext,
+    (state) => state?.handleCreateDocument
+  );
 
-  return { liabilitiesData, handleViewItem };
+  return { liabilitiesData, handleViewItem, handleCreateDocument };
 };

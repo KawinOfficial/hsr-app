@@ -24,7 +24,7 @@ import { usePayments } from "./Payments.hook";
 import { getStatusColor } from "@/features/financial/utils/color";
 
 const Payments = () => {
-  const { paymentsData, handleViewItem } = usePayments();
+  const { paymentsData, handleViewItem, handleCreateDocument } = usePayments();
 
   return (
     <Card>
@@ -44,10 +44,7 @@ const Payments = () => {
             <Button variant="outline" size="sm">
               <Filter className="h-4 w-4" />
             </Button>
-            <Button
-              size="sm"
-              // onClick={handleCreatePayment}
-            >
+            <Button size="sm" onClick={handleCreateDocument}>
               <Plus className="h-4 w-4 mr-2" />
               New Payment
             </Button>

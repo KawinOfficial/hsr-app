@@ -27,6 +27,11 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { DetailViewTab } from "@/features/financial/components/detail-view-tab";
+import {
+  ASSET_STATUS,
+  LIABILITY_STATUS,
+  PAYMENT_STATUS,
+} from "../../constants/options";
 
 const DetailViewDialog = () => {
   const {
@@ -126,39 +131,17 @@ const DetailViewDialog = () => {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {type === "payment" && (
-                            <>
-                              <SelectItem value="Pending Approval">
-                                Pending Approval
-                              </SelectItem>
-                              <SelectItem value="Approved">Approved</SelectItem>
-                              <SelectItem value="In Progress">
-                                In Progress
-                              </SelectItem>
-                              <SelectItem value="Processed">
-                                Processed
-                              </SelectItem>
-                            </>
-                          )}
-                          {type === "asset" && (
-                            <>
-                              <SelectItem value="Excellent">
-                                Excellent
-                              </SelectItem>
-                              <SelectItem value="Good">Good</SelectItem>
-                              <SelectItem value="Fair">Fair</SelectItem>
-                              <SelectItem value="Poor">Poor</SelectItem>
-                            </>
-                          )}
-                          {type === "liability" && (
-                            <>
-                              <SelectItem value="Current">Current</SelectItem>
-                              <SelectItem value="Overdue">Overdue</SelectItem>
-                              <SelectItem value="Long-term">
-                                Long-term
-                              </SelectItem>
-                            </>
-                          )}
+                          {Object.values(
+                            type === "payment"
+                              ? PAYMENT_STATUS
+                              : type === "asset"
+                              ? ASSET_STATUS
+                              : LIABILITY_STATUS
+                          ).map((status) => (
+                            <SelectItem key={status} value={status}>
+                              {status}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     ) : (

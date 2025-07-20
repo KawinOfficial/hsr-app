@@ -32,6 +32,7 @@ export const useFinancialProvider = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<FinancialItem>();
   const [editMode, setEditMode] = useState(false);
+  const [createDocumentOpen, setCreateDocumentOpen] = useState(false);
 
   function handleOpen() {
     setIsOpen(true);
@@ -61,6 +62,10 @@ export const useFinancialProvider = () => {
     handleOpen();
   }
 
+  function handleCreateDocument() {
+    setCreateDocumentOpen(true);
+  }
+
   return {
     financialSummary,
     isOpen,
@@ -73,5 +78,8 @@ export const useFinancialProvider = () => {
     handleEdit,
     handleCancel,
     handleSave,
+    createDocumentOpen,
+    setCreateDocumentOpen,
+    handleCreateDocument,
   };
 };

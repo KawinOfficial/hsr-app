@@ -27,7 +27,8 @@ import {
 import { Input } from "@/components/ui/input";
 
 const Liability = () => {
-  const { liabilitiesData, handleViewItem } = useLiability();
+  const { liabilitiesData, handleViewItem, handleCreateDocument } =
+    useLiability();
 
   return (
     <Card>
@@ -51,7 +52,7 @@ const Liability = () => {
             <Button variant="outline" size="sm">
               <Filter className="h-4 w-4" />
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={handleCreateDocument}>
               <Plus className="h-4 w-4 mr-2" />
               New Liability
             </Button>

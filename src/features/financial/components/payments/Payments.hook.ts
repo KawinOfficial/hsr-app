@@ -61,6 +61,10 @@ export const usePayments = () => {
     FinancialContext,
     (state) => state?.handleViewItem
   );
+  const handleCreateDocument = useContextSelector(
+    FinancialContext,
+    (state) => state?.handleCreateDocument
+  );
 
-  return { paymentsData, handleViewItem };
+  return { paymentsData, handleViewItem, handleCreateDocument };
 };

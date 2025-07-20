@@ -24,7 +24,7 @@ import { getStatusColor } from "@/features/financial/utils/color";
 import { Input } from "@/components/ui/input";
 
 const Assets = () => {
-  const { assetsData, handleViewItem } = useAssets();
+  const { assetsData, handleViewItem, handleCreateDocument } = useAssets();
 
   return (
     <Card>
@@ -44,7 +44,7 @@ const Assets = () => {
             <Button variant="outline" size="sm">
               <Filter className="h-4 w-4" />
             </Button>{" "}
-            <Button size="sm">
+            <Button size="sm" onClick={handleCreateDocument}>
               <Plus className="h-4 w-4 mr-2" />
               Register Asset
             </Button>
