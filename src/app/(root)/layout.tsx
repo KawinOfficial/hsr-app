@@ -5,6 +5,7 @@ import { Navigation } from "@/components/layout/navigation";
 import { Toaster } from "@/components/ui/toaster";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/assets/globals.css";
+import { ProfileProvider } from "@/features/profile/components/profile-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +34,10 @@ export default function RootLayout({
       >
         <AppProviders>
           <TooltipProvider>
-            <Toaster />
-            <Navigation>{children}</Navigation>
+            <ProfileProvider>
+              <Toaster />
+              <Navigation>{children}</Navigation>
+            </ProfileProvider>
           </TooltipProvider>
         </AppProviders>
       </body>

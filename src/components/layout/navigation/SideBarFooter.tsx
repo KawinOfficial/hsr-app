@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ChevronDown } from "lucide-react";
 import { User, Settings, HelpCircle, LogOut } from "lucide-react";
+import Link from "next/link";
+import { PAGE_ROUTES } from "@/routers/page";
 
 const SideBarFooter = () => {
   return (
@@ -30,12 +32,13 @@ const SideBarFooter = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+            <Link
+              href={PAGE_ROUTES.PROFILE}
+              className="flex items-center w-full"
+            >
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile</span>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <HelpCircle className="mr-2 h-4 w-4" />
