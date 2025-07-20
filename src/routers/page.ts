@@ -6,10 +6,12 @@ export const PAGE_ROUTES = {
   PAYMENTS: "/payments/management",
   ASSETS: "/payments/assets",
   LIABILITIES: "/payments/liabilities",
+  DOCUMENT_TYPES: "/payments/document-types",
   REPORTS_FINANCIAL: "/reports/financial",
   REPORTS_SUMMARY: "/reports/summary",
   REPORTS_COST_ANALYSIS: "/reports/cost-analysis",
   USERS: "/users",
   DEPARTMENTS: "/departments",
   PERMISSIONS: "/permissions",
+  PROFILE: "/profile",
 };

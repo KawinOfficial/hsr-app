@@ -41,6 +41,11 @@ export const NAVIGATION_ITEMS = [
         url: PAGE_ROUTES.LIABILITIES,
         description: "Track project liabilities and obligations",
       },
+      {
+        title: "Document Type",
+        url: PAGE_ROUTES.DOCUMENT_TYPES,
+        description: "Manage document types and approval workflows",
+      },
     ],
   },
   {
