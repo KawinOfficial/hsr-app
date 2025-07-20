@@ -1,3 +1,5 @@
+"use client";
+
 import { useLiability } from "./Liability.hook";
 import {
   Card,
@@ -25,7 +27,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 const Liability = () => {
-  const { liabilitiesData } = useLiability();
+  const { liabilitiesData, handleViewItem } = useLiability();
 
   return (
     <Card>
@@ -33,7 +35,7 @@ const Liability = () => {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>Liability Management</CardTitle>
-            <CardDescription>
+            <CardDescription className="mt-1">
               Track and manage project liabilities, obligations, and outstanding
               debts
             </CardDescription>
@@ -99,9 +101,7 @@ const Liability = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      //   onClick={() =>
-                      //     handleViewItem(liability, "liability")
-                      //   }
+                      onClick={() => handleViewItem?.(liability, "liability")}
                     >
                       <Eye className="h-4 w-4" />
                     </Button>

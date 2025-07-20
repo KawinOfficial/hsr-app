@@ -1,4 +1,8 @@
-const liabilitiesData = [
+import { useContextSelector } from "use-context-selector";
+import { FinancialContext } from "../financial-provider/FinancialProvider";
+import { Liability } from "@/features/financial/schemas/Liability.schema";
+
+const liabilitiesData: Liability[] = [
   {
     id: "LIA-2024-001",
     type: "Contract Obligation",
@@ -50,5 +54,10 @@ const liabilitiesData = [
 ];
 
 export const useLiability = () => {
-  return { liabilitiesData };
+  const handleViewItem = useContextSelector(
+    FinancialContext,
+    (state) => state?.handleViewItem
+  );
+
+  return { liabilitiesData, handleViewItem };
 };

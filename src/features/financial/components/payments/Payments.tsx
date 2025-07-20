@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -22,7 +24,7 @@ import { usePayments } from "./Payments.hook";
 import { getStatusColor } from "@/features/financial/utils/color";
 
 const Payments = () => {
-  const { paymentsData } = usePayments();
+  const { paymentsData, handleViewItem } = usePayments();
 
   return (
     <Card>
@@ -85,7 +87,7 @@ const Payments = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      //   onClick={() => handleViewItem(payment, "payment")}
+                      onClick={() => handleViewItem?.(payment, "payment")}
                     >
                       <Eye className="h-4 w-4" />
                     </Button>

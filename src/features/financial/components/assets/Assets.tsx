@@ -1,3 +1,5 @@
+"use client";
+
 import { useAssets } from "./Assets.hook";
 import {
   Card,
@@ -22,7 +24,7 @@ import { getStatusColor } from "@/features/financial/utils/color";
 import { Input } from "@/components/ui/input";
 
 const Assets = () => {
-  const { assetsData } = useAssets();
+  const { assetsData, handleViewItem } = useAssets();
 
   return (
     <Card>
@@ -30,7 +32,7 @@ const Assets = () => {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>Asset Management</CardTitle>
-            <CardDescription>
+            <CardDescription className="mt-1">
               Register and manage project assets, equipment, and infrastructure
             </CardDescription>
           </div>
@@ -105,7 +107,7 @@ const Assets = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      //   onClick={() => handleViewItem(asset, "asset")}
+                      onClick={() => handleViewItem?.(asset, "asset")}
                     >
                       <Eye className="h-4 w-4" />
                     </Button>

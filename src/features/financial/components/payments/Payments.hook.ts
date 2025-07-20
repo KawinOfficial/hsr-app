@@ -1,3 +1,6 @@
+import { FinancialContext } from "../financial-provider/FinancialProvider";
+import { useContextSelector } from "use-context-selector";
+
 const paymentsData = [
   {
     id: "PAY-2024-001",
@@ -54,5 +57,10 @@ const paymentsData = [
 ];
 
 export const usePayments = () => {
-  return { paymentsData };
+  const handleViewItem = useContextSelector(
+    FinancialContext,
+    (state) => state?.handleViewItem
+  );
+
+  return { paymentsData, handleViewItem };
 };
