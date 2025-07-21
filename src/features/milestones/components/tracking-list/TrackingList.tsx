@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Search, Filter, Eye, Edit, MoreVertical } from "lucide-react";
+import { Search, Filter, Edit, MoreVertical } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,

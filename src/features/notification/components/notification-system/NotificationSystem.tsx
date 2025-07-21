@@ -5,9 +5,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Bell } from "lucide-react";
-import { NotificationDialog } from "@/features/notification/components/notification-dialog";
 import { useNotificationSystem } from "./NotificationSystem.hook";
 import { NofiticationItem } from "@/features/notification/components/notification-item";
+import { NotificationDialog } from "@/features/notification/components/notification-dialog";
 import { Separator } from "@/components/ui/separator";
 
 const NotificationSystem = () => {

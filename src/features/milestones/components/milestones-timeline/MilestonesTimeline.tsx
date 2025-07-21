@@ -35,7 +35,7 @@ const MilestonesTimeline = () => {
             <div className="absolute left-8 top-0 bottom-4 w-0.5 bg-border" />
 
             <div>
-              {milestones?.map((milestone, index) => (
+              {milestones?.map((milestone) => (
                 <div
                   key={milestone.id}
                   className="relative flex items-start space-x-7"

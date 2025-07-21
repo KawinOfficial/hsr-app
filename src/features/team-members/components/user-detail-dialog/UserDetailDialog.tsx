@@ -30,7 +30,6 @@ const UserDetailDialog = () => {
   const {
     userDetails: user,
     editMode,
-    formData,
     handleSave,
     handleEdit,
     handleCancel,

@@ -74,9 +74,7 @@ const mockNotifications = [
   },
 ];
 
-export interface UseNotificationProviderProps {}
-
-export const useNotificationProvider = ({}: UseNotificationProviderProps) => {
+export const useNotificationProvider = () => {
   const [notifications, setNotifications] =
     useState<Notification[]>(mockNotifications);
   const [isOpen, setIsOpen] = useState(false);

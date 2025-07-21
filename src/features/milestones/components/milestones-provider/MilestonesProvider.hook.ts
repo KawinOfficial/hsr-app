@@ -226,7 +226,7 @@ export const useMilestonesProvider = () => {
           new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime()
       )
       .slice(0, 5);
-  }, [milestones]);
+  }, []);
 
   const delayedMilestones = useMemo(() => {
     return milestones.filter(
@@ -234,11 +234,11 @@ export const useMilestonesProvider = () => {
         m.status === "Delayed" ||
         (m.status === "In Progress" && new Date(m.targetDate) < new Date())
     );
-  }, [milestones]);
+  }, []);
 
   const projectIds = useMemo(() => {
     return [...new Set(milestones.map((m) => m.project))];
-  }, [milestones]);
+  }, []);
 
   const projectProgress = useMemo(() => {
     return projectIds.map((projectId) => {
@@ -257,7 +257,7 @@ export const useMilestonesProvider = () => {
         totalCount: projectMilestones?.length ?? 0,
       };
     });
-  }, [milestones]);
+  }, [projectIds]);
 
   const projectOptions = useMemo(() => {
     return projectIds.map((projectId) => {

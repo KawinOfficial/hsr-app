@@ -23,8 +23,7 @@ import {
 import { formatCurrency } from "@/lib/format";
 
 const ProjectInformation = () => {
-  const { isEditMode, handleEdit, handleCancel, handleSave, project } =
-    useProjectInformation();
+  const { isEditMode, project } = useProjectInformation();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

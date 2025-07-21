@@ -9,7 +9,7 @@ export const NotificationContext = createContext<ReturnType<
 > | null>(null);
 
 export const NotificationProvider = ({ children }: PropsWithChildren) => {
-  const context = useNotificationProvider({});
+  const context = useNotificationProvider();
   return (
     <NotificationContext.Provider value={context}>
       {children}

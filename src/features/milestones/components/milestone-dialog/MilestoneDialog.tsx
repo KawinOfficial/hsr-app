@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Edit, FileText, Download } from "lucide-react";
+import { Edit, FileText } from "lucide-react";
 import { useMilestoneDialog } from "./MilestoneDialog.hook";
 import { formatCurrency } from "@/lib/format";
 import { getStatusColor } from "@/features/milestones/utils/milestonesColor";

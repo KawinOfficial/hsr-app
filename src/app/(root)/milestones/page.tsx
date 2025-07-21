@@ -1,10 +1,8 @@
 "use client";
 
 import PageHeader from "@/components/layout/page-haeder/PageHeader";
-import { Button } from "@/components/ui/button";
 import { MilestonesProvider } from "@/features/milestones/components/milestones-provider/MilestonesProvider";
 import { SummaryStats } from "@/features/milestones/components/summary-stats";
-import { Plus } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MILESTONE_TABS } from "@/features/milestones/constants/tabs";
 import { Overview } from "@/features/milestones/components/overview";

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const NotificationSchema = z.object({
+export const NotificationSchema = z.object({
   id: z.string(),
   type: z.string(),
   title: z.string(),

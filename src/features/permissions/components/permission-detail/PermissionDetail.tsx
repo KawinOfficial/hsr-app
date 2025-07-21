@@ -74,7 +74,7 @@ const PermissionDetail = () => {
             <Label className="text-base font-medium">Permissions Matrix</Label>
             <div className="mt-4 space-y-4">
               {Object.entries(selectedPermissionGroup.permissions).map(
-                ([module, perms]: [string, any]) => (
+                ([module, perms]) => (
                   <Card key={module} className="p-4">
                     <div className="space-y-3">
                       <h4 className="font-medium capitalize">

@@ -15,7 +15,6 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
-import { Download, FileText } from "lucide-react";
 
 const SecurityTab = () => {
   const { userProfile, setChangePasswordOpen } = useSecurityTab();

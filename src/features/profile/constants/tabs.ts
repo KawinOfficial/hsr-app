@@ -1,4 +1,4 @@
-import { Activity, Lock, Settings, Shield, User } from "lucide-react";
+import { Lock, Shield, User } from "lucide-react";
 
 export const PROFILE_TABS = [
   {

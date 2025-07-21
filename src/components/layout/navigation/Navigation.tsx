@@ -1,5 +1,6 @@
 "use client";
 
+import { PropsWithChildren } from "react";
 import { NotificationSystem } from "@/features/notification/components/notification-system";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -8,14 +9,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Train, Search } from "lucide-react";
+import { Train } from "lucide-react";
 import SideBarMenu from "@/components/layout/navigation/SideBarMenu";
 import SideBarFooter from "@/components/layout/navigation/SideBarFooter";
 import { NotificationProvider } from "@/features/notification/components/notification-provider";
 
-interface NavigationProps extends React.PropsWithChildren {}
-
-const Navigation = ({ children }: NavigationProps) => {
+const Navigation = ({ children }: PropsWithChildren) => {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">

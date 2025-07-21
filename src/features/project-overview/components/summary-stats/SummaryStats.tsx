@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
-import { Building2, CheckCircle, DollarSign, TrendingUp } from "lucide-react";
+import { Building2, CheckCircle, DollarSign } from "lucide-react";
 import { useSummaryStats } from "./SummaryStats.hook";
 
 const SummaryStats = () => {
@@ -30,7 +30,7 @@ const SummaryStats = () => {
     },
     {
       title: "On Track Projects",
-      value: `${onTrackCount}/${projects.length}`,
+      value: `${onTrackCount}/${projects?.length ?? 0}`,
       subtitle: "Projects meeting timeline",
       icon: CheckCircle,
     },

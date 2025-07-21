@@ -7,7 +7,6 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import {
   Table,
   TableHeader,
@@ -146,7 +145,7 @@ const ReportFinancial = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {breakdownData.map((row, idx) => (
+              {breakdownData.map((row) => (
                 <TableRow key={row.category}>
                   <TableCell className="font-medium">{row.category}</TableCell>
                   <TableCell>{formatCurrency(row.amount)}</TableCell>

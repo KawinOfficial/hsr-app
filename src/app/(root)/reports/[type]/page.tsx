@@ -11,7 +11,7 @@ import { CostAnalysis } from "@/features/reports/components/cost-analysis";
 export default async function ReportsPage({
   params,
 }: {
-  params: { type: string };
+  params: Promise<{ type?: string }>;
 }) {
   const { type } = await params;
 

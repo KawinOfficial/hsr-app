@@ -47,7 +47,7 @@ const ProjectList = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {projects.map((project) => (
+          {projects?.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
         </div>

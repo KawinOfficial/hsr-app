@@ -126,7 +126,7 @@ const UserDetailTabs = ({ user, editMode }: UserDetailTabsProps) => {
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id={`${module}-read`}
-                        checked={(perms as any).read}
+                        checked={perms.read}
                         disabled={!editMode}
                       />
                       <Label htmlFor={`${module}-read`} className="text-sm">
@@ -136,7 +136,7 @@ const UserDetailTabs = ({ user, editMode }: UserDetailTabsProps) => {
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id={`${module}-write`}
-                        checked={(perms as any).write}
+                        checked={perms.write}
                         disabled={!editMode}
                       />
                       <Label htmlFor={`${module}-write`} className="text-sm">
@@ -146,7 +146,7 @@ const UserDetailTabs = ({ user, editMode }: UserDetailTabsProps) => {
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id={`${module}-admin`}
-                        checked={(perms as any).admin}
+                        checked={perms.admin}
                         disabled={!editMode}
                       />
                       <Label htmlFor={`${module}-admin`} className="text-sm">

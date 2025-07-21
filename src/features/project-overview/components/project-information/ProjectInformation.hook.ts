@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useContextSelector } from "use-context-selector";
 import { ProjectDetailContext } from "@/features/project-overview/components/project-detail-provider";
 

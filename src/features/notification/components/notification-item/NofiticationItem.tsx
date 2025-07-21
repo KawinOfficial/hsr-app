@@ -19,6 +19,10 @@ import {
 } from "lucide-react";
 import { useContextSelector } from "use-context-selector";
 import { NotificationContext } from "@/features/notification/components/notification-provider";
+import {
+  getActionColor,
+  getPriorityColor,
+} from "@/features/notification/utils/color";
 
 export function getNotificationIcon(type: string) {
   switch (type) {
@@ -37,34 +41,6 @@ export function getNotificationIcon(type: string) {
   }
 }
 
-export function getPriorityColor(priority: string) {
-  switch (priority) {
-    case "High":
-      return "text-destructive";
-    case "Medium":
-      return "text-warning-amber";
-    case "Low":
-      return "text-success-green";
-    default:
-      return "text-muted-foreground";
-  }
-}
-
-export function getActionColor(action: string) {
-  switch (action) {
-    case "approval_required":
-      return "bg-warning-amber text-white";
-    case "revision_required":
-      return "bg-construction-orange text-white";
-    case "status_update":
-      return "bg-success-green text-white";
-    case "deadline_reminder":
-      return "bg-destructive text-white";
-    default:
-      return "bg-rail-blue text-white";
-  }
-}
-
 interface NofiticationItemProps {
   notification: Notification;
 }
@@ -72,15 +48,15 @@ interface NofiticationItemProps {
 const NofiticationItem = ({ notification }: NofiticationItemProps) => {
   const handleNotificationClick = useContextSelector(
     NotificationContext,
-    (context) => context?.handleNotificationClick!
+    (context) => context?.handleNotificationClick
   );
   const markAsRead = useContextSelector(
     NotificationContext,
-    (context) => context?.markAsRead!
+    (context) => context?.markAsRead
   );
   const deleteNotification = useContextSelector(
     NotificationContext,
-    (context) => context?.deleteNotification!
+    (context) => context?.deleteNotification
   );
 
   return (
@@ -88,17 +64,12 @@ const NofiticationItem = ({ notification }: NofiticationItemProps) => {
       className={`p-3 rounded-lg border cursor-pointer transition-colors hover:bg-muted/50 ${
         !notification.isRead ? "bg-muted/30" : ""
       }`}
-      onClick={() => handleNotificationClick(notification)}
+      onClick={() => handleNotificationClick?.(notification)}
     >
       <div className="flex items-start space-x-3">
         <Avatar className="h-8 w-8">
           <AvatarImage src={notification.avatar} />
-          <AvatarFallback>
-            {notification.from
-              .split(" ")
-              .map((n) => n[0])
-              .join("")}
-          </AvatarFallback>
+          <AvatarFallback>{notification.from}</AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
@@ -131,7 +102,7 @@ const NofiticationItem = ({ notification }: NofiticationItemProps) => {
                   <DropdownMenuItem
                     onClick={(e) => {
                       e.stopPropagation();
-                      markAsRead(notification.id);
+                      markAsRead?.(notification.id);
                     }}
                   >
                     <Mail className="h-4 w-4 mr-2" />
@@ -140,7 +111,7 @@ const NofiticationItem = ({ notification }: NofiticationItemProps) => {
                   <DropdownMenuItem
                     onClick={(e) => {
                       e.stopPropagation();
-                      deleteNotification(notification.id);
+                      deleteNotification?.(notification.id);
                     }}
                     className="text-destructive"
                   >

@@ -56,7 +56,7 @@ const WorkflowDialog = () => {
           <div>
             <Label className="font-medium text-lg">Workflow Steps</Label>
             <div className="space-y-4 mt-4">
-              {selectedWorkflow.steps.map((step: any, index: number) => (
+              {selectedWorkflow.steps.map((step, index) => (
                 <div key={step.id} className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 rounded-full bg-rail-blue text-white flex items-center justify-center font-bold">

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Upload, Camera, Save } from "lucide-react";
+import { Upload, Save } from "lucide-react";
 import { useUploadDialog } from "./UploadDialog.hook";
 
 const UploadDialog = () => {

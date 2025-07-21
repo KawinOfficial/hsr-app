@@ -8,8 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { ChevronDown } from "lucide-react";
-import { User, Settings, HelpCircle, LogOut } from "lucide-react";
+import { ChevronDown, User, HelpCircle, LogOut } from "lucide-react";
 import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
 

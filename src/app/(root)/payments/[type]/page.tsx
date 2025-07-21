@@ -13,7 +13,7 @@ import { CreateDocumentDialog } from "@/features/financial/components/create-doc
 export default async function PaymentsPage({
   params,
 }: {
-  params: { type: string };
+  params: Promise<{ type?: string }>;
 }) {
   const { type } = await params;
 

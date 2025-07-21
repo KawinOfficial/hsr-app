@@ -25,6 +25,7 @@ import {
 import { formatCurrency } from "@/lib/format";
 import { MilestonesDialog } from "@/features/project-overview/components/milestones-dialog";
 import Link from "next/link";
+import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
 
 const MilestonesTracker = () => {
   const {
@@ -200,7 +201,9 @@ const MilestonesTracker = () => {
                           variant="outline"
                           size="sm"
                           className="flex-1"
-                          onClick={() => handleProgressUpdate?.(milestone)}
+                          onClick={() =>
+                            handleProgressUpdate?.(milestone as Milestone)
+                          }
                         >
                           <Edit className="h-3 w-3 mr-1" />
                           Update

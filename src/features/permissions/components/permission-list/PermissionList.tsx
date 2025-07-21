@@ -4,7 +4,7 @@ import { usePermissionList } from "./PermissionList.hook";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, Lock, Users, Edit } from "lucide-react";
+import { CheckCircle, Lock, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getStatusColor } from "@/features/permissions/utils/colorStatus";
 

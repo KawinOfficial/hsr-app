@@ -12,11 +12,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useNotificationDialog } from "./NotificationDialog.hook";
 import {
-  getNotificationIcon,
   getPriorityColor,
   getActionColor,
-} from "@/features/notification/components/notification-item";
+} from "@/features/notification/utils/color";
 import { Eye, Trash2 } from "lucide-react";
+import { getNotificationIcon } from "@/features/notification/components/notification-item";
 
 const NotificationDialog = () => {
   const { notifications, handleNotificationClick, deleteNotification } =

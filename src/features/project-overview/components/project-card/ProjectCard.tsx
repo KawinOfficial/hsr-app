@@ -8,8 +8,6 @@ import {
   CheckCircle,
   TrendingUp,
   TrendingDown,
-  Edit,
-  Eye,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { formatCurrency } from "@/lib/format";
@@ -18,8 +16,6 @@ import {
   getRiskColor,
   getVarianceColor,
 } from "@/features/project-overview/utils/badgeColor";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
 import { pathToUrl } from "@/lib/router";
 import { useRouter } from "next/navigation";
