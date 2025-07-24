@@ -1,25 +1,17 @@
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useFormContext } from "react-hook-form";
 
-export const useSecurityForm = () => {
+export const useResetForm = () => {
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email") || "";
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const {
-    register,
-    formState: { errors },
-    watch,
-  } = useFormContext();
-
-  const password = watch("password");
-
   return {
+    email,
     showPassword,
     setShowPassword,
     showConfirmPassword,
     setShowConfirmPassword,
-    password,
-    register,
-    errors,
   };
 };

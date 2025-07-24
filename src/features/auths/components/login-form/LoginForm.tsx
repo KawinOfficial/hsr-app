@@ -17,15 +17,26 @@ import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
 
 const LoginForm = () => {
-  const { showPassword, setShowPassword, register, handleSubmit, onSubmit } =
-    useLoginForm();
+  const {
+    showPassword,
+    setShowPassword,
+    register,
+    handleSubmit,
+    onSubmit,
+    forgotPassword,
+    setForgotPassword,
+  } = useLoginForm();
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
       <Card>
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Sign In</CardTitle>
+          <CardTitle className="text-2xl text-center">
+            {forgotPassword ? "Forgot Password" : "Sign In"}
+          </CardTitle>
           <CardDescription className="text-center">
-            Enter your credentials to access the HSR management system
+            {forgotPassword
+              ? "Enter your email address and we'll send you a link to reset your password"
+              : "Enter your credentials to access the HSR management system"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -45,59 +56,90 @@ const LoginForm = () => {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  className="pl-10 pr-10"
-                  required
-                  {...register("password")}
-                />
+            {!forgotPassword && (
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    className="pl-10 pr-10"
+                    required
+                    {...register("password")}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+            )}
+            {!forgotPassword && (
+              <div className="flex items-center justify-end">
                 <Button
                   type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3"
-                  onClick={() => setShowPassword(!showPassword)}
+                  variant="link"
+                  className="text-sm text-rail-blue hover:underline"
+                  onClick={() => setForgotPassword(true)}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  Forgot password?
                 </Button>
               </div>
-            </div>
+            )}
 
-            <div className="flex items-center justify-end">
-              <Link href="" className="text-sm text-rail-blue hover:underline">
-                Forgot password?
-              </Link>
-            </div>
-
-            <Button type="submit" className="w-full">
-              <div className="flex items-center space-x-2">
-                {/* <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> */}
-                <span>Sign in</span>
-              </div>
-            </Button>
+            {!forgotPassword ? (
+              <Button type="submit" className="w-full">
+                <div className="flex items-center space-x-2">
+                  {/* <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> */}
+                  <span>Sign in</span>
+                </div>
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full">
+                <div className="flex items-center space-x-2">
+                  {/* <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> */}
+                  <span>Send Reset Link</span>
+                </div>
+              </Button>
+            )}
           </form>
 
           <Separator className="my-4" />
 
-          <div className="text-sm flex items-center justify-center gap-2">
-            <p className=" text-muted-foreground">Don't have an account?</p>
-            <Link
-              href={PAGE_ROUTES.REGISTER}
-              className="text-rail-blue hover:underline"
-            >
-              Create account
-            </Link>
-          </div>
+          {!forgotPassword ? (
+            <div className="text-sm flex items-center justify-center gap-1">
+              <p className="text-muted-foreground">Don't have an account?</p>
+              <Link
+                href={PAGE_ROUTES.REGISTER}
+                className="text-rail-blue hover:underline"
+              >
+                Create account
+              </Link>
+            </div>
+          ) : (
+            <div className="text-sm flex items-center justify-center gap-1">
+              <p className="text-muted-foreground">Remember your password?</p>
+              <Button
+                type="button"
+                variant="link"
+                className="text-rail-blue hover:underline text-sm"
+                onClick={() => setForgotPassword(false)}
+              >
+                Back to Sign In
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 

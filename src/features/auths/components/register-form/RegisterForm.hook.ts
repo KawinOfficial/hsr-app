@@ -111,8 +111,6 @@ export const useRegisterForm = () => {
     };
   }, [currentStep]);
 
-  console.log(watch());
-
   function validateStep(step: number) {
     switch (step) {
       case 1:

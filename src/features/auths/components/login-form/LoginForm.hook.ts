@@ -6,6 +6,7 @@ import { PAGE_ROUTES } from "@/routers/page";
 export const useLoginForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
 
   const { register, handleSubmit } = useForm();
 
@@ -19,5 +20,7 @@ export const useLoginForm = () => {
     register,
     handleSubmit,
     onSubmit,
+    forgotPassword,
+    setForgotPassword,
   };
 };
