@@ -1,0 +1,76 @@
+"use client";
+
+import { useFormContext } from "react-hook-form";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Mail, Phone } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const PersonalForm = () => {
+  const {} = useFormContext();
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="firstName">First Name *</Label>
+          <Input id="firstName" placeholder="First name" required />
+        </div>
+        <div>
+          <Label htmlFor="lastName">Last Name *</Label>
+          <Input id="lastName" placeholder="Last name" required />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="email">Email Address *</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            id="email"
+            type="email"
+            placeholder="your.email@thairail.go.th"
+            className="pl-10"
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="phone">Phone Number *</Label>
+        <div className="relative">
+          <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            id="phone"
+            type="tel"
+            placeholder="+66-2-555-0123"
+            className="pl-10"
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="nationality">Nationality</Label>
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select nationality" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="thai">Thai</SelectItem>
+            <SelectItem value="chinese">Chinese</SelectItem>
+            <SelectItem value="other">Other</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+};
+
+export default PersonalForm;

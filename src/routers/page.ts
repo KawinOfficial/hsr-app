@@ -14,4 +14,6 @@ export const PAGE_ROUTES = {
   DEPARTMENTS: "/departments",
   PERMISSIONS: "/permissions",
   PROFILE: "/profile",
+  LOGIN: "/login",
+  REGISTER: "/register",
 };

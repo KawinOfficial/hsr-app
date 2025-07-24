@@ -1,7 +1,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Building2, Shield, Train, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { LoginForm } from "@/features/login/components/login-form";
+import { LoginForm } from "@/features/auths/components/login-form";
 
 export default function Login() {
   return (

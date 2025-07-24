@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useLoginForm } from "./LoginForm.hook";
 import Link from "next/link";
+import { PAGE_ROUTES } from "@/routers/page";
 
 const LoginForm = () => {
   const { showPassword, setShowPassword } = useLoginForm();
@@ -87,7 +88,10 @@ const LoginForm = () => {
 
           <div className="text-center space-y-2 text-sm">
             <p className=" text-muted-foreground">Don't have an account?</p>
-            <Link href="" className="text-rail-blue hover:underline">
+            <Link
+              href={PAGE_ROUTES.REGISTER}
+              className="text-rail-blue hover:underline"
+            >
               Create New Account
             </Link>
           </div>
