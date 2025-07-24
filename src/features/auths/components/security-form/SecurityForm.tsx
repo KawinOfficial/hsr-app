@@ -2,9 +2,8 @@
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Lock, Eye, EyeOff, Check, X } from "lucide-react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { useSecurityForm } from "./SecurityForm.hook";
 import { PasswordValidate } from "@/features/auths/components/password-validate";
 

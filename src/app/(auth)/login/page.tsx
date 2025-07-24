@@ -1,5 +1,4 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Building2, Shield, Train, Users } from "lucide-react";
+import { Building2, Train, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { LoginForm } from "@/features/auths/components/login-form";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRegisterForm } from "./RegisterForm.hook";
-import { Shield, AlertTriangle, CheckCircle, Train } from "lucide-react";
+import { AlertTriangle, CheckCircle, Train } from "lucide-react";
 import {
   Card,
   CardContent,

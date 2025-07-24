@@ -119,7 +119,9 @@ const LoginForm = () => {
 
           {!forgotPassword ? (
             <div className="text-sm flex items-center justify-center gap-1">
-              <p className="text-muted-foreground">Don't have an account?</p>
+              <p className="text-muted-foreground">
+                Don&apos;t have an account?
+              </p>
               <Link
                 href={PAGE_ROUTES.REGISTER}
                 className="text-rail-blue hover:underline"
