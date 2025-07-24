@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
 const TermsAgreements = () => {
-  const {} = useFormContext();
+  const { register } = useFormContext();
 
   return (
     <div className="space-y-6">
@@ -17,7 +17,7 @@ const TermsAgreements = () => {
 
         <div className="space-y-4">
           <div className="flex items-start space-x-2">
-            <Checkbox id="agreeTerms" />
+            <Checkbox id="agreeTerms" {...register("agreeTerms")} />
             <div className="text-sm">
               <Label htmlFor="agreeTerms" className="cursor-pointer">
                 I agree to the{" "}
@@ -33,7 +33,7 @@ const TermsAgreements = () => {
           </div>
 
           <div className="flex items-start space-x-2">
-            <Checkbox id="agreePrivacy" />
+            <Checkbox id="agreePrivacy" {...register("agreePrivacy")} />
             <div className="text-sm">
               <Label htmlFor="agreePrivacy" className="cursor-pointer">
                 I consent to the processing of my personal data in accordance
@@ -46,7 +46,7 @@ const TermsAgreements = () => {
           </div>
 
           <div className="flex items-start space-x-2">
-            <Checkbox id="agreeCode" />
+            <Checkbox id="agreeCode" {...register("agreeCode")} />
             <div className="text-sm">
               <Label htmlFor="agreeCode" className="cursor-pointer">
                 I agree to abide by the{" "}

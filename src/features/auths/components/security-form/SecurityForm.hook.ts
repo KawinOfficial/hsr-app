@@ -1,27 +1,36 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 export const useSecurityForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordRequirements, setPasswordRequirements] = useState({
-    length: false,
-    uppercase: false,
-    lowercase: false,
-    number: false,
-    special: false,
-  });
 
-  const {} = useFormContext();
+  const {
+    register,
+    formState: { errors },
+    watch,
+  } = useFormContext();
 
-  function getPasswordStrength() {
+  const password = watch("password");
+
+  const passwordRequirements = useMemo(() => {
+    return {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /\d/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+  }, [password]);
+
+  const getPasswordStrength = useMemo(() => {
     const score = Object.values(passwordRequirements).filter(
       (req) => req
     ).length;
     return (score / 5) * 100;
-  }
+  }, [passwordRequirements]);
 
-  function getPasswordStrengthLabel() {
+  const getPasswordStrengthLabel = useMemo(() => {
     const score = Object.values(passwordRequirements).filter(
       (req) => req
     ).length;
@@ -30,7 +39,7 @@ export const useSecurityForm = () => {
     if (score <= 3) return "Fair";
     if (score <= 4) return "Good";
     return "Strong";
-  }
+  }, [passwordRequirements]);
 
   return {
     showPassword,
@@ -40,6 +49,7 @@ export const useSecurityForm = () => {
     getPasswordStrength,
     getPasswordStrengthLabel,
     passwordRequirements,
-    setPasswordRequirements,
+    register,
+    errors,
   };
 };

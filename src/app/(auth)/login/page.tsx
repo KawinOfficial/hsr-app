@@ -55,15 +55,6 @@ export default function Login() {
                 </CardContent>
               </Card>
             </div>
-
-            {/* Security Notice */}
-            <Alert>
-              <Shield className="h-4 w-4" />
-              <AlertDescription>
-                This system uses multi-factor authentication and encrypted
-                connections to ensure data security for the HSR project.
-              </AlertDescription>
-            </Alert>
           </div>
 
           <LoginForm />

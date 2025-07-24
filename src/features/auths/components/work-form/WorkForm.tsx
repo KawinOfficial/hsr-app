@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { User, MapPin } from "lucide-react";
@@ -19,7 +19,7 @@ interface WorkFormProps {
 }
 
 const WorkForm = ({ departments, positions, locations }: WorkFormProps) => {
-  const {} = useFormContext();
+  const { register, control } = useFormContext();
   return (
     <div className="space-y-4">
       <div>
@@ -31,6 +31,7 @@ const WorkForm = ({ departments, positions, locations }: WorkFormProps) => {
             placeholder="EMP-2024-001"
             className="pl-10"
             required
+            {...register("employeeId")}
           />
         </div>
       </div>
@@ -38,57 +39,91 @@ const WorkForm = ({ departments, positions, locations }: WorkFormProps) => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="department">Department *</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select department" />
-            </SelectTrigger>
-            <SelectContent>
-              {departments.map((dept) => (
-                <SelectItem key={dept} value={dept}>
-                  {dept}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            control={control}
+            name="department"
+            render={({ field }) => (
+              <Select
+                {...field}
+                onValueChange={field.onChange}
+                value={field.value}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select department" />
+                </SelectTrigger>
+                <SelectContent>
+                  {departments.map((dept) => (
+                    <SelectItem key={dept} value={dept}>
+                      {dept}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
         <div>
           <Label htmlFor="position">Position *</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select position" />
-            </SelectTrigger>
-            <SelectContent>
-              {positions.map((pos) => (
-                <SelectItem key={pos} value={pos}>
-                  {pos}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            control={control}
+            name="position"
+            render={({ field }) => (
+              <Select
+                {...field}
+                onValueChange={field.onChange}
+                value={field.value}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select position" />
+                </SelectTrigger>
+                <SelectContent>
+                  {positions.map((pos) => (
+                    <SelectItem key={pos} value={pos}>
+                      {pos}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
       </div>
 
       <div>
         <Label htmlFor="reportingTo">Reporting To</Label>
-        <Input id="reportingTo" placeholder="Manager's name" />
+        <Input
+          id="reportingTo"
+          placeholder="Manager's name"
+          {...register("reportingTo")}
+        />
       </div>
 
       <div>
         <Label htmlFor="workLocation">Work Location</Label>
         <div className="relative">
           <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Select>
-            <SelectTrigger className="pl-10">
-              <SelectValue placeholder="Select work location" />
-            </SelectTrigger>
-            <SelectContent>
-              {locations.map((loc) => (
-                <SelectItem key={loc} value={loc}>
-                  {loc}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            control={control}
+            name="workLocation"
+            render={({ field }) => (
+              <Select
+                {...field}
+                onValueChange={field.onChange}
+                value={field.value}
+              >
+                <SelectTrigger className="pl-10">
+                  <SelectValue placeholder="Select work location" />
+                </SelectTrigger>
+                <SelectContent>
+                  {locations.map((loc) => (
+                    <SelectItem key={loc} value={loc}>
+                      {loc}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
       </div>
     </div>

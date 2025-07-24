@@ -16,6 +16,8 @@ const SecurityForm = () => {
     getPasswordStrength,
     getPasswordStrengthLabel,
     passwordRequirements,
+    register,
+    errors,
   } = useSecurityForm();
 
   return (
@@ -30,6 +32,7 @@ const SecurityForm = () => {
             placeholder="Create a strong password"
             className="pl-10 pr-10"
             required
+            {...register("password")}
           />
           <Button
             type="button"
@@ -46,13 +49,12 @@ const SecurityForm = () => {
           </Button>
         </div>
 
-        {/* {formData.password && ( */}
         <div className="mt-2 space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span>Password Strength: {getPasswordStrengthLabel()}</span>
-            <span>{Math.round(getPasswordStrength())}%</span>
+            <span>Password Strength: {getPasswordStrengthLabel}</span>
+            <span>{Math.round(getPasswordStrength)}%</span>
           </div>
-          <Progress value={getPasswordStrength()} className="h-2" />
+          <Progress value={getPasswordStrength} className="h-2" />
 
           <div className="grid grid-cols-2 gap-2 text-xs">
             {Object.entries(passwordRequirements).map(([key, met]) => (
@@ -77,7 +79,6 @@ const SecurityForm = () => {
             ))}
           </div>
         </div>
-        {/* )} */}
       </div>
 
       <div>
@@ -90,6 +91,7 @@ const SecurityForm = () => {
             placeholder="Confirm your password"
             className="pl-10 pr-10"
             required
+            {...register("confirmPassword")}
           />
           <Button
             type="button"
@@ -105,12 +107,11 @@ const SecurityForm = () => {
             )}
           </Button>
         </div>
-        {/* {formData.confirmPassword &&
-          formData.password !== formData.confirmPassword && (
-            <p className="text-sm text-destructive mt-1">
-              Passwords do not match
-            </p>
-          )} */}
+        {errors.confirmPassword && (
+          <p className="text-sm text-destructive mt-1">
+            {errors.confirmPassword.message as string}
+          </p>
+        )}
       </div>
     </div>
   );

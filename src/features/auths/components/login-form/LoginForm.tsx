@@ -17,7 +17,8 @@ import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
 
 const LoginForm = () => {
-  const { showPassword, setShowPassword } = useLoginForm();
+  const { showPassword, setShowPassword, register, handleSubmit, onSubmit } =
+    useLoginForm();
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
       <Card>
@@ -28,7 +29,7 @@ const LoginForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-2">
               <Label htmlFor="email">Email Address</Label>
               <div className="relative">
@@ -39,6 +40,7 @@ const LoginForm = () => {
                   placeholder="your.email@thairail.go.th"
                   className="pl-10"
                   required
+                  {...register("email")}
                 />
               </div>
             </div>
@@ -53,6 +55,7 @@ const LoginForm = () => {
                   placeholder="Enter your password"
                   className="pl-10 pr-10"
                   required
+                  {...register("password")}
                 />
                 <Button
                   type="button"
@@ -86,13 +89,13 @@ const LoginForm = () => {
 
           <Separator className="my-4" />
 
-          <div className="text-center space-y-2 text-sm">
+          <div className="text-sm flex items-center justify-center gap-2">
             <p className=" text-muted-foreground">Don't have an account?</p>
             <Link
               href={PAGE_ROUTES.REGISTER}
               className="text-rail-blue hover:underline"
             >
-              Create New Account
+              Create account
             </Link>
           </div>
         </CardContent>

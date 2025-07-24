@@ -24,7 +24,7 @@ const RegisterForm = () => {
   const {
     currentStep,
     isLoading,
-    error,
+    errors,
     departments,
     positions,
     locations,
@@ -32,14 +32,15 @@ const RegisterForm = () => {
     nextStep,
     prevStep,
     onSubmit,
-    stepTitles,
+    header,
     methods,
+    stepHeaders,
   } = useRegisterForm();
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={onSubmit}>
-        <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Side - Progress and Info */}
           <div className="space-y-6">
             <div className="space-y-4">
@@ -75,7 +76,7 @@ const RegisterForm = () => {
               <Progress value={(currentStep / 4) * 100} className="h-2" />
 
               <div className="space-y-3">
-                {stepTitles.map((title, index) => (
+                {stepHeaders.map(({ title }, index) => (
                   <div
                     key={index}
                     className={`flex items-center space-x-3 text-sm ${
@@ -106,15 +107,6 @@ const RegisterForm = () => {
                 ))}
               </div>
             </div>
-
-            {/* Security Info */}
-            <Alert>
-              <Shield className="h-4 w-4" />
-              <AlertDescription className="text-sm">
-                All information is encrypted and stored securely in compliance
-                with Thai data protection laws.
-              </AlertDescription>
-            </Alert>
           </div>
 
           {/* Right Side - Form */}
@@ -122,26 +114,21 @@ const RegisterForm = () => {
             <Card>
               <CardHeader>
                 <CardTitle>
-                  Step {currentStep}: {stepTitles[currentStep - 1]}
+                  Step {currentStep}: {header.title}
                 </CardTitle>
-                <CardDescription>
-                  {currentStep === 1 &&
-                    "Please provide your personal contact information"}
-                  {currentStep === 2 &&
-                    "Enter your employment and work-related details"}
-                  {currentStep === 3 &&
-                    "Set up your account password and security"}
-                  {currentStep === 4 &&
-                    "Review and accept the terms and conditions"}
-                </CardDescription>
+                <CardDescription>{header.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                {error && (
-                  <Alert variant="destructive" className="mb-4">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
+                {errors &&
+                  Object.keys(errors).length > 0 &&
+                  Object.keys(errors).map((key) => (
+                    <Alert key={key} variant="destructive" className="mb-4">
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription>
+                        {errors[key as keyof typeof errors]?.message}
+                      </AlertDescription>
+                    </Alert>
+                  ))}
 
                 {currentStep === 1 && <PersonalForm />}
                 {currentStep === 2 && (

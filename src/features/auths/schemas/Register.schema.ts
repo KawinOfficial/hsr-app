@@ -4,7 +4,7 @@ export const registerSchema = z
   .object({
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().min(1, "Last name is required"),
-    email: z.string().min(1, "Email is required"),
+    email: z.email("Invalid email address").min(1, "Email is required"),
     phone: z.string().min(1, "Phone is required"),
     nationality: z.string().min(1, "Nationality is required"),
     employeeId: z.string().min(1, "Employee ID is required"),
@@ -21,6 +21,15 @@ export const registerSchema = z
         "Password must contain at least one uppercase letter, one lowercase letter, and one number"
       ),
     confirmPassword: z.string().min(1, "Please confirm your password"),
+    agreeTerms: z.boolean().refine((val) => val, {
+      message: "You must agree to the terms and conditions",
+    }),
+    agreePrivacy: z.boolean().refine((val) => val, {
+      message: "You must agree to the privacy policy",
+    }),
+    agreeCode: z.boolean().refine((val) => val, {
+      message: "You must agree to the code of conduct",
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

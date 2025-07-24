@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Mail, Phone } from "lucide-react";
@@ -13,18 +13,28 @@ import {
 } from "@/components/ui/select";
 
 const PersonalForm = () => {
-  const {} = useFormContext();
+  const { register, control } = useFormContext();
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="firstName">First Name *</Label>
-          <Input id="firstName" placeholder="First name" required />
+          <Input
+            id="firstName"
+            placeholder="First name"
+            required
+            {...register("firstName")}
+          />
         </div>
         <div>
           <Label htmlFor="lastName">Last Name *</Label>
-          <Input id="lastName" placeholder="Last name" required />
+          <Input
+            id="lastName"
+            placeholder="Last name"
+            required
+            {...register("lastName")}
+          />
         </div>
       </div>
 
@@ -38,6 +48,7 @@ const PersonalForm = () => {
             placeholder="your.email@thairail.go.th"
             className="pl-10"
             required
+            {...register("email")}
           />
         </div>
       </div>
@@ -52,22 +63,33 @@ const PersonalForm = () => {
             placeholder="+66-2-555-0123"
             className="pl-10"
             required
+            {...register("phone")}
           />
         </div>
       </div>
 
       <div>
         <Label htmlFor="nationality">Nationality</Label>
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="Select nationality" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="thai">Thai</SelectItem>
-            <SelectItem value="chinese">Chinese</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
-          </SelectContent>
-        </Select>
+        <Controller
+          control={control}
+          name="nationality"
+          render={({ field }) => (
+            <Select
+              {...field}
+              onValueChange={field.onChange}
+              value={field.value}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select nationality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="thai">Thai</SelectItem>
+                <SelectItem value="chinese">Chinese</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+        />
       </div>
     </div>
   );

@@ -11,8 +11,15 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ChevronDown, User, HelpCircle, LogOut } from "lucide-react";
 import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
+import { useRouter } from "next/navigation";
 
 const SideBarFooter = () => {
+  const router = useRouter();
+
+  function handleSignOut() {
+    router.push(PAGE_ROUTES.LOGIN);
+  }
+
   return (
     <SidebarFooterBase className="border-t p-4">
       <DropdownMenu>
@@ -44,7 +51,7 @@ const SideBarFooter = () => {
             <span>Help & Support</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSignOut}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Sign out</span>
           </DropdownMenuItem>
