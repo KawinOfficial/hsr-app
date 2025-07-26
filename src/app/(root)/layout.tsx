@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/assets/globals.css";
 import { ProfileProvider } from "@/features/profile/components/profile-provider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AppProviders>
+          <SpeedInsights />
           <TooltipProvider>
             <ProfileProvider>
               <Toaster />
