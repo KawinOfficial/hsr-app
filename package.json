@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.53.0",
     "@vercel/speed-insights": "^1.2.0",
     "cmdk": "^1.1.1",
+    "ky": "^1.8.2",
     "next": "15.4.1",
     "path-to-regexp": "^8.2.0",
     "prisma": "^6.13.0",
