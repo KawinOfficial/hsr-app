@@ -12,11 +12,13 @@ import { ChevronDown, User, HelpCircle, LogOut } from "lucide-react";
 import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 const SideBarFooter = () => {
   const router = useRouter();
 
-  function handleSignOut() {
+  async function handleSignOut() {
+    await signOut({ redirect: false });
     router.push(PAGE_ROUTES.LOGIN);
   }
 
