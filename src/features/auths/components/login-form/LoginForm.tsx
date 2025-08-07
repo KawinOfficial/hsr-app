@@ -16,7 +16,6 @@ import { Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { useLoginForm } from "./LoginForm.hook";
 import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
-import { MessageDialog } from "@/components/dialog/message-dialog";
 
 const LoginForm = () => {
   const {
