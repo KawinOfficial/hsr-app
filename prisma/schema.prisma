@@ -1,0 +1,210 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id             String           @id @default(uuid())
+  email          String           @unique
+  firstName      String
+  lastName       String
+  phoneNumber    String
+  nationality    String
+  passwordHash   String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  employeeInfo   EmployeeInfo?
+  roles          UserRole[]
+  certifications Certification[]
+  projects       ProjectAssignment[]
+}
+
+model EmployeeInfo {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  employeeId   String   @unique
+  department   String
+  position     String
+  managerName  String?
+  workLocation String
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model Role {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  description String?
+  isActive    Boolean      @default(true)
+
+  permissions Permission[]
+  users       UserRole[]
+}
+
+model UserRole {
+  id      String @id @default(uuid())
+  userId  String
+  roleId  String
+  user    User   @relation(fields: [userId], references: [id])
+  role    Role   @relation(fields: [roleId], references: [id])
+}
+
+model Permission {
+  id       String @id @default(uuid())
+  feature  String // Dashboard, Projects, Financial, etc.
+  level    String // Read, Write, Admin
+  roleId   String
+  role     Role   @relation(fields: [roleId], references: [id])
+}
+
+model Certification {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  issuer      String
+  issueDate   DateTime
+  expiryDate  DateTime
+  status      String   // Valid, Expired, Revoked
+
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Department {
+  id             String   @id @default(uuid())
+  name           String
+  headName       String
+  location       String
+  budget         Float
+  status         String
+  teamMembers    Int
+  responsibilities String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  projects       Project[]
+}
+
+model Project {
+  id            String    @id @default(uuid())
+  projectId     String    @unique
+  name          String
+  description   String
+  startDate     DateTime
+  endDate       DateTime
+  status        String    // On Track, Delayed, etc.
+  riskLevel     String    // Low, Medium, High
+  budget        Float
+  spent         Float
+  location      String?
+  departmentId  String
+
+  department    Department @relation(fields: [departmentId], references: [id])
+  milestones    Milestone[]
+  assignments   ProjectAssignment[]
+}
+
+model ProjectAssignment {
+  id        String   @id @default(uuid())
+  userId    String
+  projectId String
+
+  user      User     @relation(fields: [userId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id])
+}
+
+model Milestone {
+  id            String    @id @default(uuid())
+  milestoneId   String    @unique
+  projectId     String
+  name          String
+  description   String
+  startDate     DateTime
+  endDate       DateTime
+  status        String    // Completed, In Progress, etc.
+  progress      Int       // 0-100
+  budget        Float
+  spent         Float
+  costVariance  Float     // +/- %
+  critical      Boolean
+  assignee      String
+  dependencies  String?
+
+  project       Project   @relation(fields: [projectId], references: [id])
+}
+
+model ApprovalWorkflow {
+  id            String   @id @default(uuid())
+  name          String
+  code          String   @unique
+  department    String
+  steps         WorkflowStep[]
+  totalExecutions Int     @default(0)
+  successRate   Float
+  avgDuration   Float     // In days
+  isActive      Boolean   @default(true)
+}
+
+model WorkflowStep {
+  id               String   @id @default(uuid())
+  workflowId       String
+  stepOrder        Int
+  stepName         String
+
+  workflow         ApprovalWorkflow @relation(fields: [workflowId], references: [id])
+}
+
+model FinancialReport {
+  id            String         @id @default(uuid())
+  period        String         // last-6-months, Q1-2024, etc.
+  revenue       Float
+  expenses      Float
+  netIncome     Float
+  roi           Float
+  createdAt     DateTime       @default(now())
+
+  costMetrics   CostMetric?
+  costItems     CostCategory[]
+  risks         RiskItem[]
+}
+
+model CostCategory {
+  id         String   @id @default(uuid())
+  name       String
+  budgeted   Float
+  actual     Float
+  variance   Float
+  forecast   Float
+  trend      String
+  reportId   String
+
+  report     FinancialReport @relation(fields: [reportId], references: [id])
+}
+
+model CostMetric {
+  id            String   @id @default(uuid())
+  reportId      String   @unique
+  CPI           Float
+  SPI           Float
+  EAC           Float
+  VAC           Float
+
+  report        FinancialReport @relation(fields: [reportId], references: [id])
+}
+
+model RiskItem {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  level       String
+  impact      String
+  reportId    String
+
+  report      FinancialReport @relation(fields: [reportId], references: [id])
+}

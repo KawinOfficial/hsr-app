@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { useLoginForm } from "./LoginForm.hook";
 import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
@@ -21,11 +22,17 @@ const LoginForm = () => {
     showPassword,
     setShowPassword,
     register,
-    handleSubmit,
+    registerForgotPassword,
     onSubmit,
+    onForgotPasswordSubmit,
     forgotPassword,
     setForgotPassword,
+    isLoading,
+    error,
+    errors,
+    forgotPasswordErrors,
   } = useLoginForm();
+
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
       <Card>
@@ -40,23 +47,35 @@ const LoginForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="your.email@thairail.go.th"
-                  className="pl-10"
-                  required
-                  {...register("email")}
-                />
-              </div>
-            </div>
+          {error && (
+            <Alert className="mb-4" variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-            {!forgotPassword && (
+          {!forgotPassword ? (
+            <form className="space-y-4" onSubmit={onSubmit}>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@thairail.go.th"
+                    className="pl-10"
+                    required
+                    {...register("email")}
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-sm text-destructive">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
@@ -83,9 +102,13 @@ const LoginForm = () => {
                     )}
                   </Button>
                 </div>
+                {errors.password && (
+                  <p className="text-sm text-destructive">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
-            )}
-            {!forgotPassword && (
+
               <div className="flex items-center justify-end">
                 <Button
                   type="button"
@@ -96,24 +119,48 @@ const LoginForm = () => {
                   Forgot password?
                 </Button>
               </div>
-            )}
 
-            {!forgotPassword ? (
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 <div className="flex items-center space-x-2">
-                  {/* <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> */}
-                  <span>Sign in</span>
+                  {isLoading && (
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  )}
+                  <span>{isLoading ? "Signing in..." : "Sign in"}</span>
                 </div>
               </Button>
-            ) : (
-              <Button type="submit" className="w-full">
+            </form>
+          ) : (
+            <form className="space-y-4" onSubmit={onForgotPasswordSubmit}>
+              <div className="space-y-2">
+                <Label htmlFor="forgot-email">Email Address</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="forgot-email"
+                    type="email"
+                    placeholder="your.email@thairail.go.th"
+                    className="pl-10"
+                    required
+                    {...registerForgotPassword("email")}
+                  />
+                </div>
+                {forgotPasswordErrors.email && (
+                  <p className="text-sm text-destructive">
+                    {forgotPasswordErrors.email.message}
+                  </p>
+                )}
+              </div>
+
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 <div className="flex items-center space-x-2">
-                  {/* <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> */}
-                  <span>Send Reset Link</span>
+                  {isLoading && (
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  )}
+                  <span>{isLoading ? "Sending..." : "Send Reset Link"}</span>
                 </div>
               </Button>
-            )}
-          </form>
+            </form>
+          )}
 
           <Separator className="my-4" />
 
