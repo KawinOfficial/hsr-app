@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
 const TermsAgreements = () => {
-  const { register } = useFormContext();
+  const { setValue, watch } = useFormContext();
 
   return (
     <div className="space-y-6">
@@ -17,7 +17,13 @@ const TermsAgreements = () => {
 
         <div className="space-y-4">
           <div className="flex items-start space-x-2">
-            <Checkbox id="agreeTerms" {...register("agreeTerms")} />
+            <Checkbox
+              id="agreeTerms"
+              checked={watch("agreeTerms")}
+              onCheckedChange={(checked) => {
+                setValue("agreeTerms", checked);
+              }}
+            />
             <div className="text-sm">
               <Label htmlFor="agreeTerms" className="cursor-pointer">
                 I agree to the{" "}
@@ -33,7 +39,13 @@ const TermsAgreements = () => {
           </div>
 
           <div className="flex items-start space-x-2">
-            <Checkbox id="agreePrivacy" {...register("agreePrivacy")} />
+            <Checkbox
+              id="agreePrivacy"
+              checked={watch("agreePrivacy")}
+              onCheckedChange={(checked) => {
+                setValue("agreePrivacy", checked);
+              }}
+            />
             <div className="text-sm">
               <Label htmlFor="agreePrivacy" className="cursor-pointer">
                 I consent to the processing of my personal data in accordance
@@ -46,7 +58,13 @@ const TermsAgreements = () => {
           </div>
 
           <div className="flex items-start space-x-2">
-            <Checkbox id="agreeCode" {...register("agreeCode")} />
+            <Checkbox
+              id="agreeCode"
+              checked={watch("agreeCode")}
+              onCheckedChange={(checked) => {
+                setValue("agreeCode", checked);
+              }}
+            />
             <div className="text-sm">
               <Label htmlFor="agreeCode" className="cursor-pointer">
                 I agree to abide by the{" "}
