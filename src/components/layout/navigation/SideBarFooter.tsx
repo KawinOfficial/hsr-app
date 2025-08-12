@@ -12,10 +12,12 @@ import { ChevronDown, User, HelpCircle, LogOut } from "lucide-react";
 import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const SideBarFooter = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+  const { firstName, lastName, email } = session?.user || {};
 
   async function handleSignOut() {
     await signOut({ redirect: false });
@@ -32,8 +34,10 @@ const SideBarFooter = () => {
               <AvatarFallback>ST</AvatarFallback>
             </Avatar>
             <div className="flex-1 text-left">
-              <p className="text-sm font-medium">Somchai Tanakorn</p>
-              <p className="text-xs text-muted-foreground">Project Manager</p>
+              <p className="text-sm font-medium">
+                {firstName} {lastName}
+              </p>
+              <p className="text-xs text-muted-foreground">{email}</p>
             </div>
             <ChevronDown className="h-4 w-4" />
           </Button>
