@@ -17,6 +17,7 @@ export const ProfileSchema = z.object({
   lastName: z.string(),
   phoneNumber: z.string(),
   nationality: z.string(),
+  otherNationality: z.string().optional().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
   employeeInfo: EmployeeInfoSchema.nullable(),

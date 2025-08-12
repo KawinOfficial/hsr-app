@@ -26,6 +26,7 @@ async function createUser(validatedData: RegisterFormData) {
       lastName: validatedData.lastName,
       phoneNumber: validatedData.phone,
       nationality: validatedData.nationality,
+      otherNationality: validatedData.otherNationality,
       passwordHash,
     })
     .select()

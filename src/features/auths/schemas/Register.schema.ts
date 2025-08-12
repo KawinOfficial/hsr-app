@@ -7,6 +7,7 @@ export const registerSchema = z
     email: z.email("Invalid email address").min(1, "Email is required"),
     phone: z.string().min(1, "Phone is required"),
     nationality: z.string().min(1, "Nationality is required"),
+    otherNationality: z.string().optional(),
     employeeId: z.string().min(1, "Employee ID is required"),
     department: z.string().min(1, "Department is required"),
     position: z.string().min(1, "Position is required"),

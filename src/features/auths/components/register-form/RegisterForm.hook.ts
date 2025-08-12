@@ -102,7 +102,6 @@ export const useRegisterForm = () => {
           watch("password") === watch("confirmPassword")
         );
       case 4:
-        console.log("watch", watch("agreeTerms"));
         return (
           watch("agreeTerms") && watch("agreePrivacy") && watch("agreeCode")
         );

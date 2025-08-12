@@ -150,7 +150,6 @@ const RegisterForm = () => {
                   >
                     Previous
                   </Button>
-                  {currentStep}
                   {currentStep === 4 ? (
                     <Button
                       type="submit"

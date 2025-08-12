@@ -46,6 +46,7 @@ const Profile = () => {
     handleSaveProfile,
     form,
     isFetching,
+    onCancel,
   } = useProfile();
 
   if (!userProfile) return null;
@@ -67,32 +68,30 @@ const Profile = () => {
               </div>
 
               <div className="flex items-center gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => setEditMode?.(!editMode)}
-                  variant={editMode ? "destructive" : "default"}
-                >
-                  {editMode ? (
-                    <>
-                      <X className="h-4 w-4" />
-                      Cancel
-                    </>
-                  ) : (
-                    <>
-                      <Edit className="h-4 w-4" />
-                      Edit Profile
-                    </>
-                  )}
-                </Button>
-                {editMode && (
+                {!editMode ? (
                   <Button
                     size="sm"
+                    onClick={() => setEditMode?.(!editMode)}
                     variant="outline"
-                    onClick={handleSaveProfile}
                   >
-                    <Save className="h-4 w-4" />
-                    Save Changes
+                    <Edit className="h-4 w-4" />
+                    Edit Profile
                   </Button>
+                ) : (
+                  <>
+                    <Button size="sm" onClick={onCancel} variant="destructive">
+                      <X className="h-4 w-4" />
+                      Cancel
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handleSaveProfile}
+                    >
+                      <Save className="h-4 w-4" />
+                      Save Changes
+                    </Button>
+                  </>
                 )}
               </div>
             </div>
@@ -146,6 +145,17 @@ const Profile = () => {
                   )}
                 />
               </div>
+              {form.watch("nationality") === "Other" && (
+                <div>
+                  <Label htmlFor="otherNationality">Other Nationality</Label>
+                  <Input
+                    id="otherNationality"
+                    placeholder="Other nationality"
+                    disabled={!editMode}
+                    {...form.fieldOtherNationality}
+                  />
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

@@ -14,7 +14,7 @@ import {
 import { nationalities } from "@/constants/options";
 
 const PersonalForm = () => {
-  const { register, control } = useFormContext();
+  const { register, control, watch } = useFormContext();
 
   return (
     <div className="space-y-4">
@@ -94,6 +94,17 @@ const PersonalForm = () => {
           )}
         />
       </div>
+
+      {watch("nationality") === "Other" && (
+        <div>
+          <Label htmlFor="otherNationality">Other Nationality</Label>
+          <Input
+            id="otherNationality"
+            placeholder="Other nationality"
+            {...register("otherNationality")}
+          />
+        </div>
+      )}
     </div>
   );
 };

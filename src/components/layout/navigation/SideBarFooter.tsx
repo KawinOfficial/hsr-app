@@ -25,10 +25,13 @@ const SideBarFooter = () => {
   }
 
   return (
-    <SidebarFooterBase className="border-t p-4">
+    <SidebarFooterBase className="border-t p-0">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="w-full justify-start space-x-3">
+          <Button
+            variant="ghost"
+            className="w-full justify-start space-x-3 p-4 !h-auto"
+          >
             <Avatar className="h-8 w-8">
               <AvatarImage src="/placeholder.svg" />
               <AvatarFallback>ST</AvatarFallback>

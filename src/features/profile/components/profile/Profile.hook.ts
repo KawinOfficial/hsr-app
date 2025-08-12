@@ -40,7 +40,7 @@ export const useProfile = () => {
     (state) => state?.isFetching
   );
 
-  const { register, reset, control } = useForm<Profile>({
+  const { register, reset, control, watch } = useForm<Profile>({
     defaultValues,
   });
   const form = {
@@ -54,8 +54,15 @@ export const useProfile = () => {
     fieldManagerName: register("employeeInfo.managerName"),
     fieldWorkLocation: register("employeeInfo.workLocation"),
     fieldNationality: register("nationality"),
+    fieldOtherNationality: register("otherNationality"),
+    watch,
     control,
   };
+
+  function onCancel() {
+    reset(userProfile);
+    setEditMode?.(false);
+  }
 
   useEffect(() => {
     if (!userProfile) return;
@@ -70,5 +77,6 @@ export const useProfile = () => {
     handleSaveProfile,
     form,
     isFetching,
+    onCancel,
   };
 };
