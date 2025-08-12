@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useProfile } from "@/features/auths/hook/use-profile";
+import { useMemo, useState } from "react";
 
 // User Profile Data
-const userProfile = {
+const mockUserProfile = {
   id: "USR-001",
   firstName: "Somchai",
   lastName: "Tanakorn",
@@ -62,32 +63,6 @@ const userProfile = {
       status: "Active",
     },
   ],
-  workExperience: [
-    {
-      position: "Project Manager",
-      company: "Thai-Chinese High Speed Rail Co., Ltd.",
-      duration: "Jan 2023 - Present",
-      location: "Bangkok, Thailand",
-      description:
-        "Leading cost control and project management for the Bangkok-Nakhon Ratchasima high-speed rail section.",
-    },
-    {
-      position: "Senior Engineering Manager",
-      company: "Bangkok Mass Transit Authority",
-      duration: "Mar 2019 - Dec 2022",
-      location: "Bangkok, Thailand",
-      description:
-        "Managed multiple metro line construction projects with budgets exceeding 50 billion THB.",
-    },
-    {
-      position: "Project Engineer",
-      company: "CH. Karnchang Public Company Limited",
-      duration: "Jun 2015 - Feb 2019",
-      location: "Bangkok, Thailand",
-      description:
-        "Oversaw infrastructure projects including bridges, tunnels, and station construction.",
-    },
-  ],
 };
 
 // User Permissions
@@ -125,9 +100,20 @@ export const useProfileProvider = () => {
   const [profileImageOpen, setProfileImageOpen] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
+  const { data: profileData, isFetching } = useProfile();
+
   function handleSaveProfile() {
     setEditMode(false);
   }
+
+  const userProfile = useMemo(
+    () => ({
+      ...profileData,
+      education: mockUserProfile.education,
+      certifications: mockUserProfile.certifications,
+    }),
+    [profileData]
+  );
 
   return {
     editMode,
@@ -139,5 +125,6 @@ export const useProfileProvider = () => {
     handleSaveProfile,
     changePasswordOpen,
     setChangePasswordOpen,
+    isFetching,
   };
 };

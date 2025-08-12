@@ -29,10 +29,10 @@ const UploadDialog = () => {
         <div className="space-y-4 mt-4">
           <div className="flex justify-center">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={userProfile?.profileImage} />
+              <AvatarImage src={""} />
               <AvatarFallback className="text-2xl">
-                {userProfile?.firstName.charAt(0)}
-                {userProfile?.lastName.charAt(0)}
+                {userProfile?.firstName?.charAt(0)}
+                {userProfile?.lastName?.charAt(0)}
               </AvatarFallback>
             </Avatar>
           </div>

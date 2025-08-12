@@ -1,5 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { supabase } from "./supabase";
+import bcrypt from "bcryptjs";
 
 export const credentialsProvider = CredentialsProvider({
   name: "credentials",
@@ -19,20 +20,25 @@ export const credentialsProvider = CredentialsProvider({
         .eq("email", credentials.email)
         .single();
 
-      if (!user || error) {
+      if (error || !user) {
         return null;
       }
 
-      // TODO: Use bcrypt or similar
-      if (user.passwordHash !== credentials.password) {
+      const isPasswordValid = bcrypt.compareSync(
+        credentials.password as string,
+        user.passwordHash as string
+      );
+
+      if (!isPasswordValid) {
         return null;
       }
 
       return {
         ...user,
+        passwordHash: undefined,
       };
-    } catch (error) {
-      console.error("Auth error:", error);
+    } catch (err) {
+      console.error("Auth error:", err);
       return null;
     }
   },

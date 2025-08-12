@@ -1,4 +1,4 @@
-import { Lock, Shield, User } from "lucide-react";
+import { Shield, User } from "lucide-react";
 
 export const PROFILE_TABS = [
   {
@@ -10,10 +10,5 @@ export const PROFILE_TABS = [
     label: "Permissions",
     value: "permissions",
     icon: Shield,
-  },
-  {
-    label: "Security",
-    value: "security",
-    icon: Lock,
   },
 ];

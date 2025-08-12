@@ -17,6 +17,7 @@ model User {
   lastName       String
   phoneNumber    String
   nationality    String
+  otherNationality    String?
   passwordHash   String
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt

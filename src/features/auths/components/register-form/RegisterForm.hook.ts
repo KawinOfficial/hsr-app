@@ -5,47 +5,11 @@ import {
   RegisterFormData,
   registerSchema,
 } from "@/features/auths/schemas/Register.schema";
-
-const departments = [
-  "Project Management",
-  "Quality Surveying (QS)",
-  "Engineering",
-  "Finance",
-  "Asset Management",
-  "Procurement",
-  "Legal",
-  "Human Resources",
-  "IT & Systems",
-];
-
-const positions = [
-  "Project Manager",
-  "Senior QS Officer",
-  "QS Officer",
-  "Chief Engineer",
-  "Senior Engineer",
-  "Engineer",
-  "Finance Manager",
-  "Finance Officer",
-  "Procurement Manager",
-  "Procurement Officer",
-  "Asset Manager",
-  "Site Supervisor",
-  "Construction Manager",
-  "Safety Officer",
-  "Quality Controller",
-];
-
-const locations = [
-  "Bangkok HQ",
-  "Nakhon Ratchasima Site",
-  "Korat Station",
-  "Pak Chong Station",
-  "Khon Kaen Office",
-  "Beijing Office",
-  "Shanghai Office",
-  "Field Office - Mobile",
-];
+import { useToast } from "@/hooks/use-toast";
+import { useRegister } from "@/features/auths/hook/use-register";
+import { useRouter } from "next/navigation";
+import { PAGE_ROUTES } from "@/routers/page";
+import { departments, positions, locations } from "@/constants/options";
 
 const stepHeaders = [
   {
@@ -92,8 +56,10 @@ const defaultValues = {
 };
 
 export const useRegisterForm = () => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const { mutate: mutateRegister, isPending } = useRegister();
 
   const methods = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -118,10 +84,17 @@ export const useRegisterForm = () => {
           watch("firstName") &&
           watch("lastName") &&
           watch("email") &&
-          watch("phone")
+          watch("phone") &&
+          watch("nationality")
         );
       case 2:
-        return watch("employeeId") && watch("department") && watch("position");
+        return (
+          watch("employeeId") &&
+          watch("department") &&
+          watch("position") &&
+          watch("reportingTo") &&
+          watch("workLocation")
+        );
       case 3:
         return (
           watch("password") &&
@@ -146,13 +119,32 @@ export const useRegisterForm = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   }
 
-  async function onSubmit() {
-    setIsLoading(true);
+  function onSubmit(data: RegisterFormData) {
+    mutateRegister(data, {
+      onSuccess: () => {
+        toast({
+          variant: "success",
+          title: "Registration Successful!",
+          description:
+            "Your account has been created successfully. You can now sign in.",
+        });
+        router.push(PAGE_ROUTES.LOGIN);
+      },
+      onError: (error) => {
+        const errorMessage =
+          error instanceof Error ? error.message : "Registration failed";
+        toast({
+          variant: "destructive",
+          title: "Registration Failed",
+          description: errorMessage,
+        });
+      },
+    });
   }
 
   return {
     currentStep,
-    isLoading,
+    isLoading: isPending,
     departments,
     positions,
     locations,

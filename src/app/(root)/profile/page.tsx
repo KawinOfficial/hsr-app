@@ -14,7 +14,7 @@ export default function ProfilePage() {
 
       <div className="px-4 sm:px-6 py-8">
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             {PROFILE_TABS.map((tab, index) => (
               <TabsTrigger
                 key={`${tab.value}-${index}`}
@@ -27,14 +27,12 @@ export default function ProfilePage() {
             ))}
           </TabsList>
 
-          <TabsContent value="profile">
+          <TabsContent value="profile" className="space-y-6">
             <Profile />
+            <SecurityTab />
           </TabsContent>
           <TabsContent value="permissions">
             <Permission />
-          </TabsContent>
-          <TabsContent value="security">
-            <SecurityTab />
           </TabsContent>
         </Tabs>
       </div>

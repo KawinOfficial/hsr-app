@@ -143,22 +143,18 @@ const RegisterForm = () => {
 
                 <div className="flex justify-between mt-6">
                   <Button
+                    type="button"
                     variant="outline"
                     onClick={prevStep}
                     disabled={currentStep === 1}
                   >
                     Previous
                   </Button>
-
-                  {currentStep < 4 ? (
+                  {currentStep === 4 ? (
                     <Button
-                      onClick={nextStep}
-                      disabled={!validateStep(currentStep)}
+                      type="submit"
+                      disabled={!validateStep(currentStep) || isLoading}
                     >
-                      Next
-                    </Button>
-                  ) : (
-                    <Button disabled={!validateStep(currentStep) || isLoading}>
                       {isLoading ? (
                         <div className="flex items-center space-x-2">
                           <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -167,6 +163,14 @@ const RegisterForm = () => {
                       ) : (
                         "Create Account"
                       )}
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      onClick={nextStep}
+                      disabled={!validateStep(currentStep)}
+                    >
+                      Next
                     </Button>
                   )}
                 </div>

@@ -11,9 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { nationalities } from "@/constants/options";
 
 const PersonalForm = () => {
-  const { register, control } = useFormContext();
+  const { register, control, watch } = useFormContext();
 
   return (
     <div className="space-y-4">
@@ -83,14 +84,27 @@ const PersonalForm = () => {
                 <SelectValue placeholder="Select nationality" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="thai">Thai</SelectItem>
-                <SelectItem value="chinese">Chinese</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                {nationalities.map((nationality) => (
+                  <SelectItem key={nationality} value={nationality}>
+                    {nationality}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           )}
         />
       </div>
+
+      {watch("nationality") === "Other" && (
+        <div>
+          <Label htmlFor="otherNationality">Other Nationality</Label>
+          <Input
+            id="otherNationality"
+            placeholder="Other nationality"
+            {...register("otherNationality")}
+          />
+        </div>
+      )}
     </div>
   );
 };
