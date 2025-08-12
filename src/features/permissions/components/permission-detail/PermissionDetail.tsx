@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { usePermissionDetail } from "./PermissionDetail.hook";
-import { LEVELS } from "@/features/permissions/constants/options";
 
 const PermissionDetail = () => {
   const { editOpen, setEditOpen, selectedPermissionGroup, handleSave } =
@@ -32,13 +31,23 @@ const PermissionDetail = () => {
 
   return (
     <Dialog open={editOpen} onOpenChange={setEditOpen}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-6">
-        <DialogHeader>
-          <DialogTitle>Edit Permission Group</DialogTitle>
-          <DialogDescription>
-            Update role permissions and access control settings
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-6 pb-0">
+        <div className="flex justify-between items-center mb-4">
+          <DialogHeader>
+            <DialogTitle>Edit Permission Group</DialogTitle>
+            <DialogDescription>
+              Update role permissions and access control settings
+            </DialogDescription>
+          </DialogHeader>
+
+          <p className="text-2xl font-bold text-rail-blue">
+            {selectedPermissionGroup.userCount}{" "}
+            <span className="text-sm text-muted-foreground font-light">
+              users assigned
+            </span>
+          </p>
+        </div>
+
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -109,33 +118,9 @@ const PermissionDetail = () => {
               )}
             </div>
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label>Current Users</Label>
-              <p className="text-2xl font-bold text-rail-blue">
-                {selectedPermissionGroup.userCount}
-              </p>
-              <p className="text-sm text-muted-foreground">users assigned</p>
-            </div>
-            <div>
-              <Label>Permission Level</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select permission level" />
-                </SelectTrigger>
-                <SelectContent>
-                  {LEVELS.map((level) => (
-                    <SelectItem key={level.value} value={level.value}>
-                      {level.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
         </div>
-        <DialogFooter>
+
+        <DialogFooter className="sticky bottom-0 left-0 right-0 bg-white py-4">
           <Button variant="outline" onClick={() => setEditOpen?.(false)}>
             Cancel
           </Button>
