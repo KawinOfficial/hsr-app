@@ -6,8 +6,10 @@ import {
   ProfileSchema,
 } from "@/features/auths/schemas/Profile.schema";
 import { validatedPromise } from "@/lib/promise";
+import { useSession } from "next-auth/react";
 
 export const useProfile = () => {
+  const session = useSession();
   return useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
@@ -16,5 +18,6 @@ export const useProfile = () => {
     },
     retry: false,
     refetchOnWindowFocus: false,
+    enabled: !!session.data?.user?.id,
   });
 };
