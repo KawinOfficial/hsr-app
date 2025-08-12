@@ -36,15 +36,24 @@ import {
   nationalities,
   positions,
 } from "@/constants/options";
+import { Loading } from "@/components/loading";
 
 const Profile = () => {
-  const { userProfile, editMode, setEditMode, handleSaveProfile, form } =
-    useProfile();
+  const {
+    userProfile,
+    editMode,
+    setEditMode,
+    handleSaveProfile,
+    form,
+    isFetching,
+  } = useProfile();
 
   if (!userProfile) return null;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {isFetching && <Loading />}
+
       {/* Personal Information */}
       <div className="lg:col-span-2 space-y-6">
         <Card>

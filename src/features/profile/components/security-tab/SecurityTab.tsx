@@ -17,7 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 
 const SecurityTab = () => {
-  const { userProfile, setChangePasswordOpen } = useSecurityTab();
+  const { setChangePasswordOpen } = useSecurityTab();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -94,12 +94,6 @@ const SecurityTab = () => {
             <div className="flex justify-between items-center">
               <span className="text-sm">Account Status</span>
               <Badge className="bg-success-green text-white">Secure</Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm">Last Login</span>
-              <span className="text-sm text-muted-foreground">
-                {userProfile?.lastLogin}
-              </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm">Password Strength</span>

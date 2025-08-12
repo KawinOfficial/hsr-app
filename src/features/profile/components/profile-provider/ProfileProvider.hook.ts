@@ -100,7 +100,7 @@ export const useProfileProvider = () => {
   const [profileImageOpen, setProfileImageOpen] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
-  const { data: profileData } = useProfile();
+  const { data: profileData, isFetching } = useProfile();
 
   function handleSaveProfile() {
     setEditMode(false);
@@ -125,5 +125,6 @@ export const useProfileProvider = () => {
     handleSaveProfile,
     changePasswordOpen,
     setChangePasswordOpen,
+    isFetching,
   };
 };

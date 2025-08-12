@@ -4,6 +4,20 @@ import { useForm } from "react-hook-form";
 import { Profile } from "@/features/auths/schemas/Profile.schema";
 import { useEffect } from "react";
 
+const defaultValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+  employeeInfo: {
+    employeeId: "",
+    position: "",
+    department: "",
+    managerName: "",
+    workLocation: "",
+  },
+};
+
 export const useProfile = () => {
   const userProfile = useContextSelector(
     ProfileContext,
@@ -21,8 +35,14 @@ export const useProfile = () => {
     ProfileContext,
     (state) => state?.handleSaveProfile
   );
+  const isFetching = useContextSelector(
+    ProfileContext,
+    (state) => state?.isFetching
+  );
 
-  const { register, reset, control } = useForm<Profile>();
+  const { register, reset, control } = useForm<Profile>({
+    defaultValues,
+  });
   const form = {
     fieldFirstName: register("firstName"),
     fieldLastName: register("lastName"),
@@ -41,7 +61,14 @@ export const useProfile = () => {
     if (!userProfile) return;
 
     reset(userProfile);
-  }, [userProfile]);
+  }, [userProfile, reset]);
 
-  return { userProfile, editMode, setEditMode, handleSaveProfile, form };
+  return {
+    userProfile,
+    editMode,
+    setEditMode,
+    handleSaveProfile,
+    form,
+    isFetching,
+  };
 };

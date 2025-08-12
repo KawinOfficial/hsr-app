@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useProfileHeader } from "./ProfileHeader.hook";
-import { Camera, Edit, Save, X } from "lucide-react";
+import { Camera } from "lucide-react";
 import { getStatusColor } from "@/features/profile/utils/colorStatus";
 
 const ProfileHeader = () => {

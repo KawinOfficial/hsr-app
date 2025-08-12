@@ -15,5 +15,6 @@ export const useProfile = () => {
       return validatedPromise<Profile>(data, ProfileSchema, "profile");
     },
     retry: false,
+    refetchOnWindowFocus: false,
   });
 };

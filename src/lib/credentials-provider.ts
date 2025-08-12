@@ -33,9 +33,10 @@ export const credentialsProvider = CredentialsProvider({
         return null;
       }
 
-      // Remove sensitive info before returning
-      const { passwordHash, ...safeUser } = user;
-      return safeUser;
+      return {
+        ...user,
+        passwordHash: undefined,
+      };
     } catch (err) {
       console.error("Auth error:", err);
       return null;

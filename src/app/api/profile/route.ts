@@ -20,7 +20,7 @@ async function getEmployeeInfoByUserId(userId: string) {
   return { data, error };
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const session = await auth();
     const userId = session?.user.id;
