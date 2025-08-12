@@ -9,15 +9,37 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, AlertTriangle } from "lucide-react";
+import {
+  CheckCircle,
+  AlertTriangle,
+  Save,
+  X,
+  Edit,
+  MapPin,
+} from "lucide-react";
 import { useProfile } from "./Profile.hook";
 import { getStatusColor } from "@/features/profile/utils/colorStatus";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Controller } from "react-hook-form";
+import {
+  departments,
+  locations,
+  nationalities,
+  positions,
+} from "@/constants/options";
 
 const Profile = () => {
-  const { userProfile, editMode } = useProfile();
+  const { userProfile, editMode, setEditMode, handleSaveProfile, form } =
+    useProfile();
 
   if (!userProfile) return null;
 
@@ -27,75 +49,94 @@ const Profile = () => {
       <div className="lg:col-span-2 space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
-            <CardDescription>
-              Basic personal and contact information
-            </CardDescription>
+            <div className="flex justify-between items-center">
+              <div>
+                <CardTitle>Personal Information</CardTitle>
+                <CardDescription>
+                  Basic personal and contact information
+                </CardDescription>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => setEditMode?.(!editMode)}
+                  variant={editMode ? "destructive" : "default"}
+                >
+                  {editMode ? (
+                    <>
+                      <X className="h-4 w-4" />
+                      Cancel
+                    </>
+                  ) : (
+                    <>
+                      <Edit className="h-4 w-4" />
+                      Edit Profile
+                    </>
+                  )}
+                </Button>
+                {editMode && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleSaveProfile}
+                  >
+                    <Save className="h-4 w-4" />
+                    Save Changes
+                  </Button>
+                )}
+              </div>
+            </div>
           </CardHeader>
+
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  value={userProfile.firstName}
-                  disabled={!editMode}
-                />
+                <Input {...form.fieldFirstName} disabled={!editMode} />
               </div>
               <div>
                 <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  value={userProfile.lastName}
-                  disabled={!editMode}
-                />
+                <Input {...form.fieldLastName} disabled={!editMode} />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={userProfile.email}
-                  disabled={!editMode}
-                />
+                <Input {...form.fieldEmail} type="email" disabled={!editMode} />
               </div>
               <div>
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  value={userProfile.phone}
-                  disabled={!editMode}
-                />
+                <Input {...form.fieldPhoneNumber} disabled={!editMode} />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="mobile">Mobile Number</Label>
-                <Input
-                  id="mobile"
-                  value={userProfile.mobile}
-                  disabled={!editMode}
-                />
-              </div>
-              <div>
                 <Label htmlFor="nationality">Nationality</Label>
-                <Input
-                  id="nationality"
-                  value={userProfile.nationality}
-                  disabled={!editMode}
+                <Controller
+                  control={form.control}
+                  name="nationality"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={!editMode}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select nationality" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {nationalities.map((nationality) => (
+                          <SelectItem key={nationality} value={nationality}>
+                            {nationality}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </div>
-            </div>
-            <div>
-              <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                id="bio"
-                rows={3}
-                value={userProfile.bio}
-                disabled={!editMode}
-              />
             </div>
           </CardContent>
         </Card>
@@ -112,50 +153,93 @@ const Profile = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="employeeId">Employee ID</Label>
-                <Input
-                  id="employeeId"
-                  value={userProfile.employeeId}
-                  disabled
-                />
+                <Input {...form.fieldEmployeeId} disabled />
               </div>
               <div>
-                <Label htmlFor="position">Position</Label>
-                <Input
-                  id="position"
-                  value={userProfile.position}
+                <Label htmlFor="position">Position *</Label>
+                <Controller
+                  control={form.control}
+                  name="employeeInfo.position"
                   disabled={!editMode}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select position" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {positions.map((pos) => (
+                          <SelectItem key={pos} value={pos}>
+                            {pos}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="department">Department</Label>
-                <Input
-                  id="department"
-                  value={userProfile.department}
+                <Label htmlFor="department">Department *</Label>
+                <Controller
+                  control={form.control}
+                  name="employeeInfo.department"
                   disabled={!editMode}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {departments.map((dept) => (
+                          <SelectItem key={dept} value={dept}>
+                            {dept}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </div>
               <div>
                 <Label htmlFor="reportingTo">Reporting To</Label>
-                <Input
-                  id="reportingTo"
-                  value={userProfile.reportingTo}
-                  disabled={!editMode}
-                />
+                <Input {...form.fieldManagerName} disabled={!editMode} />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="hireDate">Hire Date</Label>
-                <Input id="hireDate" value={userProfile.hireDate} disabled />
-              </div>
-              <div>
-                <Label htmlFor="workLocation">Work Location</Label>
-                <Input
-                  id="workLocation"
-                  value={userProfile.workLocation}
+            <div>
+              <Label htmlFor="workLocation">Work Location</Label>
+              <div className="relative">
+                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Controller
+                  control={form.control}
+                  name="employeeInfo.workLocation"
                   disabled={!editMode}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="pl-10">
+                        <SelectValue placeholder="Select work location" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {locations.map((loc) => (
+                          <SelectItem key={loc} value={loc}>
+                            {loc}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </div>
             </div>
@@ -175,9 +259,9 @@ const Profile = () => {
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span>Profile Completeness</span>
-                  <span>92%</span>
+                  <span>80%</span>
                 </div>
-                <Progress value={92} className="h-2" />
+                <Progress value={80} className="h-2" />
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
@@ -194,7 +278,7 @@ const Profile = () => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <AlertTriangle className="h-4 w-4 text-warning-amber" />
-                  <span>Emergency Contact</span>
+                  <span>Certifications</span>
                 </div>
               </div>
             </div>
