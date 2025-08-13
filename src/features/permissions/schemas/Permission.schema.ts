@@ -16,12 +16,12 @@ export const PermissionsMatrixSchema = z.object({
 });
 
 export const PermissionGroupSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string(),
   description: z.string(),
   userCount: z.number(),
   permissions: PermissionsMatrixSchema,
-  status: z.enum(["Active", "Inactive"]),
+  isActive: z.boolean(),
 });
 
 export const PermissionGroupsSchema = z.array(PermissionGroupSchema);
