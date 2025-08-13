@@ -59,7 +59,11 @@ const PermissionDetail = () => {
             </div>
             <div>
               <Label htmlFor="edit-role-status">Status</Label>
-              <Select defaultValue={selectedPermissionGroup.status}>
+              <Select
+                defaultValue={
+                  selectedPermissionGroup.isActive ? "Active" : "Inactive"
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>

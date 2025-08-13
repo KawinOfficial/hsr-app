@@ -7,15 +7,21 @@ import { Separator } from "@/components/ui/separator";
 import { CheckCircle, Lock, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getStatusColor } from "@/features/permissions/utils/colorStatus";
+import { Loading } from "@/components/loading";
 
 const PermissionList = () => {
-  const { permissionGroups, handleEdit } = usePermissionList();
+  const { handleEdit, isLoading, permissionList } = usePermissionList();
 
   return (
     <div>
+      {isLoading && <Loading />}
+
       <div className="space-y-4">
-        {permissionGroups.map((group) => (
-          <Card key={group.id} className="hover:shadow-md transition-shadow">
+        {permissionList?.map((group, idx) => (
+          <Card
+            key={`${group.id}-${idx}`}
+            className="hover:shadow-md transition-shadow"
+          >
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
@@ -28,8 +34,12 @@ const PermissionList = () => {
                       {group.userCount} users assigned
                     </p>
                   </div>
-                  <Badge className={getStatusColor(group.status)}>
-                    {group.status}
+                  <Badge
+                    className={getStatusColor(
+                      group.isActive ? "Active" : "Inactive"
+                    )}
+                  >
+                    {group.isActive ? "Active" : "Inactive"}
                   </Badge>
                 </div>
 

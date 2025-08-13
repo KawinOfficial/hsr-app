@@ -19,11 +19,14 @@ export const PermissionGroupSchema = z.object({
   id: z.string().optional(),
   name: z.string(),
   description: z.string(),
-  userCount: z.number(),
+  userCount: z.number().optional(),
   permissions: PermissionsMatrixSchema,
   isActive: z.boolean(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
 export const PermissionGroupsSchema = z.array(PermissionGroupSchema);
 
 export type PermissionGroup = z.infer<typeof PermissionGroupSchema>;
+export type PermissionGroups = z.infer<typeof PermissionGroupsSchema>;
