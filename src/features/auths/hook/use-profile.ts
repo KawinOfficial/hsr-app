@@ -27,7 +27,7 @@ export const useUpdateProfile = () => {
     mutationKey: ["update-profile"],
     mutationFn: async (data: Profile) => {
       const response = await api
-        .post(API_ROUTES.profile, {
+        .put(API_ROUTES.profile, {
           body: JSON.stringify(data),
         })
         .json();
