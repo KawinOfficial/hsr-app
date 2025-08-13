@@ -40,7 +40,7 @@ export const useProfile = () => {
     (state) => state?.isFetching
   );
 
-  const { register, reset, control, watch } = useForm<Profile>({
+  const { register, reset, control, watch, handleSubmit } = useForm<Profile>({
     defaultValues,
   });
   const form = {
@@ -64,9 +64,12 @@ export const useProfile = () => {
     setEditMode?.(false);
   }
 
+  function onSubmit(data: Profile) {
+    handleSaveProfile?.(data);
+  }
+
   useEffect(() => {
     if (!userProfile) return;
-
     reset(userProfile);
   }, [userProfile, reset]);
 
@@ -74,9 +77,9 @@ export const useProfile = () => {
     userProfile,
     editMode,
     setEditMode,
-    handleSaveProfile,
     form,
     isFetching,
     onCancel,
+    onSubmit: handleSubmit(onSubmit),
   };
 };

@@ -1,4 +1,6 @@
+import { NextResponse } from "next/server";
 import { z } from "zod";
+import { auth } from "./auth";
 
 export const validatedPromise = <T>(
   response: unknown,
@@ -13,3 +15,12 @@ export const validatedPromise = <T>(
 
   return validate.data as T;
 };
+
+export async function checkUserAuth() {
+  const session = await auth();
+  const userId = session?.user.id;
+  if (!userId) {
+    throw new Error("Unauthorized - No valid session");
+  }
+  return userId;
+}

@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { API_ROUTES } from "@/routers/api";
 import {
   Profile,
@@ -19,5 +19,20 @@ export const useProfile = () => {
     retry: false,
     refetchOnWindowFocus: false,
     enabled: !!session.data?.user?.id,
+  });
+};
+
+export const useUpdateProfile = () => {
+  return useMutation({
+    mutationKey: ["update-profile"],
+    mutationFn: async (data: Profile) => {
+      const response = await api
+        .post(API_ROUTES.profile, {
+          body: JSON.stringify(data),
+        })
+        .json();
+
+      return validatedPromise<Profile>(response, ProfileSchema, "profile");
+    },
   });
 };

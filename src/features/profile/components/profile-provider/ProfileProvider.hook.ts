@@ -1,4 +1,9 @@
-import { useProfile } from "@/features/auths/hook/use-profile";
+import {
+  useProfile,
+  useUpdateProfile,
+} from "@/features/auths/hook/use-profile";
+import { Profile } from "@/features/auths/schemas/Profile.schema";
+import { useToast } from "@/hooks/use-toast";
 import { useMemo, useState } from "react";
 
 // User Profile Data
@@ -96,14 +101,35 @@ const userPermissions = {
 };
 
 export const useProfileProvider = () => {
+  const { toast } = useToast();
   const [editMode, setEditMode] = useState(false);
   const [profileImageOpen, setProfileImageOpen] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
-  const { data: profileData, isFetching } = useProfile();
+  const { data: profileData, isFetching, refetch } = useProfile();
+  const { mutate: mutateProfile } = useUpdateProfile();
 
-  function handleSaveProfile() {
-    setEditMode(false);
+  function handleSaveProfile(data: Profile) {
+    mutateProfile(data, {
+      onSuccess: () => {
+        toast({
+          variant: "success",
+          title: "Profile Updated",
+          description: "Your profile has been updated successfully.",
+        });
+        setEditMode(false);
+        refetch();
+      },
+      onError: (error) => {
+        const errorMessage =
+          error instanceof Error ? error.message : "Registration failed";
+        toast({
+          variant: "destructive",
+          title: "Registration Failed",
+          description: errorMessage,
+        });
+      },
+    });
   }
 
   const userProfile = useMemo(
