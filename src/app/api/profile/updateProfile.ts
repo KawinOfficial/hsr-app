@@ -27,9 +27,7 @@ export async function updateProfile(req: Request) {
         otherNationality,
       })
       .eq("id", userId);
-    if (userUpdateError) {
-      throw new Error(userUpdateError.message);
-    }
+    if (userUpdateError) throw new Error(userUpdateError.message);
 
     const { employeeId, position, department, managerName, workLocation } =
       employeeInfo;
@@ -44,9 +42,7 @@ export async function updateProfile(req: Request) {
       })
       .eq("userId", userId);
 
-    if (empUpdateError) {
-      throw new Error(empUpdateError.message);
-    }
+    if (empUpdateError) throw new Error(empUpdateError.message);
 
     return NextResponse.json({
       ...body,

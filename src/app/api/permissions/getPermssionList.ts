@@ -10,10 +10,7 @@ export async function getPermissionList() {
       .from("Role")
       .select("*")
       .order("createdAt", { ascending: false });
-
-    if (error) {
-      throw new Error(error.message);
-    }
+    if (error) throw new Error(error.message);
 
     const rolesWithUserCount = await Promise.all(
       (roles || []).map(async (role) => {
@@ -21,10 +18,7 @@ export async function getPermissionList() {
           .from("UserRole")
           .select("roleId", { count: "exact", head: true })
           .eq("roleId", role.id);
-
-        if (userCountError) {
-          throw new Error(userCountError.message);
-        }
+        if (userCountError) throw new Error(userCountError.message);
 
         return {
           ...role,

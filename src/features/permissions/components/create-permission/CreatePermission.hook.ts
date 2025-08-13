@@ -17,6 +17,7 @@ const defaultValues: PermissionGroup = {
     settings: { read: false, write: false, admin: false },
   },
   isActive: true,
+  status: "active",
 };
 
 export const useCreatePermission = () => {

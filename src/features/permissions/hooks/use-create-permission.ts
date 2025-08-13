@@ -1,11 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { API_ROUTES } from "@/routers/api";
-import {
-  PermissionGroup,
-  PermissionGroupSchema,
-} from "@/features/permissions/schemas/Permission.schema";
-import { validatedPromise } from "@/lib/promise";
+import { PermissionGroup } from "@/features/permissions/schemas/Permission.schema";
 
 export const useCreatePermission = () => {
   return useMutation({

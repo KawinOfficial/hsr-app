@@ -24,15 +24,12 @@ export async function getProfile() {
   try {
     const userId = await checkUserAuth();
     const { data: user, error: userError } = await getUserById(userId);
-    if (userError) {
-      throw new Error(userError.message);
-    }
+    if (userError) throw new Error(userError.message);
 
     const { data: employeeInfo, error: employeeError } =
       await getEmployeeInfoByUserId(userId);
-    if (employeeError && employeeError.code !== "PGRST116") {
+    if (employeeError && employeeError.code !== "PGRST116")
       throw new Error(employeeError.message);
-    }
 
     return NextResponse.json({
       ...user,
