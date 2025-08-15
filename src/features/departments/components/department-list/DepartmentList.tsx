@@ -9,7 +9,8 @@ import { getStatusColor } from "@/features/departments/utils/colorStatus";
 import { formatCurrency } from "@/lib/format";
 
 const DepartmentList = () => {
-  const { departments, handleEditDepartment } = useDepartmentList();
+  const { departments, handleEditDepartment, handleViewMembers } =
+    useDepartmentList();
 
   return (
     <div className="space-y-4">
@@ -72,7 +73,12 @@ const DepartmentList = () => {
                   <p className="text-sm text-muted-foreground">Team Members</p>
                 </div>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => handleViewMembers?.(dept)}
+                  >
                     <Users className="h-4 w-4 mr-1" />
                     Members
                   </Button>

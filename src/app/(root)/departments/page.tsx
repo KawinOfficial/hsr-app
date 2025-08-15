@@ -2,6 +2,7 @@ import PageHeader from "@/components/layout/page-haeder/PageHeader";
 import { CreateDepartments } from "@/features/departments/components/create-department";
 import { DepartmentList } from "@/features/departments/components/department-list";
 import { DepartmentDetailDialog } from "@/features/departments/components/department-detail-dialog";
+import { MemberListDialog } from "@/features/departments/components/member-list-dialog";
 
 export default function DepartmentsPage() {
   return (
@@ -18,6 +19,7 @@ export default function DepartmentsPage() {
       </div>
 
       <DepartmentDetailDialog />
+      <MemberListDialog />
     </div>
   );
 }

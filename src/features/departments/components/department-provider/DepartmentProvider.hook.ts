@@ -84,14 +84,98 @@ const departments: Department[] = [
   },
 ];
 
+const teamMembers = [
+  {
+    id: "USR-001",
+    name: "Somchai Tanakorn",
+    email: "somchai.t@thairail.go.th",
+    phone: "+66-2-555-0123",
+    role: "Project Manager",
+    department: "Project Management",
+    status: "Active",
+    lastLogin: "2024-02-17 09:30",
+    joinDate: "2023-01-15",
+    location: "Bangkok",
+    avatar: "/placeholder.svg",
+    projects: ["TH-CN-001", "TH-CN-002"],
+    permissions: ["all"],
+  },
+  {
+    id: "USR-002",
+    name: "Pranee Chotirat",
+    email: "pranee.c@thairail.go.th",
+    phone: "+66-2-555-0124",
+    role: "Senior QS Officer",
+    department: "Quality Surveying",
+    status: "Active",
+    lastLogin: "2024-02-17 08:45",
+    joinDate: "2023-02-01",
+    location: "Bangkok",
+    avatar: "/placeholder.svg",
+    projects: ["TH-CN-001"],
+    permissions: ["quality", "reports"],
+  },
+  {
+    id: "USR-003",
+    name: "Liu Wei Chen",
+    email: "liu.w@crrc.com.cn",
+    phone: "+86-10-555-0125",
+    role: "Chief Engineer",
+    department: "Engineering",
+    status: "Active",
+    lastLogin: "2024-02-16 22:15",
+    joinDate: "2023-03-10",
+    location: "Beijing",
+    avatar: "/placeholder.svg",
+    projects: ["TH-CN-003"],
+    permissions: ["engineering", "technical"],
+  },
+  {
+    id: "USR-004",
+    name: "Siriporn Wattana",
+    email: "siriporn.w@thairail.go.th",
+    phone: "+66-2-555-0126",
+    role: "Finance Manager",
+    department: "Finance",
+    status: "Active",
+    lastLogin: "2024-02-17 10:00",
+    joinDate: "2023-01-20",
+    location: "Bangkok",
+    avatar: "/placeholder.svg",
+    projects: ["TH-CN-ALL"],
+    permissions: ["finance", "payments", "reports"],
+  },
+  {
+    id: "USR-005",
+    name: "Anupong Thavorn",
+    email: "anupong.t@contractor.com",
+    phone: "+66-2-555-0127",
+    role: "Site Engineer",
+    department: "Engineering",
+    status: "Inactive",
+    lastLogin: "2024-02-10 16:30",
+    joinDate: "2023-04-05",
+    location: "Nakhon Ratchasima",
+    avatar: "/placeholder.svg",
+    projects: ["TH-CN-002"],
+    permissions: ["site-access"],
+  },
+];
+
 export const useDepartmentProvider = () => {
   const [departmentEditOpen, setDepartmentEditOpen] = useState(false);
+  const [memberOpen, setMemberOpen] = useState(false);
   const [selectedDepartment, setSelectedDepartment] =
     useState<Department | null>(null);
 
   function handleEditDepartment(department: Department) {
     setSelectedDepartment(department);
     setDepartmentEditOpen(true);
+  }
+
+  function handleViewMembers(department: Department) {
+    setSelectedDepartment(department);
+    setMemberOpen(true);
   }
 
   return {
@@ -101,5 +185,9 @@ export const useDepartmentProvider = () => {
     selectedDepartment,
     setSelectedDepartment,
     handleEditDepartment,
+    memberOpen,
+    setMemberOpen,
+    handleViewMembers,
+    teamMembers,
   };
 };
