@@ -30,9 +30,6 @@ const PermissionList = () => {
                     <p className="text-sm text-muted-foreground">
                       {group.description}
                     </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {group.userCount} users assigned
-                    </p>
                   </div>
                   <Badge
                     className={getStatusColor(

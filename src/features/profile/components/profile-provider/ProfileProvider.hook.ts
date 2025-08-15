@@ -3,6 +3,7 @@ import {
   useUpdateProfile,
 } from "@/features/auths/hook/use-profile";
 import { Profile } from "@/features/auths/schemas/Profile.schema";
+import { useOptions } from "@/hooks/use-option";
 import { useToast } from "@/hooks/use-toast";
 import { useMemo, useState } from "react";
 
@@ -106,6 +107,7 @@ export const useProfileProvider = () => {
   const [profileImageOpen, setProfileImageOpen] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
+  const { data: options, isFetching: isOptionsFetching } = useOptions();
   const { data: profileData, isFetching, refetch } = useProfile();
   const { mutate: mutateProfile } = useUpdateProfile();
 
@@ -151,6 +153,7 @@ export const useProfileProvider = () => {
     handleSaveProfile,
     changePasswordOpen,
     setChangePasswordOpen,
-    isFetching,
+    isFetching: isFetching || isOptionsFetching,
+    options,
   };
 };

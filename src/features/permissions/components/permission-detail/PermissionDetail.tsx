@@ -24,6 +24,8 @@ import { Card } from "@/components/ui/card";
 import { usePermissionDetail } from "./PermissionDetail.hook";
 import { Controller } from "react-hook-form";
 import { PermissionsMatrix } from "@/features/permissions/schemas/Permission.schema";
+import { Badge } from "@/components/ui/badge";
+import { getStatusColor } from "@/features/permissions/utils/colorStatus";
 
 const PermissionDetail = () => {
   const {
@@ -50,10 +52,9 @@ const PermissionDetail = () => {
             </DialogHeader>
 
             <p className="text-2xl font-bold text-rail-blue">
-              {selectedPermissionGroup.userCount}{" "}
-              <span className="text-sm text-muted-foreground font-light">
-                users assigned
-              </span>
+              <Badge className={getStatusColor(selectedPermissionGroup.status)}>
+                {selectedPermissionGroup.status}
+              </Badge>
             </p>
           </div>
 

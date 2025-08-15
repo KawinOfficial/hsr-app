@@ -7,7 +7,6 @@ import { useToast } from "@/hooks/use-toast";
 const defaultValues: PermissionGroup = {
   name: "",
   description: "",
-  userCount: 0,
   permissions: {
     dashboard: { read: false, write: false, admin: false },
     projects: { read: false, write: false, admin: false },
@@ -34,7 +33,6 @@ export const useCreatePermission = () => {
     fieldId: register("id"),
     fieldName: register("name"),
     fieldDescription: register("description"),
-    fieldUserCount: register("userCount"),
     fieldPermissions: register("permissions"),
     fieldIsActive: register("isActive"),
   };

@@ -11,15 +11,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { BaseOption } from "@/features/profile/schemas/Option.schema";
+import { RegisterFormData } from "@/features/auths/schemas/Register.schema";
 
 interface WorkFormProps {
-  departments: string[];
-  positions: string[];
+  departments: BaseOption[];
+  roles: BaseOption[];
   locations: string[];
 }
 
-const WorkForm = ({ departments, positions, locations }: WorkFormProps) => {
-  const { register, control } = useFormContext();
+const WorkForm = ({ departments, roles, locations }: WorkFormProps) => {
+  const { register, control } = useFormContext<RegisterFormData>();
   return (
     <div className="space-y-4">
       <div>
@@ -41,7 +43,7 @@ const WorkForm = ({ departments, positions, locations }: WorkFormProps) => {
           <Label htmlFor="department">Department *</Label>
           <Controller
             control={control}
-            name="department"
+            name="departmentId"
             render={({ field }) => (
               <Select
                 {...field}
@@ -53,8 +55,8 @@ const WorkForm = ({ departments, positions, locations }: WorkFormProps) => {
                 </SelectTrigger>
                 <SelectContent>
                   {departments.map((dept) => (
-                    <SelectItem key={dept} value={dept}>
-                      {dept}
+                    <SelectItem key={dept.value} value={dept.value}>
+                      {dept.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -66,7 +68,7 @@ const WorkForm = ({ departments, positions, locations }: WorkFormProps) => {
           <Label htmlFor="position">Position *</Label>
           <Controller
             control={control}
-            name="position"
+            name="roleId"
             render={({ field }) => (
               <Select
                 {...field}
@@ -77,9 +79,9 @@ const WorkForm = ({ departments, positions, locations }: WorkFormProps) => {
                   <SelectValue placeholder="Select position" />
                 </SelectTrigger>
                 <SelectContent>
-                  {positions.map((pos) => (
-                    <SelectItem key={pos} value={pos}>
-                      {pos}
+                  {roles.map((role) => (
+                    <SelectItem key={role.value} value={role.value}>
+                      {role.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -3,4 +3,5 @@ export const API_ROUTES = {
   users: "users",
   profile: "profile",
   permissions: "permissions",
+  options: "options",
 };
