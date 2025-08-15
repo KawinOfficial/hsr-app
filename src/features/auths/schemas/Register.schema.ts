@@ -9,8 +9,8 @@ export const registerSchema = z
     nationality: z.string().min(1, "Nationality is required"),
     otherNationality: z.string().optional(),
     employeeId: z.string().min(1, "Employee ID is required"),
-    department: z.string().min(1, "Department is required"),
-    position: z.string().min(1, "Position is required"),
+    departmentId: z.string().min(1, "Department is required"),
+    roleId: z.string().min(1, "Position is required"),
     reportingTo: z.string().min(1, "Reporting to is required"),
     workLocation: z.string().min(1, "Work location is required"),
     password: z

@@ -12,24 +12,9 @@ export async function getPermissionList() {
       .order("createdAt", { ascending: false });
     if (error) throw new Error(error.message);
 
-    const rolesWithUserCount = await Promise.all(
-      (roles || []).map(async (role) => {
-        const { count, error: userCountError } = await supabase
-          .from("UserRole")
-          .select("roleId", { count: "exact", head: true })
-          .eq("roleId", role.id);
-        if (userCountError) throw new Error(userCountError.message);
-
-        return {
-          ...role,
-          userCount: count ?? 0,
-        };
-      })
-    );
-
     return NextResponse.json({
       status: "success",
-      data: rolesWithUserCount,
+      data: roles,
     });
   } catch (error) {
     throw new Error(

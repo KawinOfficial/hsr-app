@@ -4,8 +4,8 @@ const EmployeeInfoSchema = z.object({
   id: z.string(),
   userId: z.string(),
   employeeId: z.string(),
-  department: z.string(),
-  position: z.string(),
+  departmentId: z.string(),
+  roleId: z.string(),
   managerName: z.string(),
   workLocation: z.string(),
 });

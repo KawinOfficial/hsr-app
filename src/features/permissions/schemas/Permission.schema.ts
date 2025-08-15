@@ -20,7 +20,6 @@ export const PermissionGroupSchema = z
     id: z.string().optional(),
     name: z.string(),
     description: z.string(),
-    userCount: z.number().optional(),
     permissions: PermissionsMatrixSchema,
     isActive: z.boolean().optional(),
     createdAt: z.string().optional(),

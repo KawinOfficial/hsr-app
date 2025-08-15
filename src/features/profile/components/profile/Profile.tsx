@@ -30,12 +30,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Controller } from "react-hook-form";
-import {
-  departments,
-  locations,
-  nationalities,
-  positions,
-} from "@/constants/options";
+import { locations, nationalities } from "@/constants/options";
 import { Loading } from "@/components/loading";
 
 const Profile = () => {
@@ -47,6 +42,8 @@ const Profile = () => {
     isFetching,
     onCancel,
     onSubmit,
+    departments,
+    roles,
   } = useProfile();
 
   if (!userProfile) return null;
@@ -184,7 +181,7 @@ const Profile = () => {
                   <Label htmlFor="position">Position *</Label>
                   <Controller
                     control={form.control}
-                    name="employeeInfo.position"
+                    name="employeeInfo.roleId"
                     disabled={!editMode}
                     render={({ field }) => (
                       <Select
@@ -196,9 +193,9 @@ const Profile = () => {
                           <SelectValue placeholder="Select position" />
                         </SelectTrigger>
                         <SelectContent>
-                          {positions.map((pos) => (
-                            <SelectItem key={pos} value={pos}>
-                              {pos}
+                          {roles.map((role) => (
+                            <SelectItem key={role.value} value={role.value}>
+                              {role.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -212,7 +209,7 @@ const Profile = () => {
                   <Label htmlFor="department">Department *</Label>
                   <Controller
                     control={form.control}
-                    name="employeeInfo.department"
+                    name="employeeInfo.departmentId"
                     disabled={!editMode}
                     render={({ field }) => (
                       <Select
@@ -224,9 +221,12 @@ const Profile = () => {
                           <SelectValue placeholder="Select department" />
                         </SelectTrigger>
                         <SelectContent>
-                          {departments.map((dept) => (
-                            <SelectItem key={dept} value={dept}>
-                              {dept}
+                          {departments.map((department) => (
+                            <SelectItem
+                              key={department.value}
+                              value={department.value}
+                            >
+                              {department.label}
                             </SelectItem>
                           ))}
                         </SelectContent>

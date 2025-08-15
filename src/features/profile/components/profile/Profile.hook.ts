@@ -11,8 +11,8 @@ const defaultValues = {
   phoneNumber: "",
   employeeInfo: {
     employeeId: "",
-    position: "",
-    department: "",
+    roleId: "",
+    departmentId: "",
     managerName: "",
     workLocation: "",
   },
@@ -39,6 +39,7 @@ export const useProfile = () => {
     ProfileContext,
     (state) => state?.isFetching
   );
+  const options = useContextSelector(ProfileContext, (state) => state?.options);
 
   const { register, reset, control, watch, handleSubmit } = useForm<Profile>({
     defaultValues,
@@ -49,8 +50,8 @@ export const useProfile = () => {
     fieldEmail: register("email"),
     fieldPhoneNumber: register("phoneNumber"),
     fieldEmployeeId: register("employeeInfo.employeeId"),
-    fieldPosition: register("employeeInfo.position"),
-    fieldDepartment: register("employeeInfo.department"),
+    fieldRoleId: register("employeeInfo.roleId"),
+    fieldDepartmentId: register("employeeInfo.departmentId"),
     fieldManagerName: register("employeeInfo.managerName"),
     fieldWorkLocation: register("employeeInfo.workLocation"),
     fieldNationality: register("nationality"),
@@ -81,5 +82,7 @@ export const useProfile = () => {
     isFetching,
     onCancel,
     onSubmit: handleSubmit(onSubmit),
+    departments: options?.departments || [],
+    roles: options?.roles || [],
   };
 };
