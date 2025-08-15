@@ -25,8 +25,6 @@ const RegisterForm = () => {
     currentStep,
     isLoading,
     errors,
-    departments,
-    positions,
     locations,
     validateStep,
     nextStep,
@@ -35,6 +33,8 @@ const RegisterForm = () => {
     header,
     methods,
     stepHeaders,
+    roles,
+    departments,
   } = useRegisterForm();
 
   return (
@@ -134,7 +134,7 @@ const RegisterForm = () => {
                 {currentStep === 2 && (
                   <WorkForm
                     departments={departments}
-                    positions={positions}
+                    roles={roles}
                     locations={locations}
                   />
                 )}

@@ -9,7 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useRegister } from "@/features/auths/hook/use-register";
 import { useRouter } from "next/navigation";
 import { PAGE_ROUTES } from "@/routers/page";
-import { departments, positions, locations } from "@/constants/options";
+import { locations } from "@/constants/options";
+import { useOptions } from "@/hooks/use-option";
 
 const stepHeaders = [
   {
@@ -60,6 +61,7 @@ export const useRegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const { toast } = useToast();
   const { mutate: mutateRegister, isPending } = useRegister();
+  const { data: options } = useOptions();
 
   const methods = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -90,8 +92,8 @@ export const useRegisterForm = () => {
       case 2:
         return (
           watch("employeeId") &&
-          watch("department") &&
-          watch("position") &&
+          watch("departmentId") &&
+          watch("roleId") &&
           watch("reportingTo") &&
           watch("workLocation")
         );
@@ -145,8 +147,6 @@ export const useRegisterForm = () => {
   return {
     currentStep,
     isLoading: isPending,
-    departments,
-    positions,
     locations,
     validateStep,
     nextStep,
@@ -156,5 +156,7 @@ export const useRegisterForm = () => {
     methods,
     onSubmit: methods.handleSubmit(onSubmit),
     errors,
+    roles: options?.roles || [],
+    departments: options?.departments || [],
   };
 };

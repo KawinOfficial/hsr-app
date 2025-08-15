@@ -1,5 +1,46 @@
 import { useContextSelector } from "use-context-selector";
 import { PermissionContext } from "@/features/permissions/components/permission-provider";
+import { useForm } from "react-hook-form";
+import { PermissionGroup } from "@/features/permissions/schemas/Permission.schema";
+import { useEffect } from "react";
+
+const defaultValues: PermissionGroup = {
+  name: "",
+  description: "",
+  status: "active",
+  permissions: {
+    dashboard: {
+      read: false,
+      write: false,
+      admin: false,
+    },
+    projects: {
+      read: false,
+      write: false,
+      admin: false,
+    },
+    financial: {
+      read: false,
+      write: false,
+      admin: false,
+    },
+    reports: {
+      read: false,
+      write: false,
+      admin: false,
+    },
+    users: {
+      read: false,
+      write: false,
+      admin: false,
+    },
+    settings: {
+      read: false,
+      write: false,
+      admin: false,
+    },
+  },
+};
 
 export const usePermissionDetail = () => {
   const editOpen = useContextSelector(
@@ -19,10 +60,39 @@ export const usePermissionDetail = () => {
     (state) => state?.handleSave
   );
 
+  const { register, handleSubmit, reset, control } = useForm<PermissionGroup>({
+    defaultValues,
+  });
+
+  const form = {
+    fieldName: register("name"),
+    fieldDescription: register("description"),
+    fieldStatus: register("status"),
+    control,
+    register,
+  };
+
+  function onSubmit(data: PermissionGroup) {
+    handleSave?.(data);
+  }
+
+  function onReset() {
+    reset(defaultValues);
+    setEditOpen?.(false);
+  }
+
+  useEffect(() => {
+    if (!selectedPermissionGroup) return;
+    reset(selectedPermissionGroup);
+  }, [selectedPermissionGroup, reset]);
+
   return {
     editOpen,
     setEditOpen,
     selectedPermissionGroup,
     handleSave,
+    form,
+    onSubmit: handleSubmit(onSubmit),
+    onReset,
   };
 };

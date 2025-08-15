@@ -12,17 +12,24 @@ import { ChevronDown, User, HelpCircle, LogOut } from "lucide-react";
 import Link from "next/link";
 import { PAGE_ROUTES } from "@/routers/page";
 import { useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import { useProfile } from "@/features/auths/hook/use-profile";
+import { useEffect } from "react";
 
 const SideBarFooter = () => {
   const router = useRouter();
-  const { data: session } = useSession();
-  const { firstName, lastName, email } = session?.user || {};
+  const { data: profile, isError } = useProfile();
+  const { firstName, lastName, email } = profile || {};
 
   async function handleSignOut() {
     await signOut({ redirect: false });
     router.push(PAGE_ROUTES.LOGIN);
   }
+
+  useEffect(() => {
+    if (!isError) return;
+    handleSignOut();
+  }, [isError]);
 
   return (
     <SidebarFooterBase className="border-t p-0">
