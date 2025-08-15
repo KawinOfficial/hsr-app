@@ -8,7 +8,8 @@ import { Camera } from "lucide-react";
 import { getStatusColor } from "@/features/profile/utils/colorStatus";
 
 const ProfileHeader = () => {
-  const { userProfile, setProfileImageOpen } = useProfileHeader();
+  const { userProfile, setProfileImageOpen, role, department } =
+    useProfileHeader();
 
   if (!userProfile) return null;
 
@@ -34,8 +35,7 @@ const ProfileHeader = () => {
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">
-                {userProfile.employeeInfo?.position} •{" "}
-                {userProfile.employeeInfo?.department}
+                {role} • {department}
               </p>
               <div className="flex items-center space-x-2 mt-1"></div>
             </div>
