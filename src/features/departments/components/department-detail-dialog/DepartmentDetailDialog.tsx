@@ -23,8 +23,12 @@ import { Trash2, Plus } from "lucide-react";
 import { useDepartmentDetailDialog } from "./DepartmentDetailDialog.hook";
 
 const DepartmentDetailDialog = () => {
-  const { departmentEditOpen, setDepartmentEditOpen, selectedDepartment } =
-    useDepartmentDetailDialog();
+  const {
+    departmentEditOpen,
+    setDepartmentEditOpen,
+    selectedDepartment,
+    options,
+  } = useDepartmentDetailDialog();
 
   if (!selectedDepartment) return null;
 
@@ -53,24 +57,16 @@ const DepartmentDetailDialog = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="edit-dept-head">Department Head</Label>
-              <Select defaultValue={selectedDepartment.head}>
+              <Select defaultValue={selectedDepartment.headId}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Somchai Tanakorn">
-                    Somchai Tanakorn
-                  </SelectItem>
-                  <SelectItem value="Pranee Chotirat">
-                    Pranee Chotirat
-                  </SelectItem>
-                  <SelectItem value="Liu Wei Chen">Liu Wei Chen</SelectItem>
-                  <SelectItem value="Siriporn Wattana">
-                    Siriporn Wattana
-                  </SelectItem>
-                  <SelectItem value="Malee Jitpakdee">
-                    Malee Jitpakdee
-                  </SelectItem>
+                  {options?.users.map((user) => (
+                    <SelectItem key={user.value} value={user.value}>
+                      {user.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -106,16 +102,14 @@ const DepartmentDetailDialog = () => {
           <div>
             <Label>Key Responsibilities</Label>
             <div className="space-y-2 mt-2">
-              {selectedDepartment.responsibilities.map(
-                (resp: string, index: number) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <Input defaultValue={resp} className="flex-1" />
-                    <Button variant="ghost" size="sm">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                )
-              )}
+              {selectedDepartment.responsibilities.map((resp, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <Input defaultValue={resp} className="flex-1" />
+                  <Button variant="ghost" size="sm">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
               <Button variant="outline" size="sm" className="w-full">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Responsibility

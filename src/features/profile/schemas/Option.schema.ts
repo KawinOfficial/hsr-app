@@ -8,6 +8,7 @@ const baseOptionSchema = z.object({
 export const OptionsSchema = z.object({
   roles: z.array(baseOptionSchema),
   departments: z.array(baseOptionSchema),
+  users: z.array(baseOptionSchema),
 });
 
 export type Options = z.infer<typeof OptionsSchema>;

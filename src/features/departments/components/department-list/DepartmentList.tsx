@@ -9,12 +9,16 @@ import { getStatusColor } from "@/features/departments/utils/colorStatus";
 import { formatCurrency } from "@/lib/format";
 
 const DepartmentList = () => {
-  const { departments, handleEditDepartment, handleViewMembers } =
-    useDepartmentList();
+  const {
+    departmentList,
+    handleEditDepartment,
+    handleViewMembers,
+    findHeadName,
+  } = useDepartmentList();
 
   return (
     <div className="space-y-4">
-      {departments?.map((dept) => (
+      {departmentList?.map((dept) => (
         <Card key={dept.id} className="hover:shadow-md transition-shadow">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -34,11 +38,13 @@ const DepartmentList = () => {
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="text-muted-foreground">Department Head</p>
-                    <p className="font-medium">{dept.head}</p>
+                    <p className="font-medium">{findHeadName(dept.headId)}</p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Team Members</p>
-                    <p className="font-medium">{dept.memberCount} members</p>
+                    <p className="font-medium">
+                      {dept.teamMembers ?? 0} members
+                    </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Location</p>
@@ -68,7 +74,7 @@ const DepartmentList = () => {
               <div className="space-y-4">
                 <div className="text-center p-4 bg-muted/50 rounded-lg">
                   <p className="text-2xl font-bold text-primary">
-                    {dept.memberCount}
+                    {dept.teamMembers ?? 0}
                   </p>
                   <p className="text-sm text-muted-foreground">Team Members</p>
                 </div>

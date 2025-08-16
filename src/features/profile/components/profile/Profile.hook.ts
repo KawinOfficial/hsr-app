@@ -70,7 +70,7 @@ export const useProfile = () => {
   }
 
   useEffect(() => {
-    if (!userProfile) return;
+    if (!userProfile || isFetching) return;
     reset(userProfile);
   }, [userProfile, reset]);
 

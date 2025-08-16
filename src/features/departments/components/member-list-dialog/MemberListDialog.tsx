@@ -155,7 +155,7 @@ const MemberListDialog = () => {
                     <TableCell>
                       <div>
                         <p className="font-medium">{member.role}</p>
-                        {member.name === selectedDepartment?.head && (
+                        {member.id === selectedDepartment?.headId && (
                           <Badge className="bg-rail-gold text-white mt-1">
                             Department Head
                           </Badge>

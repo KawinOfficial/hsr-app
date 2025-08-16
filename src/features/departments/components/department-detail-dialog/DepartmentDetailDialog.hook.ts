@@ -14,10 +14,15 @@ export const useDepartmentDetailDialog = () => {
     DepartmentContext,
     (state) => state?.selectedDepartment
   );
+  const options = useContextSelector(
+    DepartmentContext,
+    (state) => state?.options
+  );
 
   return {
     departmentEditOpen,
     setDepartmentEditOpen,
     selectedDepartment,
+    options,
   };
 };

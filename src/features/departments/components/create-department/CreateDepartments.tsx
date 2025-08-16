@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -19,8 +21,11 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { useCreateDepartment } from "./CreateDepartments.hook";
 
 const CreateDepartments = () => {
+  const { options } = useCreateDepartment();
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -56,8 +61,11 @@ const CreateDepartments = () => {
                   <SelectValue placeholder="Select head" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="somchai">Somchai Tanakorn</SelectItem>
-                  <SelectItem value="pranee">Pranee Chotirat</SelectItem>
+                  {options?.users.map((user) => (
+                    <SelectItem key={user.value} value={user.value}>
+                      {user.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
