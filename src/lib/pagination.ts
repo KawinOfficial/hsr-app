@@ -1,4 +1,8 @@
-export function paginateArray(data: any[], page: string, itemsPerPage: string) {
+export function paginateArray<T>(
+  data: T[],
+  page: string,
+  itemsPerPage: string
+) {
   const pageNumber = Number(page);
   const itemsPerPageNumber = Number(itemsPerPage);
 

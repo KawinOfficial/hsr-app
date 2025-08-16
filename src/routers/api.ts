@@ -6,4 +6,6 @@ export const API_ROUTES = {
   options: "options",
   departments: "departments",
   departmentMember: "departments/:id",
+  departmentAddMember: "departments/add-member",
+  teamMember: "team-member",
 };

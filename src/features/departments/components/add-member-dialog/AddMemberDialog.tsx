@@ -33,9 +33,21 @@ import { Input } from "@/components/ui/input";
 import { departments } from "@/constants/options";
 import { useAddMemberDialog } from "./AddMemberDialog.hook";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Pagination } from "@/components/pagination";
 
 const AddmemberDialog = () => {
-  const { teamMembers, open, setOpen } = useAddMemberDialog();
+  const {
+    list,
+    pagination,
+    open,
+    setOpen,
+    handlePageChange,
+    getRoleName,
+    getDepartmentName,
+    onCheckMember,
+    isChecked,
+    onAddMember,
+  } = useAddMemberDialog();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -87,31 +99,60 @@ const AddmemberDialog = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {teamMembers?.map((member) => (
-                  <TableRow key={member.id}>
-                    <TableCell>
-                      <Checkbox />
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{member.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {member.email}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>{member.department}</TableCell>
-                    <TableCell>{member.role}</TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(member.status)}>
-                        {member.status}
-                      </Badge>
+                {!list?.length ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={5}
+                      className="text-center py-10 text-muted-foreground"
+                    >
+                      No users found
                     </TableCell>
                   </TableRow>
-                ))}
+                ) : (
+                  list?.map((member) => (
+                    <TableRow key={member.id}>
+                      <TableCell>
+                        <Checkbox
+                          checked={isChecked(member.id)}
+                          onCheckedChange={() => onCheckMember(member.id)}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">
+                            {member.firstName} {member.lastName}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {member.email}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {getDepartmentName(member.employeeInfo?.departmentId)}
+                      </TableCell>
+                      <TableCell>
+                        {getRoleName(member.employeeInfo?.roleId)}
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(member.status)}>
+                          {member.status}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
+
+          <Pagination
+            startIndex={0}
+            itemsPerPage={pagination?.itemsPerPage || 0}
+            totalItems={pagination?.totalItems || 0}
+            totalPages={pagination?.totalPages || 0}
+            currentPage={pagination?.currentPage || 1}
+            onPageChange={(page) => handlePageChange(page.toString())}
+          />
 
           <Alert>
             <Users className="h-4 w-4" />
@@ -126,7 +167,7 @@ const AddmemberDialog = () => {
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button>
+          <Button onClick={onAddMember}>
             <Plus className="h-4 w-4 mr-2" />
             Add Selected Members
           </Button>

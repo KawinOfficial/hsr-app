@@ -11,7 +11,6 @@ import {
 import {
   Building2,
   Users,
-  Shield,
   CheckCircle,
   MapPin,
   Settings,
@@ -52,6 +51,7 @@ const MemberListDialog = () => {
     list,
     onEditDepartment,
     getRoleName,
+    handlePageChange,
   } = useMemberListDialog();
 
   return (
@@ -199,7 +199,7 @@ const MemberListDialog = () => {
             totalItems={pagination?.totalItems || 0}
             totalPages={pagination?.totalPages || 0}
             currentPage={pagination?.currentPage || 1}
-            onPageChange={() => {}}
+            onPageChange={(page) => handlePageChange(page.toString())}
           />
         </div>
 
