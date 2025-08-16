@@ -41,14 +41,17 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { getStatusColor } from "@/features/departments/utils/colorStatus";
 import { AddMemberDialog } from "@/features/departments/components/add-member-dialog";
+import { Pagination } from "@/components/pagination";
 
 const MemberListDialog = () => {
   const {
     memberOpen,
     setMemberOpen,
     selectedDepartment,
-    teamMembers,
+    pagination,
+    list,
     onEditDepartment,
+    getRoleName,
   } = useMemberListDialog();
 
   return (
@@ -70,30 +73,25 @@ const MemberListDialog = () => {
             <Card>
               <CardContent className="p-4 text-center">
                 <Users className="h-6 w-6 text-rail-blue mx-auto mb-2" />
-                <div className="text-2xl font-bold text-rail-blue">1</div>
+                <div className="text-2xl font-bold text-rail-blue">
+                  {pagination?.totalItems || 0}
+                </div>
                 <p className="text-sm text-muted-foreground">Total Members</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
-                <Shield className="h-6 w-6 text-construction-orange mx-auto mb-2" />
-                <div className="text-2xl font-bold text-construction-orange">
-                  1
-                </div>
-                <p className="text-sm text-muted-foreground">Managers</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
                 <CheckCircle className="h-6 w-6 text-success-green mx-auto mb-2" />
-                <div className="text-2xl font-bold text-success-green">1</div>
+                <div className="text-2xl font-bold text-success-green">
+                  {pagination?.totalItems || 0}
+                </div>
                 <p className="text-sm text-muted-foreground">Active</p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="col-span-2">
               <CardContent className="p-4 text-center">
                 <MapPin className="h-6 w-6 text-warning-amber mx-auto mb-2" />
-                <div className="text-2xl font-bold text-warning-amber">
+                <div className="text-2xl font-bold text-warning-amber truncate">
                   {selectedDepartment?.location}
                 </div>
                 <p className="text-sm text-muted-foreground">Location</p>
@@ -135,72 +133,74 @@ const MemberListDialog = () => {
                   <TableHead>Role</TableHead>
                   <TableHead>Contact</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Projects</TableHead>
                   <TableHead className="text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {teamMembers?.map((member) => (
-                  <TableRow key={member.id}>
-                    <TableCell>
-                      <p className="font-medium">{member.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {member.id}
-                      </p>
+                {!list?.length ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={5}
+                      className="text-center py-10 text-muted-foreground"
+                    >
+                      No members found
                     </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{member.role}</p>
-                        {member.id === selectedDepartment?.headId && (
-                          <Badge className="bg-rail-gold text-white mt-1">
-                            Department Head
-                          </Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="text-sm">{member.email}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {member.phone}
+                  </TableRow>
+                ) : (
+                  list?.map((member) => (
+                    <TableRow key={member.id}>
+                      <TableCell>
+                        <p className="font-medium">
+                          {member.firstName} {member.lastName}
                         </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(member.status)}>
-                        {member.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {member.projects.slice(0, 2).map((project) => (
-                          <Badge
-                            key={project}
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            {project}
-                          </Badge>
-                        ))}
-                        {member.projects.length > 2 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{member.projects.length - 2}
-                          </Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex space-x-1">
+                        <p className="text-sm text-muted-foreground">
+                          {member.employeeInfo?.employeeId}
+                        </p>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">
+                            {getRoleName(member.employeeInfo?.roleId || "")}
+                          </p>
+                          {member.id === selectedDepartment?.headId && (
+                            <Badge className="bg-rail-gold text-white mt-1">
+                              Department Head
+                            </Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="text-sm">{member.email}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {member.phoneNumber}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(member.status)}>
+                          {member.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-center">
                         <Button variant="ghost" size="sm">
                           <Eye className="h-4 w-4" />
                         </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
+          <Pagination
+            startIndex={0}
+            itemsPerPage={pagination?.itemsPerPage || 0}
+            totalItems={pagination?.totalItems || 0}
+            totalPages={pagination?.totalPages || 0}
+            currentPage={pagination?.currentPage || 1}
+            onPageChange={() => {}}
+          />
         </div>
 
         <DialogFooter>

@@ -5,4 +5,5 @@ export const API_ROUTES = {
   permissions: "permissions",
   options: "options",
   departments: "departments",
+  departmentMember: "departments/:id",
 };
