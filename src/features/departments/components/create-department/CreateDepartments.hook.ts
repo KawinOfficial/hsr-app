@@ -32,13 +32,7 @@ export const useCreateDepartment = () => {
 
   const { mutate: createDepartment, isPending } = useCreate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    control,
-    reset,
-  } = useForm<DepartmentForm>({
+  const { register, handleSubmit, control, reset } = useForm<DepartmentForm>({
     defaultValues,
   });
 

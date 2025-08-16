@@ -15,15 +15,11 @@ import {
   CheckCircle,
   MapPin,
   Settings,
-  Plus,
   Search,
   Eye,
-  ArrowUpRight,
-  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
 import { useMemberListDialog } from "./MemberListDialog.hook";
 import { positions } from "@/constants/options";
 import { Input } from "@/components/ui/input";
