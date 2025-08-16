@@ -61,7 +61,7 @@ const DepartmentList = () => {
                     Key Responsibilities
                   </p>
                   <ul className="text-sm space-y-1">
-                    {dept.responsibilities.map((resp, index) => (
+                    {dept.keyResponsibilities.map((resp, index) => (
                       <li key={index} className="flex items-center">
                         <CheckCircle className="h-3 w-3 text-success-green mr-2" />
                         {resp}
