@@ -8,4 +8,5 @@ export const API_ROUTES = {
   departmentMember: "departments/:id",
   departmentAddMember: "departments/add-member",
   teamMember: "team-member",
+  teamMemberDetail: "team-member/:id",
 };

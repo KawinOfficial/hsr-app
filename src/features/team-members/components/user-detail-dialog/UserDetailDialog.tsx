@@ -20,9 +20,16 @@ import {
 import { Label } from "@/components/ui/label";
 import { CheckCircle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { formatDate } from "@/lib/format";
 
 const UserDetailDialog = () => {
-  const { userDetails: user, isOpen, setIsOpen } = useUserDetailDialog();
+  const {
+    userDetails: user,
+    isOpen,
+    setIsOpen,
+    getRoleName,
+    getDepartmentName,
+  } = useUserDetailDialog();
 
   if (!user) return null;
 
@@ -33,11 +40,16 @@ const UserDetailDialog = () => {
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-4">
               <Avatar className="h-16 w-16">
-                <AvatarImage src={user.avatar} />
-                <AvatarFallback className="text-lg">{user.name}</AvatarFallback>
+                <AvatarImage src={""} />
+                <AvatarFallback className="text-lg">
+                  {user.firstName?.charAt(0)}
+                  {user.lastName?.charAt(0)}
+                </AvatarFallback>
               </Avatar>
               <div>
-                <DialogTitle className="text-2xl">{user.name}</DialogTitle>
+                <DialogTitle className="text-2xl">
+                  {user.firstName} {user.lastName}
+                </DialogTitle>
                 <div className="mt-2">
                   <Badge className={getStatusColor(user.status ?? "")}>
                     {user.status}
@@ -67,7 +79,7 @@ const UserDetailDialog = () => {
                     <Label className="text-sm font-medium text-muted-foreground">
                       Phone Number
                     </Label>
-                    <p className="mt-1 text-sm">{user.phone}</p>
+                    <p className="mt-1 text-sm">{user.phoneNumber}</p>
                   </div>
                 </div>
 
@@ -76,13 +88,19 @@ const UserDetailDialog = () => {
                     <Label className="text-sm font-medium text-muted-foreground">
                       Role
                     </Label>
-                    <p className="mt-1 text-sm">{user.role}</p>
+                    <p className="mt-1 text-sm">
+                      {getRoleName?.(user.employeeInfo?.roleId ?? "")}
+                    </p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">
                       Department
                     </Label>
-                    <p className="mt-1 text-sm">{user.department}</p>
+                    <p className="mt-1 text-sm">
+                      {getDepartmentName?.(
+                        user.employeeInfo?.departmentId ?? ""
+                      )}
+                    </p>
                   </div>
                 </div>
 
@@ -92,13 +110,15 @@ const UserDetailDialog = () => {
                       Location
                     </Label>
 
-                    <p className="mt-1 text-sm">{user.location}</p>
+                    <p className="mt-1 text-sm">
+                      {user.employeeInfo?.workLocation}
+                    </p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">
                       Created At
                     </Label>
-                    <p className="mt-1 text-sm">{user.joinDate}</p>
+                    <p className="mt-1 text-sm">{formatDate(user.createdAt)}</p>
                   </div>
                 </div>
 
@@ -108,22 +128,20 @@ const UserDetailDialog = () => {
                       Employee ID
                     </Label>
                     <p className="text-sm font-mono">
-                      {user.employment.employeeId}
+                      {user.employeeInfo?.employeeId}
                     </p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">
                       Reporting Manager
                     </Label>
-                    <p className="text-sm">
-                      {user.employment.reportingManager}
-                    </p>
+                    <p className="text-sm">{user.employeeInfo?.managerName}</p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">
                       Work Location
                     </Label>
-                    <p className="text-sm">{user.employment.workLocation}</p>
+                    <p className="text-sm">{user.employeeInfo?.workLocation}</p>
                   </div>
                 </div>
               </CardContent>
@@ -135,11 +153,6 @@ const UserDetailDialog = () => {
                 <CardTitle>Account Status</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="text-center p-4 bg-muted/50 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Last Login</p>
-                  <p className="text-sm font-medium">{user.lastLogin}</p>
-                </div>
-
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Account Status</span>
@@ -183,7 +196,7 @@ const UserDetailDialog = () => {
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id={`${module}-read`}
-                          // checked={perms.read}
+                          checked={perms.read}
                           disabled
                         />
                         <Label htmlFor={`${module}-read`} className="text-sm">
@@ -193,7 +206,7 @@ const UserDetailDialog = () => {
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id={`${module}-write`}
-                          // checked={perms.write}
+                          checked={perms.write}
                           disabled
                         />
                         <Label htmlFor={`${module}-write`} className="text-sm">
@@ -203,7 +216,7 @@ const UserDetailDialog = () => {
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id={`${module}-admin`}
-                          // checked={perms.admin}
+                          checked={perms.admin}
                           disabled
                         />
                         <Label htmlFor={`${module}-admin`} className="text-sm">
