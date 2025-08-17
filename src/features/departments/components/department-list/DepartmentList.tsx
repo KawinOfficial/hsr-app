@@ -7,6 +7,7 @@ import { CheckCircle, Users, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getStatusColor } from "@/features/departments/utils/colorStatus";
 import { formatCurrency } from "@/lib/format";
+import Loading from "@/components/loading/Loading";
 
 const DepartmentList = () => {
   const {
@@ -18,6 +19,8 @@ const DepartmentList = () => {
 
   return (
     <div className="space-y-4">
+      {!departmentList?.length && <Loading />}
+
       {departmentList?.map((dept) => (
         <Card key={dept.id} className="hover:shadow-md transition-shadow">
           <CardContent className="p-6">

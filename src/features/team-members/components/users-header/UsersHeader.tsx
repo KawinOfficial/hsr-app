@@ -1,6 +1,5 @@
 import PageHeader from "@/components/layout/page-haeder/PageHeader";
-import { Button } from "@/components/ui/button";
-import { Filter, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -9,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateUser } from "@/features/team-members/components/create-user";
 import { STATUS_OPTIONS } from "@/features/project-overview/constants/options";
 
 const UsersHeader = () => {
@@ -39,12 +37,7 @@ const UsersHeader = () => {
               ))}
             </SelectContent>
           </Select>
-          <Button variant="outline" size="sm">
-            <Filter className="h-4 w-4" />
-          </Button>
-
-          <CreateUser />
-        </div>{" "}
+        </div>
       </PageHeader>
     </div>
   );
