@@ -2,13 +2,17 @@ import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 import { checkUserAuth } from "@/lib/promise";
 
-export async function getTeamMemberList() {
+export async function getTeamMemberList(page: string, itemsPerPage: string) {
   try {
     await checkUserAuth();
     const { data: usersData, error: userError } = await supabase
       .from("User")
       .select("*")
-      .order("createdAt", { ascending: false });
+      .order("createdAt", { ascending: false })
+      .range(
+        (Number(page) - 1) * Number(itemsPerPage),
+        Number(page) * Number(itemsPerPage) - 1
+      );
     if (userError) throw new Error(userError.message);
 
     const userIds = usersData.map((user) => user.id);
@@ -29,6 +33,12 @@ export async function getTeamMemberList() {
     return NextResponse.json({
       status: "success",
       data: formattedData,
+      pagination: {
+        totalItems: usersData.length,
+        totalPages: Math.ceil(usersData.length / Number(itemsPerPage)),
+        currentPage: Number(page),
+        itemsPerPage: Number(itemsPerPage),
+      },
     });
   } catch (error) {
     throw new Error(

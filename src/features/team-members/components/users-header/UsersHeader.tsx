@@ -1,14 +1,6 @@
 import PageHeader from "@/components/layout/page-haeder/PageHeader";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { STATUS_OPTIONS } from "@/features/project-overview/constants/options";
 
 const UsersHeader = () => {
   return (
@@ -25,18 +17,6 @@ const UsersHeader = () => {
               className="pl-10 w-64"
             />
           </div>
-          <Select defaultValue={STATUS_OPTIONS[0].value}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {STATUS_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
       </PageHeader>
     </div>

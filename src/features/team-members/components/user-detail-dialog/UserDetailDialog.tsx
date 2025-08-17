@@ -183,7 +183,7 @@ const UserDetailDialog = () => {
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id={`${module}-read`}
-                          checked={perms.read}
+                          // checked={perms.read}
                           disabled
                         />
                         <Label htmlFor={`${module}-read`} className="text-sm">
@@ -193,7 +193,7 @@ const UserDetailDialog = () => {
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id={`${module}-write`}
-                          checked={perms.write}
+                          // checked={perms.write}
                           disabled
                         />
                         <Label htmlFor={`${module}-write`} className="text-sm">
@@ -203,7 +203,7 @@ const UserDetailDialog = () => {
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id={`${module}-admin`}
-                          checked={perms.admin}
+                          // checked={perms.admin}
                           disabled
                         />
                         <Label htmlFor={`${module}-admin`} className="text-sm">
