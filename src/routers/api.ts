@@ -4,4 +4,9 @@ export const API_ROUTES = {
   profile: "profile",
   permissions: "permissions",
   options: "options",
+  departments: "departments",
+  departmentMember: "departments/:id",
+  departmentAddMember: "departments/add-member",
+  teamMember: "team-member",
+  teamMemberDetail: "team-member/:id",
 };

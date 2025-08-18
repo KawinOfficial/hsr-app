@@ -9,6 +9,11 @@ export async function getOptions() {
       .from("Department")
       .select("*");
     if (departmentsError) throw new Error(departmentsError.message);
+    const { data: users, error: usersError } = await supabase
+      .from("User")
+      .select("*")
+      .order("createdAt", { ascending: false });
+    if (usersError) throw new Error(usersError.message);
 
     const formattedDepartments = departments.map((department) => ({
       value: department.id,
@@ -18,10 +23,15 @@ export async function getOptions() {
       value: role.id,
       label: role.name,
     }));
+    const formattedUsers = users.map((user) => ({
+      value: user.id,
+      label: `${user.firstName} ${user.lastName}`,
+    }));
 
     return NextResponse.json({
       roles: formattedRoles,
       departments: formattedDepartments,
+      users: formattedUsers,
     });
   } catch (error) {
     throw new Error(

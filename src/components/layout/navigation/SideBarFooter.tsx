@@ -18,7 +18,7 @@ import { useEffect } from "react";
 
 const SideBarFooter = () => {
   const router = useRouter();
-  const { data: profile, isError } = useProfile();
+  const { data: profile, isError, isFetching } = useProfile();
   const { firstName, lastName, email } = profile || {};
 
   async function handleSignOut() {
@@ -27,9 +27,9 @@ const SideBarFooter = () => {
   }
 
   useEffect(() => {
-    if (!isError) return;
+    if (!isError || isFetching) return;
     handleSignOut();
-  }, [isError]);
+  }, [isError, isFetching]);
 
   return (
     <SidebarFooterBase className="border-t p-0">

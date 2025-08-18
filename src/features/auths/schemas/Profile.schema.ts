@@ -1,3 +1,4 @@
+import { PaginationSchema } from "@/types/pagination";
 import { z } from "zod";
 
 const EmployeeInfoSchema = z.object({
@@ -24,5 +25,11 @@ export const ProfileSchema = z.object({
   status: z.string(),
 });
 
+export const ProfileListSchema = z.object({
+  data: z.array(ProfileSchema),
+  pagination: PaginationSchema,
+});
+
 export type EmployeeInfo = z.infer<typeof EmployeeInfoSchema>;
 export type Profile = z.infer<typeof ProfileSchema>;
+export type ProfileList = z.infer<typeof ProfileListSchema>;
