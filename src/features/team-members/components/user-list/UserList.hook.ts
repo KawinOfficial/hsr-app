@@ -1,21 +1,14 @@
 import { useContextSelector } from "use-context-selector";
 import { UsersContext } from "@/features/team-members/components/users-provider";
-import { User } from "@/features/team-members/schemas/User.schema";
 
 export const useUserList = () => {
-  const paginatedMembers =
-    useContextSelector(UsersContext, (state) => state?.paginatedMembers) ?? [];
-  const paginated = useContextSelector(
+  const teamMembers = useContextSelector(
     UsersContext,
-    (state) => state?.paginated
+    (state) => state?.teamMembers
   );
   const handlePageChange = useContextSelector(
     UsersContext,
     (state) => state?.handlePageChange
-  );
-  const totalItems = useContextSelector(
-    UsersContext,
-    (state) => state?.totalItems
   );
   const setSelectedUser = useContextSelector(
     UsersContext,
@@ -25,22 +18,31 @@ export const useUserList = () => {
     UsersContext,
     (state) => state?.setIsOpen
   );
+  const getRoleName = useContextSelector(
+    UsersContext,
+    (state) => state?.getRoleName
+  );
+  const getDepartmentName = useContextSelector(
+    UsersContext,
+    (state) => state?.getDepartmentName
+  );
+  const isLoading = useContextSelector(
+    UsersContext,
+    (state) => state?.isLoading
+  );
 
-  const { currentPage, totalPages, startIndex, itemsPerPage } = paginated ?? {};
-
-  function handleView(user: User) {
-    setSelectedUser?.(user);
+  function handleView(id: string) {
+    setSelectedUser?.(id);
     setIsOpen?.(true);
   }
 
   return {
-    paginatedMembers,
-    currentPage,
-    totalPages,
-    startIndex,
-    itemsPerPage,
-    totalItems,
+    list: teamMembers?.data ?? [],
+    pagination: teamMembers?.pagination,
     handlePageChange,
     handleView,
+    getRoleName,
+    getDepartmentName,
+    isLoading,
   };
 };

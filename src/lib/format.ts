@@ -7,3 +7,11 @@ export const formatCurrency = (amount?: number) => {
     maximumFractionDigits: 0,
   }).format(amount);
 };
+
+export const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString("us-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};

@@ -7,13 +7,21 @@ import { CheckCircle, Users, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getStatusColor } from "@/features/departments/utils/colorStatus";
 import { formatCurrency } from "@/lib/format";
+import Loading from "@/components/loading/Loading";
 
 const DepartmentList = () => {
-  const { departments, handleEditDepartment } = useDepartmentList();
+  const {
+    departmentList,
+    handleEditDepartment,
+    handleViewMembers,
+    findHeadName,
+  } = useDepartmentList();
 
   return (
     <div className="space-y-4">
-      {departments?.map((dept) => (
+      {!departmentList?.length && <Loading />}
+
+      {departmentList?.map((dept) => (
         <Card key={dept.id} className="hover:shadow-md transition-shadow">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -33,11 +41,13 @@ const DepartmentList = () => {
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="text-muted-foreground">Department Head</p>
-                    <p className="font-medium">{dept.head}</p>
+                    <p className="font-medium">{findHeadName(dept.headId)}</p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Team Members</p>
-                    <p className="font-medium">{dept.memberCount} members</p>
+                    <p className="font-medium">
+                      {dept.teamMembers ?? 0} members
+                    </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Location</p>
@@ -54,7 +64,7 @@ const DepartmentList = () => {
                     Key Responsibilities
                   </p>
                   <ul className="text-sm space-y-1">
-                    {dept.responsibilities.map((resp, index) => (
+                    {dept.keyResponsibilities.map((resp, index) => (
                       <li key={index} className="flex items-center">
                         <CheckCircle className="h-3 w-3 text-success-green mr-2" />
                         {resp}
@@ -67,12 +77,17 @@ const DepartmentList = () => {
               <div className="space-y-4">
                 <div className="text-center p-4 bg-muted/50 rounded-lg">
                   <p className="text-2xl font-bold text-primary">
-                    {dept.memberCount}
+                    {dept.teamMembers ?? 0}
                   </p>
                   <p className="text-sm text-muted-foreground">Team Members</p>
                 </div>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => handleViewMembers?.(dept)}
+                  >
                     <Users className="h-4 w-4 mr-1" />
                     Members
                   </Button>

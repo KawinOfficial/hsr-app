@@ -1,12 +1,13 @@
 export function getStatusColor(status: string) {
-  switch (status) {
-    case "Active":
+  const formattedStatus = status.toLowerCase();
+  switch (formattedStatus) {
+    case "active":
       return "bg-success-green text-white";
-    case "Inactive":
+    case "inactive":
       return "bg-muted text-muted-foreground";
-    case "Suspended":
+    case "suspended":
       return "bg-destructive text-white";
-    case "Pending":
+    case "pending":
       return "bg-warning-amber text-white";
     default:
       return "bg-muted text-muted-foreground";
