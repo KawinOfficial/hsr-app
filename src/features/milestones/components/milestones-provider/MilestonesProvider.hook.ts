@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
 
-const milestones: Milestone[] = [
+const milestones = [
   {
     id: "MS-001",
     title: "Site Survey Completion",

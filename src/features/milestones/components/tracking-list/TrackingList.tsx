@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Search, Filter, Edit, MoreVertical } from "lucide-react";
+import { Search, Filter, Edit, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -25,11 +25,11 @@ import {
   TableCell,
   TableHead,
 } from "@/components/ui/table";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { MILESTONE_LIST_OPTIONS } from "@/features/milestones/constants/options";
 import { useTrackingList } from "./TrackingList.hook";
 import { getStatusColor } from "@/features/milestones/utils/milestonesColor";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatDate } from "@/lib/format";
+import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
 
 const TrackingList = () => {
   const { milestones, handleViewMilestone } = useTrackingList();
@@ -77,11 +77,11 @@ const TrackingList = () => {
             <TableRow>
               <TableHead>Milestone</TableHead>
               <TableHead>Project</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="text-center">Status</TableHead>
               <TableHead>Progress</TableHead>
+              <TableHead>Start Date</TableHead>
               <TableHead>Target Date</TableHead>
               <TableHead>Budget</TableHead>
-              <TableHead>Assignee</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -115,33 +115,22 @@ const TrackingList = () => {
                     <span className="text-sm">{milestone.progress}%</span>
                   </div>
                 </TableCell>
-                <TableCell>{milestone.targetDate}</TableCell>
+                <TableCell>{formatDate(milestone.startDate)}</TableCell>
+                <TableCell>{formatDate(milestone.targetDate)}</TableCell>
                 <TableCell>{formatCurrency(milestone.budget)}</TableCell>
                 <TableCell>
-                  <div className="flex items-center space-x-2">
-                    <Avatar className="h-6 w-6">
-                      <AvatarImage src="/placeholder.svg" />
-                      <AvatarFallback className="text-xs">
-                        {milestone.assignedTo
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="text-sm">{milestone.assignedTo}</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex space-x-1 justify-center">
+                  <div className="flex justify-center">
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleViewMilestone?.(milestone)}
+                      onClick={() =>
+                        handleViewMilestone?.(milestone as unknown as Milestone)
+                      }
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="sm">
-                      <MoreVertical className="h-4 w-4" />
+                    <Button variant="ghost" size="sm" className="text-red-500">
+                      <Trash className="h-4 w-4" />
                     </Button>
                   </div>
                 </TableCell>
