@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Search, Filter, Edit, Trash } from "lucide-react";
+import { Search, Filter, Edit } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -30,6 +30,8 @@ import { useTrackingList } from "./TrackingList.hook";
 import { getStatusColor } from "@/features/milestones/utils/milestonesColor";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
+import { Pagination } from "@/components/pagination";
+import { DeleteDialog } from "../delete-dialog";
 
 const TrackingList = () => {
   const { milestones, handleViewMilestone } = useTrackingList();
@@ -129,15 +131,21 @@ const TrackingList = () => {
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-red-500">
-                      <Trash className="h-4 w-4" />
-                    </Button>
+                    <DeleteDialog />
                   </div>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+
+        <Pagination
+          startIndex={0}
+          itemsPerPage={10}
+          totalItems={milestones?.length ?? 0}
+          totalPages={Math.ceil((milestones?.length ?? 0) / 10)}
+          currentPage={1}
+        />
       </CardContent>
     </Card>
   );
