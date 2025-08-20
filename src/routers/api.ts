@@ -9,4 +9,6 @@ export const API_ROUTES = {
   departmentAddMember: "departments/add-member",
   teamMember: "team-member",
   teamMemberDetail: "team-member/:id",
+  milestone: "milestone",
+  milestoneSummary: "milestone/summary",
 };

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useContextSelector } from "use-context-selector";
 import { UsersContext } from "@/features/team-members/components/users-provider";
 import { useMemberDetail } from "@/features/team-members/hooks/use-member-detail";

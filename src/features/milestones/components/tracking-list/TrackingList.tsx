@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Search, Filter, Edit } from "lucide-react";
+import { Search, Edit, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -28,13 +28,20 @@ import {
 import { MILESTONE_LIST_OPTIONS } from "@/features/milestones/constants/options";
 import { useTrackingList } from "./TrackingList.hook";
 import { getStatusColor } from "@/features/milestones/utils/milestonesColor";
-import { formatCurrency, formatDate } from "@/lib/format";
-import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
+import { formatCurrency, formatDate, formatPercent } from "@/lib/format";
 import { Pagination } from "@/components/pagination";
-import { DeleteDialog } from "../delete-dialog";
+import { DeleteDialog } from "@/features/milestones/components/delete-dialog";
 
 const TrackingList = () => {
-  const { milestones, handleViewMilestone } = useTrackingList();
+  const {
+    list,
+    pagination,
+    isLoading,
+    handleViewMilestone,
+    handlePageChange,
+    handleSearch,
+    handleStatusChange,
+  } = useTrackingList();
 
   return (
     <Card>
@@ -52,9 +59,10 @@ const TrackingList = () => {
               <Input
                 placeholder="Search milestones..."
                 className="pl-10 w-64"
+                onChange={handleSearch}
               />
             </div>
-            <Select>
+            <Select onValueChange={handleStatusChange} defaultValue="all">
               <SelectTrigger className="w-40">
                 <SelectValue />
               </SelectTrigger>
@@ -66,9 +74,6 @@ const TrackingList = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </CardHeader>
@@ -83,68 +88,88 @@ const TrackingList = () => {
               <TableHead>Progress</TableHead>
               <TableHead>Start Date</TableHead>
               <TableHead>Target Date</TableHead>
-              <TableHead>Budget</TableHead>
+              <TableHead className="text-right">Budget</TableHead>
+              <TableHead className="text-right">Actual Cost</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {milestones?.map((milestone) => (
-              <TableRow key={milestone.id}>
-                <TableCell>
-                  <div>
-                    <p className="font-medium">{milestone.title}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {milestone.id}
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div>
-                    <p className="text-sm">{milestone.project}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {milestone.phase}
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Badge className={getStatusColor(milestone.status)}>
-                    {milestone.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center space-x-2">
-                    <Progress value={milestone.progress} className="w-16 h-2" />
-                    <span className="text-sm">{milestone.progress}%</span>
-                  </div>
-                </TableCell>
-                <TableCell>{formatDate(milestone.startDate)}</TableCell>
-                <TableCell>{formatDate(milestone.targetDate)}</TableCell>
-                <TableCell>{formatCurrency(milestone.budget)}</TableCell>
-                <TableCell>
-                  <div className="flex justify-center">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() =>
-                        handleViewMilestone?.(milestone as unknown as Milestone)
-                      }
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <DeleteDialog />
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={10}>
+                  <div className="h-40 py-10 flex items-center justify-center text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    Loading...
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              list?.map((milestone) => (
+                <TableRow key={milestone.id}>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium">{milestone.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {milestone.milestoneId}
+                      </p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <p className="text-sm">
+                        {milestone.projectId ?? "No project"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {milestone.phase}
+                      </p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Badge className={getStatusColor(milestone.status)}>
+                      {milestone.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-2">
+                      <Progress
+                        value={milestone.progress}
+                        className="w-16 h-2"
+                      />
+                      <span className="text-sm">
+                        {formatPercent(milestone.progress)}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{formatDate(milestone.startDate)}</TableCell>
+                  <TableCell>{formatDate(milestone.targetDate)}</TableCell>
+                  <TableCell className="text-right">
+                    {formatCurrency(milestone.budget)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {formatCurrency(milestone.actualCost ?? 0)}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex justify-center">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleViewMilestone?.(milestone)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <DeleteDialog />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
 
         <Pagination
-          startIndex={0}
-          itemsPerPage={10}
-          totalItems={milestones?.length ?? 0}
-          totalPages={Math.ceil((milestones?.length ?? 0) / 10)}
-          currentPage={1}
+          totalPages={pagination?.totalPages ?? 0}
+          currentPage={pagination?.currentPage ?? 1}
+          onPageChange={handlePageChange}
         />
       </CardContent>
     </Card>

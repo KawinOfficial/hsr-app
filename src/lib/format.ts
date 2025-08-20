@@ -15,3 +15,11 @@ export const formatDate = (date: string) => {
     day: "numeric",
   });
 };
+
+export const formatPercent = (percent: number) => {
+  return new Intl.NumberFormat("th-TH", {
+    style: "percent",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(percent / 100);
+};

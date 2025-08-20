@@ -146,9 +146,6 @@ const AddmemberDialog = () => {
           </div>
 
           <Pagination
-            startIndex={0}
-            itemsPerPage={pagination?.itemsPerPage || 0}
-            totalItems={pagination?.totalItems || 0}
             totalPages={pagination?.totalPages || 0}
             currentPage={pagination?.currentPage || 1}
             onPageChange={(page) => handlePageChange(page.toString())}
