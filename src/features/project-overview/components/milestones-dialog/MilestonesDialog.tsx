@@ -35,7 +35,7 @@ const MilestonesDialog = () => {
         <DialogHeader>
           <DialogTitle>Update Milestone Progress</DialogTitle>
           <DialogDescription>
-            {selectedMilestone?.title} - Update progress and status
+            {selectedMilestone?.name} - Update progress and status
           </DialogDescription>
         </DialogHeader>
 

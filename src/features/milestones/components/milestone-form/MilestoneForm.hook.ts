@@ -18,6 +18,7 @@ const defaultValues: Milestone = {
   id: "",
   milestoneId: "",
   status: "",
+  progress: 0,
 };
 
 export const useMilestoneForm = () => {

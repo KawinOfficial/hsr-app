@@ -202,7 +202,9 @@ const MilestonesTracker = () => {
                           size="sm"
                           className="flex-1"
                           onClick={() =>
-                            handleProgressUpdate?.(milestone as Milestone)
+                            handleProgressUpdate?.(
+                              milestone as unknown as Milestone
+                            )
                           }
                         >
                           <Edit className="h-3 w-3 mr-1" />
