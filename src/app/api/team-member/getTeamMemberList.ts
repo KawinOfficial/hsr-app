@@ -2,17 +2,29 @@ import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 import { checkUserAuth } from "@/lib/promise";
 
-export async function getTeamMemberList(page: string, itemsPerPage: string) {
+export async function getTeamMemberList(
+  page: string,
+  limit: string,
+  keyword: string
+) {
   try {
     await checkUserAuth();
-    const { data: usersData, error: userError } = await supabase
+
+    let query = supabase
       .from("User")
-      .select("*")
-      .order("createdAt", { ascending: false })
-      .range(
-        (Number(page) - 1) * Number(itemsPerPage),
-        Number(page) * Number(itemsPerPage) - 1
+      .select("*", { count: "exact" })
+      .order("createdAt", { ascending: false });
+    if (keyword) {
+      query = query.or(
+        `firstName.ilike.%${keyword}%,lastName.ilike.%${keyword}%,email.ilike.%${keyword}%`
       );
+    }
+    query = query.range(
+      (Number(page) - 1) * Number(limit),
+      Number(page) * Number(limit) - 1
+    );
+
+    const { data: usersData, error: userError, count } = await query;
     if (userError) throw new Error(userError.message);
 
     const userIds = usersData.map((user) => user.id);
@@ -34,10 +46,10 @@ export async function getTeamMemberList(page: string, itemsPerPage: string) {
       status: "success",
       data: formattedData,
       pagination: {
-        totalItems: usersData.length,
-        totalPages: Math.ceil(usersData.length / Number(itemsPerPage)),
+        totalItems: count ?? 0,
+        totalPages: Math.ceil((count ?? 0) / Number(limit)),
         currentPage: Number(page),
-        itemsPerPage: Number(itemsPerPage),
+        itemsPerPage: Number(limit),
       },
     });
   } catch (error) {

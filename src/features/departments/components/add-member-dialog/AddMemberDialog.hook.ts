@@ -1,15 +1,18 @@
 import { useContextSelector } from "use-context-selector";
 import { DepartmentContext } from "../department-provider/DepartmentProvider";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useMemberList } from "@/features/departments/hooks/use-member-list";
 import { useAddMember } from "@/features/departments/hooks/use-add-member";
 import { useToast } from "@/hooks/use-toast";
+import { useDebouncedValue } from "@/hooks/use-debouce";
 
 export const useAddMemberDialog = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const [page, setPage] = useState("1");
+  const [page, setPage] = useState(1);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [roleId, setRoleId] = useState<string>("all");
+  const [keyword, setKeyword] = useState<string>("");
 
   const selectedDepartment = useContextSelector(
     DepartmentContext,
@@ -20,14 +23,26 @@ export const useAddMemberDialog = () => {
     (state) => state?.options
   );
 
-  const { mutate: addMember } = useAddMember();
-  const { data: teamMembers } = useMemberList({
-    page,
-    itemsPerPage: "10",
-    departmentId: selectedDepartment?.id,
-  });
+  const debouncedKeyword = useDebouncedValue(keyword, 500);
+  const query = useMemo(
+    () => ({
+      page,
+      limit: 10,
+      departmentId: selectedDepartment?.id || "",
+      roleId: roleId === "all" ? "" : roleId,
+      keyword: debouncedKeyword,
+    }),
+    [page, selectedDepartment?.id, roleId, debouncedKeyword]
+  );
 
-  function handlePageChange(page: string) {
+  const { mutate: addMember } = useAddMember();
+  const { data: teamMembers } = useMemberList(query);
+
+  const roleOptions = useMemo(() => {
+    return [{ label: "All", value: "all" }, ...(options?.roles || [])];
+  }, [options]);
+
+  function handlePageChange(page: number) {
     setPage(page);
   }
 
@@ -42,6 +57,14 @@ export const useAddMemberDialog = () => {
       options?.departments.find((option) => option.value === departmentId)
         ?.label || "-"
     );
+  }
+
+  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    setKeyword(e.target.value);
+  }
+
+  function handleRoleChange(roleId: string) {
+    setRoleId(roleId);
   }
 
   function onCheckMember(userId: string) {
@@ -100,5 +123,8 @@ export const useAddMemberDialog = () => {
     onCheckMember,
     isChecked,
     onAddMember,
+    handleSearch,
+    handleRoleChange,
+    roleOptions,
   };
 };

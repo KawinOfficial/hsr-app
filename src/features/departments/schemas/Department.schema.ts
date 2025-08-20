@@ -22,7 +22,6 @@ export const DepartmentFormSchema = z.object({
   name: z.string(),
   description: z.string(),
   headId: z.string(),
-  teamMembers: z.number(),
   budget: z.number(),
   responsibilities: z.string(),
   status: z.enum(["active", "inactive", "suspended"]),

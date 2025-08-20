@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Search, Edit, Loader2 } from "lucide-react";
+import { Search, Edit } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -31,6 +31,7 @@ import { getStatusColor } from "@/features/milestones/utils/milestonesColor";
 import { formatCurrency, formatDate, formatPercent } from "@/lib/format";
 import { Pagination } from "@/components/pagination";
 import { DeleteDialog } from "@/features/milestones/components/delete-dialog";
+import { TableEmpty, TableLoading } from "@/components/table";
 
 const TrackingList = () => {
   const {
@@ -88,21 +89,16 @@ const TrackingList = () => {
               <TableHead>Progress</TableHead>
               <TableHead>Start Date</TableHead>
               <TableHead>Target Date</TableHead>
-              <TableHead className="text-right">Budget</TableHead>
+              <TableHead className="text-right"> Budget</TableHead>
               <TableHead className="text-right">Actual Cost</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={10}>
-                  <div className="h-40 py-10 flex items-center justify-center text-muted-foreground">
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    Loading...
-                  </div>
-                </TableCell>
-              </TableRow>
+              <TableLoading colSpan={10} className="py-[20vh]" />
+            ) : !list.length ? (
+              <TableEmpty colSpan={10} className="py-[20vh]" />
             ) : (
               list?.map((milestone) => (
                 <TableRow key={milestone.id}>

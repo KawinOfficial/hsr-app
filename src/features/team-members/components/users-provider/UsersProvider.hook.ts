@@ -1,21 +1,29 @@
 import { useState } from "react";
 import { useTeamMember } from "@/features/team-members/hooks/use-team-member";
 import { useOptions } from "@/hooks/use-option";
+import { useDebouncedValue } from "@/hooks/use-debouce";
 
 export const useUsersProvider = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
 
-  const { data: teamMembers, isLoading } = useTeamMember(
-    currentPage.toString(),
-    itemsPerPage.toString()
-  );
+  const debouncedKeyword = useDebouncedValue(keyword, 500);
+
   const { data: options } = useOptions();
+  const { data: teamMembers, isLoading } = useTeamMember({
+    page,
+    limit: 10,
+    keyword: debouncedKeyword,
+  });
 
   function handlePageChange(page: number) {
-    setCurrentPage(page);
+    setPage(page);
+  }
+
+  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    setKeyword(e.target.value);
   }
 
   function getRoleName(roleId: string) {
@@ -38,5 +46,6 @@ export const useUsersProvider = () => {
     teamMembers,
     getRoleName,
     getDepartmentName,
+    handleSearch,
   };
 };

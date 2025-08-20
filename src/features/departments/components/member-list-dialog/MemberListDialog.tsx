@@ -20,7 +20,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMemberListDialog } from "./MemberListDialog.hook";
-import { positions } from "@/constants/options";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -41,6 +40,8 @@ import { Badge } from "@/components/ui/badge";
 import { getStatusColor } from "@/features/departments/utils/colorStatus";
 import { AddMemberDialog } from "@/features/departments/components/add-member-dialog";
 import { Pagination } from "@/components/pagination";
+import { TableLoading } from "@/components/table/TableLoading";
+import { TableEmpty } from "@/components/table/TableEmpty";
 
 const MemberListDialog = () => {
   const {
@@ -49,9 +50,13 @@ const MemberListDialog = () => {
     selectedDepartment,
     pagination,
     list,
+    roleOptions,
     onEditDepartment,
     getRoleName,
     handlePageChange,
+    handleSearch,
+    handleRoleChange,
+    isLoading,
   } = useMemberListDialog();
 
   return (
@@ -107,16 +112,20 @@ const MemberListDialog = () => {
             <div className="flex items-center space-x-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Search members..." className="pl-10 w-64" />
+                <Input
+                  placeholder="Search members..."
+                  className="pl-10 w-64"
+                  onChange={handleSearch}
+                />
               </div>
-              <Select defaultValue="All">
+              <Select defaultValue="all" onValueChange={handleRoleChange}>
                 <SelectTrigger className="w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {["All", ...positions].map((pos) => (
-                    <SelectItem key={pos} value={pos}>
-                      {pos}
+                  {roleOptions.map((role) => (
+                    <SelectItem key={role.value} value={role.value}>
+                      {role.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -137,15 +146,10 @@ const MemberListDialog = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {!list?.length ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      className="text-center py-10 text-muted-foreground"
-                    >
-                      No members found
-                    </TableCell>
-                  </TableRow>
+                {isLoading ? (
+                  <TableLoading colSpan={5} />
+                ) : !list?.length ? (
+                  <TableEmpty colSpan={5} />
                 ) : (
                   list?.map((member) => (
                     <TableRow key={member.id}>
@@ -196,7 +200,7 @@ const MemberListDialog = () => {
           <Pagination
             totalPages={pagination?.totalPages || 0}
             currentPage={pagination?.currentPage || 1}
-            onPageChange={(page) => handlePageChange(page.toString())}
+            onPageChange={(page) => handlePageChange(page)}
           />
         </div>
 

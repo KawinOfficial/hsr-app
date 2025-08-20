@@ -7,15 +7,24 @@ import { validatedPromise } from "@/lib/promise";
 import { API_ROUTES } from "@/routers/api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useTeamMember = (page: string, itemsPerPage: string) => {
+export const useTeamMember = ({
+  page,
+  limit,
+  keyword,
+}: {
+  page: number;
+  limit: number;
+  keyword: string;
+}) => {
   return useQuery({
-    queryKey: ["team-member"],
+    queryKey: ["team-member", page, limit, keyword],
     queryFn: async () => {
       const response = await api
         .get(API_ROUTES.teamMember, {
           searchParams: {
             page,
-            itemsPerPage,
+            limit,
+            keyword,
           },
         })
         .json();

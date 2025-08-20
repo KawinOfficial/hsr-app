@@ -30,7 +30,6 @@ import { Button } from "@/components/ui/button";
 import { Plus, Users, Search } from "lucide-react";
 import { getStatusColor } from "@/features/departments/utils/colorStatus";
 import { Input } from "@/components/ui/input";
-import { departments } from "@/constants/options";
 import { useAddMemberDialog } from "./AddMemberDialog.hook";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Pagination } from "@/components/pagination";
@@ -47,6 +46,9 @@ const AddmemberDialog = () => {
     onCheckMember,
     isChecked,
     onAddMember,
+    handleSearch,
+    handleRoleChange,
+    roleOptions,
   } = useAddMemberDialog();
 
   return (
@@ -71,16 +73,17 @@ const AddmemberDialog = () => {
               <Input
                 placeholder="Search available members..."
                 className="pl-10"
+                onChange={handleSearch}
               />
             </div>
-            <Select defaultValue="All">
+            <Select defaultValue="all" onValueChange={handleRoleChange}>
               <SelectTrigger className="w-40">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {["All", ...departments].map((dept) => (
-                  <SelectItem key={dept} value={dept}>
-                    {dept}
+                {roleOptions.map((role) => (
+                  <SelectItem key={role.value} value={role.value}>
+                    {role.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -148,7 +151,7 @@ const AddmemberDialog = () => {
           <Pagination
             totalPages={pagination?.totalPages || 0}
             currentPage={pagination?.currentPage || 1}
-            onPageChange={(page) => handlePageChange(page.toString())}
+            onPageChange={(page) => handlePageChange(page)}
           />
 
           <Alert>

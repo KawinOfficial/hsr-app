@@ -1,8 +1,17 @@
+"use client";
+
+import { useContextSelector } from "use-context-selector";
+import { UsersContext } from "@/features/team-members/components/users-provider";
 import PageHeader from "@/components/layout/page-haeder/PageHeader";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const UsersHeader = () => {
+  const handleSearch = useContextSelector(
+    UsersContext,
+    (state) => state?.handleSearch
+  );
+
   return (
     <div>
       <PageHeader
@@ -15,6 +24,7 @@ const UsersHeader = () => {
             <Input
               placeholder="Search team members..."
               className="pl-10 w-64"
+              onChange={handleSearch}
             />
           </div>
         </div>

@@ -1,7 +1,8 @@
 import { useContextSelector } from "use-context-selector";
 import { DepartmentContext } from "../department-provider/DepartmentProvider";
 import { useDepartmentMember } from "@/features/departments/hooks/use-department-member";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useDebouncedValue } from "@/hooks/use-debouce";
 
 export const useMemberListDialog = () => {
   const memberOpen = useContextSelector(
@@ -25,12 +26,26 @@ export const useMemberListDialog = () => {
     (state) => state?.options
   );
 
-  const [page, setPage] = useState("1");
-  const { data: departmentMember } = useDepartmentMember({
-    id: selectedDepartment?.id || "",
-    page,
-    itemsPerPage: "10",
-  });
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+  const [roleId, setRoleId] = useState("all");
+  const debouncedKeyword = useDebouncedValue(keyword, 500);
+  const query = useMemo(
+    () => ({
+      id: selectedDepartment?.id || "",
+      page,
+      limit: 10,
+      keyword: debouncedKeyword,
+      roleId: roleId === "all" ? "" : roleId,
+    }),
+    [selectedDepartment?.id, page, debouncedKeyword, roleId]
+  );
+
+  const { data: departmentMember, isLoading } = useDepartmentMember(query);
+
+  const roleOptions = useMemo(() => {
+    return [{ label: "All", value: "all" }, ...(options?.roles || [])];
+  }, [options]);
 
   function onEditDepartment() {
     if (!selectedDepartment) return;
@@ -41,8 +56,16 @@ export const useMemberListDialog = () => {
     return options?.roles.find((option) => option.value === roleId)?.label;
   }
 
-  function handlePageChange(page: string) {
+  function handlePageChange(page: number) {
     setPage(page);
+  }
+
+  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    setKeyword(e.target.value);
+  }
+
+  function handleRoleChange(roleId: string) {
+    setRoleId(roleId);
   }
 
   return {
@@ -51,8 +74,12 @@ export const useMemberListDialog = () => {
     selectedDepartment,
     pagination: departmentMember?.pagination,
     list: departmentMember?.data,
+    roleOptions,
     onEditDepartment,
     getRoleName,
     handlePageChange,
+    handleSearch,
+    handleRoleChange,
+    isLoading,
   };
 };

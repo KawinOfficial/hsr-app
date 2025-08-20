@@ -6,7 +6,9 @@ export async function GET(request: Request) {
   const id = pathParts[pathParts.length - 1];
 
   const page = searchParams.get("page") || "1";
-  const itemsPerPage = searchParams.get("itemsPerPage") || "10";
+  const limit = searchParams.get("limit") || "10";
+  const keyword = searchParams.get("keyword") || "";
+  const roleId = searchParams.get("roleId") || "";
 
-  return getDepartmentMember(id, page, itemsPerPage);
+  return getDepartmentMember(id, page, limit, keyword, roleId);
 }

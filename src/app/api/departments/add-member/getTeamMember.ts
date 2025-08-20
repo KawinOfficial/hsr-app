@@ -1,58 +1,77 @@
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 import { checkUserAuth } from "@/lib/promise";
-import { paginateArray } from "@/lib/pagination";
 
 export async function getTeamMember(
-  page: string = "1",
-  itemsPerPage: string = "10",
-  departmentId?: string
+  page: string,
+  limit: string,
+  departmentId: string,
+  roleId?: string,
+  keyword?: string
 ) {
   try {
     await checkUserAuth();
 
-    let employeeInfoQuery = supabase.from("EmployeeInfo").select("*");
-    if (departmentId !== undefined) {
-      employeeInfoQuery = employeeInfoQuery.neq("departmentId", departmentId);
+    const query = supabase
+      .from("EmployeeInfo")
+      .select("*", { count: "exact" })
+      .neq("departmentId", departmentId);
+    if (roleId) {
+      query.eq("roleId", roleId);
     }
-    const { data: employeeInfoData, error: userError } =
-      await employeeInfoQuery;
-    if (userError) throw new Error(userError.message);
+    query.range(
+      (Number(page) - 1) * Number(limit),
+      Number(page) * Number(limit) - 1
+    );
 
     const {
-      paginatedData: paginatedEmployeeInfo,
-      totalItems,
-      totalPages,
-    } = paginateArray(employeeInfoData, page, itemsPerPage);
+      data: employeeInfoData,
+      error: employeeInfoError,
+      count,
+    } = await query;
+    if (employeeInfoError) throw new Error(employeeInfoError.message);
 
-    const userIds = paginatedEmployeeInfo.map((user) => user.userId);
-
-    let users = [];
-    if (userIds.length > 0) {
-      const { data: usersData, error: employeeInfoError } = await supabase
-        .from("User")
-        .select("*")
-        .in("id", userIds)
-        .order("createdAt", { ascending: false });
-      if (employeeInfoError) throw new Error(employeeInfoError.message);
-      users = usersData;
+    const userIds = employeeInfoData.map((user) => user.userId);
+    if (!userIds.length) {
+      return NextResponse.json({
+        data: [],
+        pagination: {
+          totalItems: 0,
+          totalPages: 0,
+          currentPage: 0,
+          itemsPerPage: 0,
+        },
+      });
     }
 
-    const formattedData = users.map((user) => ({
+    const baseQuery = supabase
+      .from("User")
+      .select("*")
+      .in("id", userIds)
+      .order("createdAt", { ascending: false });
+    if (keyword) {
+      baseQuery.or(
+        `firstName.ilike.%${keyword}%,lastName.ilike.%${keyword}%,email.ilike.%${keyword}%`
+      );
+    }
+    baseQuery.order("createdAt", { ascending: false });
+
+    const { data: usersData, error: usersError } = await baseQuery;
+    if (usersError) throw new Error(usersError.message);
+
+    const formattedData = usersData.map((user) => ({
       ...user,
       passwordHash: undefined,
       status: "active",
-      employeeInfo: paginatedEmployeeInfo.find(
-        (info) => info.userId === user.id
-      ),
+      employeeInfo: employeeInfoData.find((info) => info.userId === user.id),
     }));
     return NextResponse.json({
       data: formattedData,
       pagination: {
-        totalItems,
-        totalPages,
+        totalItems: count ?? 0,
+        totalPages: Math.ceil((count ?? 0) / Number(limit)),
         currentPage: Number(page),
-        itemsPerPage: Number(itemsPerPage),
+        itemsPerPage: Number(limit),
       },
     });
   } catch (error) {
