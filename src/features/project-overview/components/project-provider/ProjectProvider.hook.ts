@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { ProjectList } from "@/features/project-overview/schemas/Project.schema";
 
-const projects: ProjectList = [
+const initialProjects: ProjectList = [
   {
     id: "TH-CN-001",
     title: "Bangkok-Nakhon Ratchasima Mainline",
@@ -118,5 +119,9 @@ const projects: ProjectList = [
 ];
 
 export const useProjectProvider = () => {
-  return { projects };
+  const [projects] = useState<ProjectList>(initialProjects);
+
+  return {
+    projects,
+  };
 };
