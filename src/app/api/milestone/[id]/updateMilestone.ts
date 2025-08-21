@@ -2,39 +2,47 @@ import { checkUserAuth } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
-export async function updateDepartment(req: Request) {
+export async function updateMilestone(id: string, req: Request) {
   try {
     await checkUserAuth();
 
     const body = await req.json();
     const {
-      id,
+      milestoneId,
       name,
       description,
-      headId,
-      teamMembers,
-      budget,
-      responsibilities,
       status,
-      location,
+      targetDate,
+      startDate,
+      priority,
+      phase,
+      budget,
+      actualCost,
+      deliverables,
+      projectId,
     } = body;
 
     const updatedAt = new Date().toISOString();
 
     const { data, error } = await supabase
-      .from("Department")
+      .from("Milestone")
       .update({
+        milestoneId,
         name,
         description,
-        headId,
-        teamMembers,
-        budget,
-        responsibilities,
         status,
-        location,
+        targetDate,
+        startDate,
+        priority,
+        phase,
+        budget,
+        actualCost,
+        deliverables,
+        projectId,
         updatedAt,
       })
       .eq("id", id);
+
     if (error) throw new Error(error.message);
 
     return NextResponse.json({ data });

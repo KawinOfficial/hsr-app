@@ -1,5 +1,4 @@
 export const MILESTONE_LIST_OPTIONS = [
-  { label: "All Status", value: "all" },
   { label: "Pending", value: "Pending" },
   { label: "In Progress", value: "In Progress" },
   { label: "Completed", value: "Completed" },
@@ -8,7 +7,7 @@ export const MILESTONE_LIST_OPTIONS = [
 ];
 
 export const PHASE_OPTIONS = [
-  { label: "Planning & Design", value: "Planning & Design" },
+  { label: "Planning & Design", value: "Planning" },
   { label: "Construction", value: "Construction" },
   { label: "Track Installation", value: "Track Installation" },
   { label: "Testing", value: "Testing" },

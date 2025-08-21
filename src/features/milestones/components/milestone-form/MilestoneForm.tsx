@@ -13,12 +13,14 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   PHASE_OPTIONS,
   PRIORITY_OPTIONS,
+  MILESTONE_LIST_OPTIONS,
 } from "@/features/milestones/constants/options";
-import { useMilestoneForm } from "./MilestoneForm.hook";
+import { useMilestoneForm, UseMilestoneForm } from "./MilestoneForm.hook";
 import { Button } from "@/components/ui/button";
 import { Plus, Save, Trash2 } from "lucide-react";
+import { Controller } from "react-hook-form";
 
-const MilestoneForm = () => {
+const MilestoneForm = (props: UseMilestoneForm) => {
   const {
     form,
     onSubmit,
@@ -26,7 +28,7 @@ const MilestoneForm = () => {
     onRemoveResponsibility,
     onAddResponsibility,
     onReset,
-  } = useMilestoneForm();
+  } = useMilestoneForm(props);
 
   return (
     <form
@@ -37,44 +39,70 @@ const MilestoneForm = () => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="milestone-title">Milestone Title</Label>
-          <Input id="milestone-title" placeholder="Enter milestone title" />
+          <Input
+            id="milestone-title"
+            placeholder="Enter milestone title"
+            {...form.fieldName}
+          />
         </div>
 
         <div>
           <Label htmlFor="milestone-id">Milestone ID</Label>
-          <Input id="milestone-id" placeholder="Enter milestone id" />
+          <Input
+            id="milestone-id"
+            placeholder="Enter milestone id"
+            {...form.fieldMilestoneId}
+          />
         </div>
 
         <div>
           <Label htmlFor="milestone-project">Project</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select project" />
-            </SelectTrigger>
-            <SelectContent>
-              {[{ value: "1", label: "Project 1" }].map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            control={form.control}
+            name="projectId"
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value || ""}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select project" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[{ value: "1", label: "Project 1" }].map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
 
         <div>
-          <Label htmlFor="milestone-status">Status</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select status" />
-            </SelectTrigger>
-            <SelectContent>
-              {[{ value: "1", label: "Status 1" }].map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label htmlFor="status">Status</Label>
+          <Controller
+            control={form.control}
+            name="status"
+            render={({ field }) => (
+              <Select
+                {...field}
+                onValueChange={(value) => {
+                  if (!value) return;
+                  form.setValue("status", value);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {MILESTONE_LIST_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
 
         <div className="col-span-2">
@@ -83,59 +111,94 @@ const MilestoneForm = () => {
             id="milestone-description"
             placeholder="Enter milestone description"
             rows={3}
+            {...form.fieldDescription}
           />
         </div>
 
         <div>
           <Label htmlFor="milestone-phase">Phase</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select phase" />
-            </SelectTrigger>
-            <SelectContent>
-              {PHASE_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            control={form.control}
+            name="phase"
+            render={({ field }) => (
+              <Select
+                {...field}
+                onValueChange={(value) => {
+                  if (!value) return;
+                  form.setValue("phase", value);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select phase" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PHASE_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
 
         <div>
           <Label htmlFor="milestone-priority">Priority</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select priority" />
-            </SelectTrigger>
-            <SelectContent>
-              {PRIORITY_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            control={form.control}
+            name="priority"
+            render={({ field }) => (
+              <Select
+                {...field}
+                onValueChange={(value) => {
+                  if (!value) return;
+                  form.setValue("priority", value);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select priority" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PRIORITY_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
 
         <div>
           <Label htmlFor="milestone-budget">Budget (THB)</Label>
-          <Input id="milestone-budget" type="number" placeholder="0" />
+          <Input
+            id="milestone-budget"
+            type="number"
+            placeholder="0"
+            {...form.fieldBudget}
+          />
         </div>
 
         <div>
           <Label htmlFor="milestone-actual-cost">Actual Cost (THB)</Label>
-          <Input id="milestone-actual-cost" type="number" placeholder="0" />
+          <Input
+            id="milestone-actual-cost"
+            type="number"
+            placeholder="0"
+            {...form.fieldActualCost}
+          />
         </div>
 
         <div>
           <Label htmlFor="milestone-start">Start Date</Label>
-          <Input id="milestone-start" type="date" />
+          <Input id="milestone-start" type="date" {...form.fieldStart} />
         </div>
 
         <div>
           <Label htmlFor="milestone-target">Target Date</Label>
-          <Input id="milestone-target" type="date" />
+          <Input id="milestone-target" type="date" {...form.fieldTarget} />
         </div>
 
         <div className="col-span-2">
@@ -175,7 +238,7 @@ const MilestoneForm = () => {
         </Button>
         <Button type="submit">
           <Save className="h-4 w-4 mr-2" />
-          Create Milestone
+          {props.id ? "Update Milestone" : "Create Milestone"}
         </Button>
       </div>
     </form>

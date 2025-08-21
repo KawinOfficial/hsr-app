@@ -1,11 +1,14 @@
 import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Milestone,
-  MilestoneSchema,
-} from "@/features/milestones/schemas/Milestones.schema";
+import { MilestoneForm } from "@/features/milestones/schemas/Milestones.schema";
+import { useContextSelector } from "use-context-selector";
+import { MilestonesContext } from "../milestones-provider/MilestonesProvider";
+import { useEffect } from "react";
+import { useCreateMilestone } from "@/features/milestones/hooks/use-create-milestone";
+import { useToast } from "@/hooks/use-toast";
+import { useUpdateMilestone } from "@/features/milestones/hooks/use-update-milestone";
+import { formatDateInput } from "@/lib/format";
 
-const defaultValues: Milestone = {
+const defaultValues: MilestoneForm = {
   name: "",
   description: "",
   phase: "",
@@ -15,17 +18,34 @@ const defaultValues: Milestone = {
   startDate: "",
   targetDate: "",
   deliverables: [{ name: "" }],
-  id: "",
   milestoneId: "",
-  status: "",
-  progress: 0,
+  status: "Not Started",
 };
 
-export const useMilestoneForm = () => {
-  const { register, handleSubmit, control, reset } = useForm<Milestone>({
-    resolver: zodResolver(MilestoneSchema),
-    defaultValues,
-  });
+export interface UseMilestoneForm {
+  id?: string;
+  onClose?: () => void;
+}
+
+export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
+  const { toast } = useToast();
+  const selectedMilestone = useContextSelector(
+    MilestonesContext,
+    (state) => state?.selectedMilestone
+  );
+  const refetch = useContextSelector(
+    MilestonesContext,
+    (state) => state?.refetch
+  );
+
+  const { mutate: createMilestone } = useCreateMilestone();
+  const { mutate: updateMilestone } = useUpdateMilestone(id ?? "");
+
+  const { register, handleSubmit, control, reset, watch, setValue } =
+    useForm<MilestoneForm>({
+      defaultValues,
+    });
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "deliverables",
@@ -40,16 +60,65 @@ export const useMilestoneForm = () => {
     fieldActualCost: register("actualCost"),
     fieldStart: register("startDate"),
     fieldTarget: register("targetDate"),
+    fieldMilestoneId: register("milestoneId"),
+    fieldStatus: register("status"),
+    fieldProjectId: register("projectId"),
     control,
     register,
+    watch,
+    setValue,
   };
 
-  function onSubmit(data: Milestone) {
+  function onSubmit(data: MilestoneForm) {
     console.log(data);
+    if (!id) {
+      createMilestone(data, {
+        onSuccess: () => {
+          toast({
+            variant: "success",
+            title: "Milestone Created",
+            description: "Your milestone has been created successfully.",
+          });
+          onClose?.();
+          refetch?.();
+        },
+        onError: (error) => {
+          const errorMessage =
+            error instanceof Error ? error.message : "Registration failed";
+          toast({
+            variant: "destructive",
+            title: "Milestone Creation Failed",
+            description: errorMessage,
+          });
+        },
+      });
+      return;
+    }
+
+    updateMilestone(data, {
+      onSuccess: () => {
+        toast({
+          variant: "success",
+          title: "Milestone Updated",
+          description: "Your milestone has been updated successfully.",
+        });
+        refetch?.();
+      },
+      onError: (error) => {
+        const errorMessage =
+          error instanceof Error ? error.message : "Registration failed";
+        toast({
+          variant: "destructive",
+          title: "Milestone Update Failed",
+          description: errorMessage,
+        });
+      },
+    });
   }
 
   function onReset() {
     reset();
+    onClose?.();
   }
 
   function onRemoveResponsibility(index: number) {
@@ -59,6 +128,23 @@ export const useMilestoneForm = () => {
   function onAddResponsibility() {
     append({ name: "" });
   }
+
+  useEffect(() => {
+    if (!id || !selectedMilestone) {
+      reset(defaultValues);
+      return;
+    }
+    const { actualCost, startDate, targetDate } = selectedMilestone;
+
+    console.log(selectedMilestone);
+
+    reset({
+      ...selectedMilestone,
+      actualCost: actualCost || 0,
+      startDate: formatDateInput(startDate),
+      targetDate: formatDateInput(targetDate),
+    });
+  }, [selectedMilestone, reset, id]);
 
   return {
     form,

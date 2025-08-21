@@ -12,7 +12,7 @@ import { useCreateMilestoneDialog } from "./CreateMilestoneDialog.hook";
 import { MilestoneForm } from "../milestone-form";
 
 const CreateMilestoneDialog = () => {
-  const { open, setOpen } = useCreateMilestoneDialog();
+  const { open, setOpen, onClose } = useCreateMilestoneDialog();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -30,7 +30,7 @@ const CreateMilestoneDialog = () => {
           </DialogDescription>
         </DialogHeader>
 
-        <MilestoneForm />
+        <MilestoneForm onClose={onClose} />
       </DialogContent>
     </Dialog>
   );

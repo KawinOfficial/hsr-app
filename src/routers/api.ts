@@ -10,5 +10,6 @@ export const API_ROUTES = {
   teamMember: "team-member",
   teamMemberDetail: "team-member/:id",
   milestone: "milestone",
+  milestoneDetail: "milestone/:id",
   milestoneSummary: "milestone/summary",
 };

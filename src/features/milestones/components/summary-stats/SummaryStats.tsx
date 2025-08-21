@@ -1,7 +1,7 @@
 import { useSummaryStats } from "./SummaryStats.hook";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Target, TrendingUp, AlertTriangle, Clock } from "lucide-react";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatPercent } from "@/lib/format";
 import { Loading } from "@/components/loading";
 
 const SummaryStats = () => {
@@ -11,10 +11,9 @@ const SummaryStats = () => {
     {
       title: "Overall Progress",
       icon: <Target className="h-5 w-5 text-primary" />,
-      value:
-        summaryData?.overallProgress !== undefined
-          ? `${summaryData.overallProgress}%`
-          : "-",
+      value: summaryData?.overallProgress
+        ? formatPercent(summaryData.overallProgress)
+        : "-",
       description: (
         <>
           {summaryData?.completed} of {summaryData?.total} completed

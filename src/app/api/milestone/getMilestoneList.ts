@@ -14,7 +14,7 @@ export async function getMilestoneList(
     let query = supabase
       .from("Milestone")
       .select("*", { count: "exact" })
-      .order("createdAt", { ascending: false });
+      .order("updatedAt", { ascending: false });
 
     if (keyword) {
       query = query.ilike("name", `%${keyword}%`);

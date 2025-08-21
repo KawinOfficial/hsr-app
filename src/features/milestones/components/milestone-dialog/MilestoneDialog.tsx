@@ -9,7 +9,7 @@ import { useMilestoneDialog } from "./MilestoneDialog.hook";
 import { MilestoneForm } from "../milestone-form";
 
 const MilestoneDialog = () => {
-  const { selectedMilestone, detailViewOpen, setDetailViewOpen } =
+  const { selectedMilestone, detailViewOpen, setDetailViewOpen, onClose } =
     useMilestoneDialog();
 
   if (!selectedMilestone) return null;
@@ -24,7 +24,7 @@ const MilestoneDialog = () => {
           </DialogDescription>
         </DialogHeader>
 
-        <MilestoneForm />
+        <MilestoneForm id={selectedMilestone.id} onClose={onClose} />
       </DialogContent>
     </Dialog>
   );

@@ -68,7 +68,10 @@ const TrackingList = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {MILESTONE_LIST_OPTIONS.map((option) => (
+                {[
+                  { label: "All Status", value: "all" },
+                  ...MILESTONE_LIST_OPTIONS,
+                ].map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
