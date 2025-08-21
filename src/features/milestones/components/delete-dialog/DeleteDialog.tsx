@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useDeleteDialog } from "./DeleteDialog.hook";
 
-const DeleteDialog = () => {
-  const { open, setOpen, onDelete, isLoading } = useDeleteDialog();
+const DeleteDialog = ({ id }: { id: string }) => {
+  const { open, setOpen, onDelete, isLoading } = useDeleteDialog({ id });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

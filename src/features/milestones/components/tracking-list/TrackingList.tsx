@@ -106,12 +106,10 @@ const TrackingList = () => {
               list?.map((milestone) => (
                 <TableRow key={milestone.id}>
                   <TableCell>
-                    <div>
-                      <p className="font-medium">{milestone.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {milestone.milestoneId}
-                      </p>
-                    </div>
+                    <p className="font-medium">{milestone.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {milestone.milestoneId}
+                    </p>
                   </TableCell>
                   <TableCell>
                     <div>
@@ -123,7 +121,7 @@ const TrackingList = () => {
                       </p>
                     </div>
                   </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="text-center truncate">
                     <Badge className={getStatusColor(milestone.status)}>
                       {milestone.status}
                     </Badge>
@@ -139,8 +137,12 @@ const TrackingList = () => {
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell>{formatDate(milestone.startDate)}</TableCell>
-                  <TableCell>{formatDate(milestone.targetDate)}</TableCell>
+                  <TableCell className="truncate">
+                    {formatDate(milestone.startDate)}
+                  </TableCell>
+                  <TableCell className="truncate">
+                    {formatDate(milestone.targetDate)}
+                  </TableCell>
                   <TableCell className="text-right">
                     {formatCurrency(milestone.budget)}
                   </TableCell>
@@ -156,7 +158,7 @@ const TrackingList = () => {
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <DeleteDialog />
+                      <DeleteDialog id={milestone.id} />
                     </div>
                   </TableCell>
                 </TableRow>
