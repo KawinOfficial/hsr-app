@@ -9,11 +9,10 @@ import { ProjectDetailContext } from "@/features/project-overview/components/pro
 import { ProjectInformation } from "@/features/project-overview/components/project-information";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TABS } from "@/features/project-overview/constants/options";
-import { Timeline } from "@/features/project-overview/components/timeline";
 import { Team } from "@/features/project-overview/components/team";
 import { Document } from "@/features/project-overview/components/document";
-import { RiskList } from "@/features/project-overview/components/risk-list";
 import { MilestonesTracker } from "@/features/project-overview/components/milestones-tracker";
+import { MilestoneDialog } from "@/features/milestones/components/milestone-dialog";
 
 export default function ProjectDetail() {
   const params = useParams();
@@ -49,16 +48,16 @@ export default function ProjectDetail() {
       <div className="space-y-6 p-6">
         <ProjectInformation />
 
-        <Tabs defaultValue="timeline" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+        <Tabs defaultValue="milestones" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
             {TABS.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
                 {tab.label}
               </TabsTrigger>
             ))}
           </TabsList>
-          <TabsContent value="timeline">
-            <Timeline />
+          <TabsContent value="milestones">
+            <MilestonesTracker />
           </TabsContent>
           <TabsContent value="team">
             <Team />
@@ -66,14 +65,10 @@ export default function ProjectDetail() {
           <TabsContent value="documents">
             <Document />
           </TabsContent>
-          <TabsContent value="risks">
-            <RiskList />
-          </TabsContent>
-          <TabsContent value="milestones">
-            <MilestonesTracker />
-          </TabsContent>
         </Tabs>
       </div>
+
+      <MilestoneDialog />
     </div>
   );
 }

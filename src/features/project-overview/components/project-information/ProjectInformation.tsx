@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -16,11 +15,9 @@ import {
   getRiskColor,
 } from "@/features/project-overview/utils/badgeColor";
 import { useProjectInformation } from "./ProjectInformation.hook";
-import {
-  RISK_OPTIONS,
-  STATUS_OPTIONS,
-} from "@/features/project-overview/constants/options";
+import { STATUS_OPTIONS } from "@/features/project-overview/constants/options";
 import { formatCurrency } from "@/lib/format";
+import { PRIORITY_OPTIONS } from "@/features/milestones/constants/options";
 
 const ProjectInformation = () => {
   const { isEditMode, project } = useProjectInformation();
@@ -29,7 +26,7 @@ const ProjectInformation = () => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <Card className="lg:col-span-2">
         <CardHeader>
-          <CardTitle>Project Overview</CardTitle>
+          <CardTitle>{project?.title}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -68,7 +65,7 @@ const ProjectInformation = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {RISK_OPTIONS.map((option) => (
+                    {PRIORITY_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
@@ -123,16 +120,26 @@ const ProjectInformation = () => {
             </div>
           </div>
 
-          <div>
-            <Label className="text-sm font-medium text-muted-foreground">
-              Progress
-            </Label>
-            <div className="mt-2 space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Overall Progress</span>
-                <span>{project?.progress}%</span>
-              </div>
-              <Progress value={project?.progress || 0} className="h-2" />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-sm font-medium text-muted-foreground">
+                Location
+              </Label>
+              {isEditMode ? (
+                <Input type="text" className="mt-1" />
+              ) : (
+                <p className="mt-1 text-sm">{project?.location}</p>
+              )}
+            </div>
+            <div>
+              <Label className="text-sm font-medium text-muted-foreground">
+                Department
+              </Label>
+              {isEditMode ? (
+                <Input type="text" className="mt-1" />
+              ) : (
+                <p className="mt-1 text-sm">{project?.category}</p>
+              )}
             </div>
           </div>
         </CardContent>
@@ -172,7 +179,7 @@ const ProjectInformation = () => {
                   : "text-destructive"
               }`}
             >
-              {!!project?.variance ? "+" : ""}
+              {project?.variance ? "+" : ""}
               {project?.variance}%
             </p>
           </div>

@@ -18,8 +18,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Pagination } from "@/components/pagination";
 import { formatDate } from "@/lib/format";
 import { TableEmpty, TableLoading } from "@/components/table";
+import { cn } from "@/lib/utils";
 
-const UserList = () => {
+interface UserListProps {
+  className?: string;
+}
+
+const UserList = ({ className }: UserListProps) => {
   const {
     list,
     pagination,
@@ -31,7 +36,7 @@ const UserList = () => {
   } = useUserList();
 
   return (
-    <Card className="mt-6 mx-6">
+    <Card className={cn("mt-6 mx-6", className)}>
       <CardContent>
         <div className="h-[calc(88vh-10rem)] overflow-y-auto">
           <Table>
