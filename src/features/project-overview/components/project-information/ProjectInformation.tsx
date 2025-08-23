@@ -25,12 +25,14 @@ import { STATUS_OPTIONS } from "@/features/project-overview/constants/options";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { PRIORITY_OPTIONS } from "@/features/milestones/constants/options";
 import { Controller } from "react-hook-form";
+import { Loading } from "@/components/loading";
 
 const ProjectInformation = () => {
-  const { isEditMode, project, form, methods } = useProjectInformation();
+  const { isEditMode, project, methods, isLoading } = useProjectInformation();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {isLoading && <Loading />}
       <form className="lg:col-span-2">
         <Card>
           <CardHeader>

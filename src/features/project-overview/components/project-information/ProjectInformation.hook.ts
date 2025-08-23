@@ -10,11 +10,14 @@ export const useProjectInformation = () => {
     ProjectDetailContext,
     (state) => state?.projectData
   );
-  const form = useContextSelector(ProjectDetailContext, (state) => state?.form);
   const methods = useContextSelector(
     ProjectDetailContext,
     (state) => state?.methods
   );
+  const isLoading = useContextSelector(
+    ProjectDetailContext,
+    (state) => state?.isLoading
+  );
 
-  return { isEditMode, project, form, methods };
+  return { isEditMode, project, methods, isLoading };
 };
