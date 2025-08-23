@@ -1,58 +1,79 @@
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 import { checkUserAuth } from "@/lib/promise";
-import { paginateArray } from "@/lib/pagination";
 
 export async function getDepartmentMember(
   id: string,
   page: string = "1",
-  itemsPerPage: string = "10"
+  limit: string = "10",
+  keyword: string = "",
+  roleId: string = ""
 ) {
   try {
     await checkUserAuth();
 
-    const { data: employeeInfoData, error: userError } = await supabase
+    const query = supabase
       .from("EmployeeInfo")
       .select("*")
       .eq("departmentId", id);
 
-    if (userError) throw new Error(userError.message);
-
-    const {
-      paginatedData: paginatedEmployeeInfo,
-      totalItems,
-      totalPages,
-    } = paginateArray(employeeInfoData, page, itemsPerPage);
-
-    const userIds = paginatedEmployeeInfo.map((user) => user.userId);
-
-    let users = [];
-    if (userIds.length > 0) {
-      const { data: usersData, error: employeeInfoError } = await supabase
-        .from("User")
-        .select("*")
-        .in("id", userIds)
-        .order("createdAt", { ascending: false });
-      if (employeeInfoError) throw new Error(employeeInfoError.message);
-      users = usersData;
+    if (roleId) {
+      query.eq("roleId", roleId);
     }
 
-    const formattedData = users.map((user) => ({
+    query.range(
+      (Number(page) - 1) * Number(limit),
+      Number(page) * Number(limit) - 1
+    );
+
+    const {
+      data: employeeInfoData,
+      error: employeeInfoError,
+      count,
+    } = await query;
+    if (employeeInfoError) throw new Error(employeeInfoError.message);
+
+    const userIds = employeeInfoData.map((user) => user.userId);
+    if (!userIds.length) {
+      return NextResponse.json({
+        data: [],
+        pagination: {
+          totalItems: 0,
+          totalPages: 0,
+          currentPage: 0,
+          itemsPerPage: 0,
+        },
+      });
+    }
+
+    let baseQuery = supabase
+      .from("User")
+      .select("*")
+      .in("id", userIds)
+      .order("createdAt", { ascending: false });
+    if (keyword) {
+      baseQuery = baseQuery.or(
+        `firstName.ilike.%${keyword}%,lastName.ilike.%${keyword}%,email.ilike.%${keyword}%`
+      );
+    }
+    baseQuery.order("createdAt", { ascending: false });
+    const { data: usersData, error: usersError } = await baseQuery;
+    if (usersError) throw new Error(usersError.message);
+
+    const formattedData = usersData.map((user) => ({
       ...user,
       passwordHash: undefined,
       status: "active",
-      employeeInfo: paginatedEmployeeInfo.find(
-        (info) => info.userId === user.id
-      ),
+      employeeInfo: employeeInfoData.find((info) => info.userId === user.id),
     }));
 
     return NextResponse.json({
       data: formattedData,
       pagination: {
-        totalItems,
-        totalPages,
+        totalItems: count ?? 0,
+        totalPages: Math.ceil((count ?? 0) / Number(limit)),
         currentPage: Number(page),
-        itemsPerPage: Number(itemsPerPage),
+        itemsPerPage: Number(limit),
       },
     });
   } catch (error) {

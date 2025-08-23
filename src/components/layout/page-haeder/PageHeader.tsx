@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 
 interface PageHeaderProps extends PropsWithChildren {
   title: string;
-  subTitle: string;
+  subTitle?: string;
 }
 const PageHeader = ({ title, subTitle, children }: PageHeaderProps) => {
   return (

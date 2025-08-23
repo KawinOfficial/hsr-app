@@ -1,28 +1,18 @@
 import { Button } from "@/components/ui/button";
 
 interface PaginationProps {
-  startIndex: number;
-  itemsPerPage: number;
-  totalItems: number;
   totalPages: number;
   currentPage: number;
   onPageChange?: (page: number) => void;
 }
 const Pagination = ({
-  startIndex,
-  itemsPerPage,
-  totalItems,
   totalPages,
   currentPage,
   onPageChange,
 }: PaginationProps) => {
   return (
     <div className="flex items-center justify-between mt-6">
-      <div className="text-sm text-muted-foreground">
-        Showing {startIndex + 1} to{" "}
-        {Math.min(startIndex + itemsPerPage, totalItems)} of {totalItems}{" "}
-        members
-      </div>
+      <div />
       <div className="flex space-x-2">
         <Button
           variant="outline"

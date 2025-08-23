@@ -8,8 +8,11 @@ export const ProjectDetailContext = createContext<ReturnType<
   typeof useProjectDetailProvider
 > | null>(null);
 
-export const ProjectDetailProvider = ({ children }: PropsWithChildren) => {
-  const context = useProjectDetailProvider();
+export const ProjectDetailProvider = ({
+  children,
+  id,
+}: PropsWithChildren<{ id: string }>) => {
+  const context = useProjectDetailProvider({ id });
   return (
     <ProjectDetailContext.Provider value={context}>
       {children}

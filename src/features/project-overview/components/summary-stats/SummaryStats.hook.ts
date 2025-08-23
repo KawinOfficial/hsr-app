@@ -4,7 +4,7 @@ import { ProjectContext } from "@/features/project-overview/components/project-p
 export const useSummaryStats = () => {
   const projects = useContextSelector(
     ProjectContext,
-    (state) => state?.projects
+    (state) => state?.projectData?.data
   );
 
   const totalBudget = projects?.reduce((sum, p) => sum + p.budget, 0) ?? 0;
@@ -12,7 +12,9 @@ export const useSummaryStats = () => {
   const avgProgress =
     (projects?.reduce((sum, p) => sum + p.progress, 0) ?? 0) /
     (projects?.length ?? 1);
-  const onTrackCount = projects?.filter((p) => p.status === "On Track").length;
+  const onTrackCount = projects?.filter(
+    (p) => p.status === "On Track" || p.status === "In Progress"
+  ).length;
 
   return { projects, totalBudget, totalSpent, avgProgress, onTrackCount };
 };

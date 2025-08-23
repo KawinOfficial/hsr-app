@@ -1,30 +1,35 @@
+import { PaginationSchema } from "@/types/pagination";
 import { z } from "zod";
-
-export const MilestoneSchema = z.object({
-  completed: z.number(),
-  total: z.number(),
-});
 
 export const ProjectSchema = z.object({
   id: z.string(),
-  title: z.string(),
+  projectId: z.string(),
+  name: z.string(),
   description: z.string(),
   status: z.string(),
-  progress: z.number(),
+  riskLevel: z.string(),
+  startDate: z.string(),
+  targetDate: z.string(),
+  location: z.string(),
+  departmentId: z.string().nullable(),
+  managerId: z.string().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
   budget: z.number(),
   spent: z.number(),
+  progress: z.number(),
   variance: z.number(),
-  startDate: z.string(),
-  completion: z.string(),
-  location: z.string(),
-  category: z.string(),
-  manager: z.string(),
-  riskLevel: z.string(),
+  milestones: z.object({
+    total: z.number(),
+    completed: z.number(),
+  }),
   team: z.number(),
-  milestones: MilestoneSchema,
 });
 
-export const ProjectsSchema = z.array(ProjectSchema);
+export const ProjectListSchema = z.object({
+  data: z.array(ProjectSchema),
+  pagination: PaginationSchema,
+});
 
-export type ProjectList = z.infer<typeof ProjectsSchema>;
+export type ProjectList = z.infer<typeof ProjectListSchema>;
 export type Project = z.infer<typeof ProjectSchema>;

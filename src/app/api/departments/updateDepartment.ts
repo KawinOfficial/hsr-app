@@ -19,6 +19,8 @@ export async function updateDepartment(req: Request) {
       location,
     } = body;
 
+    const updatedAt = new Date().toISOString();
+
     const { data, error } = await supabase
       .from("Department")
       .update({
@@ -30,6 +32,7 @@ export async function updateDepartment(req: Request) {
         responsibilities,
         status,
         location,
+        updatedAt,
       })
       .eq("id", id);
     if (error) throw new Error(error.message);

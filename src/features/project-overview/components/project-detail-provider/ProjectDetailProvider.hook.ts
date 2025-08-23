@@ -1,162 +1,79 @@
-import { Project } from "@/features/project-overview/schemas/Project.schema";
 import { useState } from "react";
+import { useProjectDetail } from "@/features/project-overview/hooks/use-project-detail";
+import { useUpdateProject } from "@/features/project-overview/hooks/use-update-project";
+import { useToast } from "@/components/ui/use-toast";
+import { useForm } from "react-hook-form";
+import { Project } from "@/features/project-overview/schemas/Project.schema";
 
-const project: Project = {
-  id: "TH-CN-001",
-  title: "Bangkok-Nakhon Ratchasima Mainline",
-  description:
-    "Construction of high-speed rail line connecting Bangkok to Nakhon Ratchasima with 8 intermediate stations",
-  status: "On Track",
-  progress: 68,
-  budget: 1200000000,
-  spent: 816000000,
-  variance: -2.1,
-  startDate: "2023-03-01",
-  completion: "2025-08-15",
-  location: "Bangkok - Nakhon Ratchasima",
-  category: "Infrastructure",
-  manager: "Somchai Tanakorn",
-  riskLevel: "Low",
-  team: 45,
-  milestones: { completed: 12, total: 18 },
-};
+export interface UseProjectDetailProvider {
+  id?: string;
+}
 
-const projectDetails = {
-  ...project,
-  timeline: [
-    {
-      phase: "Planning & Design",
-      startDate: "2023-01-15",
-      endDate: "2023-06-30",
-      status: "Completed",
-      progress: 100,
-      milestones: [
-        { name: "Site Survey", date: "2023-02-15", status: "Completed" },
-        {
-          name: "Environmental Impact",
-          date: "2023-04-01",
-          status: "Completed",
-        },
-        { name: "Design Approval", date: "2023-06-15", status: "Completed" },
-      ],
-    },
-    {
-      phase: "Foundation Work",
-      startDate: "2023-07-01",
-      endDate: "2024-03-31",
-      status: "In Progress",
-      progress: 75,
-      milestones: [
-        { name: "Excavation", date: "2023-08-15", status: "Completed" },
-        { name: "Concrete Pouring", date: "2023-12-01", status: "Completed" },
-        {
-          name: "Foundation Testing",
-          date: "2024-02-15",
-          status: "In Progress",
-        },
-      ],
-    },
-    {
-      phase: "Track Installation",
-      startDate: "2024-04-01",
-      endDate: "2024-12-31",
-      status: "Pending",
-      progress: 0,
-      milestones: [
-        { name: "Rail Delivery", date: "2024-05-01", status: "Pending" },
-        { name: "Track Laying", date: "2024-08-01", status: "Pending" },
-        {
-          name: "Testing & Commissioning",
-          date: "2024-11-01",
-          status: "Pending",
-        },
-      ],
-    },
-  ],
-  team: [
-    {
-      name: "Somchai Tanakorn",
-      role: "Project Manager",
-      email: "somchai.t@thairail.go.th",
-      avatar: "/placeholder.svg",
-    },
-    {
-      name: "Pranee Chotirat",
-      role: "QS Officer",
-      email: "pranee.c@thairail.go.th",
-      avatar: "/placeholder.svg",
-    },
-    {
-      name: "Liu Wei Chen",
-      role: "Chief Engineer",
-      email: "liu.w@crrc.com.cn",
-      avatar: "/placeholder.svg",
-    },
-  ],
-  documents: [
-    {
-      name: "Project Charter",
-      type: "PDF",
-      size: "2.4 MB",
-      uploadDate: "2023-01-15",
-      category: "Planning",
-    },
-    {
-      name: "Environmental Report",
-      type: "PDF",
-      size: "15.2 MB",
-      uploadDate: "2023-04-01",
-      category: "Compliance",
-    },
-    {
-      name: "Technical Drawings",
-      type: "DWG",
-      size: "45.8 MB",
-      uploadDate: "2023-06-15",
-      category: "Engineering",
-    },
-  ],
-  risks: [
-    {
-      id: "RISK-001",
-      description: "Weather delays during monsoon season",
-      impact: "High",
-      probability: "Medium",
-      status: "Active",
-      mitigation: "Adjust timeline and add weather protection",
-    },
-    {
-      id: "RISK-002",
-      description: "Material price inflation",
-      impact: "Medium",
-      probability: "High",
-      status: "Monitoring",
-      mitigation: "Fixed-price contracts where possible",
-    },
-  ],
-};
-
-export const useProjectDetailProvider = () => {
+export const useProjectDetailProvider = ({ id }: UseProjectDetailProvider) => {
+  const { toast } = useToast();
   const [isEditMode, setIsEditMode] = useState(false);
+  const { data: projectData, isLoading } = useProjectDetail(id ?? "");
+  const { mutate: updateProject, isPending: isUpdating } = useUpdateProject(
+    id ?? ""
+  );
+
+  const methods = useForm<Project>({
+    defaultValues: projectData,
+  });
+  const { reset, watch, register } = methods;
+  const form = {
+    fieldName: register("name"),
+    fieldDescription: register("description"),
+    fieldStatus: register("status"),
+    fieldRiskLevel: register("riskLevel"),
+    fieldStartDate: register("startDate"),
+    fieldTargetDate: register("targetDate"),
+    fieldLocation: register("location"),
+  };
 
   function handleEdit() {
     setIsEditMode(true);
   }
 
   function handleCancel() {
+    reset(projectData);
     setIsEditMode(false);
   }
 
   function handleSave() {
-    handleCancel();
+    const payload = {
+      ...watch(),
+    };
+    updateProject(payload, {
+      onSuccess: () => {
+        toast({
+          variant: "success",
+          title: "Project Created",
+          description: "Your project has been created successfully.",
+        });
+        setIsEditMode(false);
+      },
+      onError: (error) => {
+        const errorMessage =
+          error instanceof Error ? error.message : "Registration failed";
+        toast({
+          variant: "destructive",
+          title: "Project Creation Failed",
+          description: errorMessage,
+        });
+      },
+    });
   }
 
   return {
-    project,
-    projectDetails,
-    isEditMode,
     handleEdit,
     handleCancel,
     handleSave,
+    isEditMode,
+    isLoading,
+    projectData,
+    isUpdating,
+    form,
+    methods,
   };
 };

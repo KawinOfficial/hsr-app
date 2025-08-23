@@ -9,22 +9,28 @@ import { API_ROUTES } from "@/routers/api";
 
 export const useMemberList = ({
   page,
-  itemsPerPage,
+  limit,
   departmentId,
+  roleId,
+  keyword,
 }: {
-  page: string;
-  itemsPerPage: string;
-  departmentId?: string;
+  page: number;
+  limit: number;
+  departmentId: string;
+  roleId: string;
+  keyword: string;
 }) => {
   return useQuery({
-    queryKey: ["team-member", page, itemsPerPage, departmentId],
+    queryKey: ["team-member", page, limit, departmentId, roleId, keyword],
     queryFn: async () => {
       const response = await api
         .get<{ data: ProfileList }>(API_ROUTES.departmentAddMember, {
           searchParams: {
             page,
-            itemsPerPage,
-            departmentId: departmentId || "",
+            limit,
+            departmentId,
+            roleId,
+            keyword,
           },
         })
         .json();

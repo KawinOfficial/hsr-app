@@ -12,22 +12,28 @@ import { useQuery } from "@tanstack/react-query";
 export const useDepartmentMember = ({
   id,
   page,
-  itemsPerPage,
+  limit,
+  keyword,
+  roleId,
 }: {
   id: string;
-  page: string;
-  itemsPerPage: string;
+  page: number;
+  limit: number;
+  keyword: string;
+  roleId: string;
 }) => {
   const path = pathToUrl(API_ROUTES.departmentMember, { id });
 
   return useQuery({
-    queryKey: ["department-member", id, page, itemsPerPage],
+    queryKey: ["department-member", id, page, limit, keyword, roleId],
     queryFn: async () => {
       const response = await api
         .get<{ data: ProfileList; pagination: Pagination }>(path, {
           searchParams: {
             page,
-            itemsPerPage,
+            limit,
+            keyword,
+            roleId,
           },
         })
         .json();

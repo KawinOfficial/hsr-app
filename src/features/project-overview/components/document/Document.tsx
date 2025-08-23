@@ -1,5 +1,3 @@
-import { useContextSelector } from "use-context-selector";
-import { ProjectDetailContext } from "@/features/project-overview/components/project-detail-provider";
 import {
   Card,
   CardContent,
@@ -19,11 +17,31 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
+const documents = [
+  {
+    name: "Project Charter",
+    type: "PDF",
+    size: "2.4 MB",
+    uploadDate: "2023-01-15",
+    category: "Planning",
+  },
+  {
+    name: "Environmental Report",
+    type: "PDF",
+    size: "15.2 MB",
+    uploadDate: "2023-04-01",
+    category: "Compliance",
+  },
+  {
+    name: "Technical Drawings",
+    type: "DWG",
+    size: "45.8 MB",
+    uploadDate: "2023-06-15",
+    category: "Engineering",
+  },
+];
+
 const Document = () => {
-  const projectDetails = useContextSelector(
-    ProjectDetailContext,
-    (state) => state?.projectDetails
-  );
   return (
     <Card>
       <CardHeader>
@@ -53,7 +71,7 @@ const Document = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {projectDetails?.documents.map((doc, index) => (
+            {documents.map((doc, index) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">{doc.name}</TableCell>
                 <TableCell>{doc.type}</TableCell>

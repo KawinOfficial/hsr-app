@@ -1,34 +1,38 @@
 import { useContextSelector } from "use-context-selector";
-import { MilestonesTrackerContext } from "@/features/project-overview/components/milestones-tracker-provider";
 import { useMemo } from "react";
+import { MilestonesContext } from "@/features/milestones/components/milestones-provider/MilestonesProvider";
+import {
+  MILESTONE_PRIORITY,
+  MILESTONE_STATUS,
+} from "@/features/milestones/constants/options";
 
 export const useMilestonesTracker = () => {
-  const milestones = useContextSelector(
-    MilestonesTrackerContext,
-    (state) => state?.milestones
-  );
-  const handleProgressUpdate = useContextSelector(
-    MilestonesTrackerContext,
-    (state) => state?.handleProgressUpdate
+  const milestonesData = useContextSelector(
+    MilestonesContext,
+    (state) => state?.milestonesData
   );
 
   function calculateOverallProgress() {
-    if (!milestones) return 0;
-    const totalProgress = milestones.reduce((sum, m) => sum + m.progress, 0);
-    return Math.round(totalProgress / milestones.length);
+    if (!milestonesData) return 0;
+    const totalProgress = milestonesData.data?.reduce(
+      (sum, m) => sum + m.progress,
+      0
+    );
+    return Math.round(totalProgress / milestonesData.data?.length);
   }
 
   const getCount = useMemo(() => {
-    const completed = milestones?.filter(
-      (milestone) => milestone.status === "Completed"
+    const completed = milestonesData?.data?.filter(
+      (milestone) => milestone.status === MILESTONE_STATUS.COMPLETED
     ).length;
-    const inProgress = milestones?.filter(
-      (milestone) => milestone.status === "In Progress"
+    const inProgress = milestonesData?.data?.filter(
+      (milestone) => milestone.status === MILESTONE_STATUS.IN_PROGRESS
     ).length;
-    const critical = milestones?.filter(
+    const critical = milestonesData?.data?.filter(
       (m) =>
-        (m.priority === "Critical" || m.status === "Delayed") &&
-        m.status !== "Completed"
+        (m.priority === MILESTONE_PRIORITY.CRITICAL ||
+          m.status === MILESTONE_STATUS.DELAYED) &&
+        m.status !== MILESTONE_STATUS.COMPLETED
     ).length;
 
     return {
@@ -36,12 +40,10 @@ export const useMilestonesTracker = () => {
       inProgress,
       critical,
     };
-  }, [milestones]);
+  }, [milestonesData]);
 
   return {
-    milestones,
     calculateOverallProgress,
     getCount,
-    handleProgressUpdate,
   };
 };

@@ -2,14 +2,22 @@ import { useContextSelector } from "use-context-selector";
 import { MilestonesContext } from "@/features/milestones/components/milestones-provider/MilestonesProvider";
 
 export const useTrackingList = () => {
-  const milestones = useContextSelector(
-    MilestonesContext,
-    (state) => state?.milestones
-  );
-  const handleViewMilestone = useContextSelector(
-    MilestonesContext,
-    (state) => state?.handleViewMilestone
-  );
+  const {
+    milestonesData,
+    isLoading,
+    handlePageChange,
+    handleSearch,
+    handleStatusChange,
+    handleViewMilestone,
+  } = useContextSelector(MilestonesContext, (state) => state!);
 
-  return { milestones, handleViewMilestone };
+  return {
+    handleViewMilestone,
+    list: milestonesData?.data || [],
+    pagination: milestonesData?.pagination,
+    isLoading,
+    handlePageChange,
+    handleSearch,
+    handleStatusChange,
+  };
 };

@@ -2,17 +2,22 @@ import { useContextSelector } from "use-context-selector";
 import { ProjectDetailContext } from "@/features/project-overview/components/project-detail-provider";
 
 export const useProjectInformation = () => {
-  const { isEditMode, handleEdit, handleCancel, handleSave } =
-    useContextSelector(ProjectDetailContext, (state) => ({
-      isEditMode: state?.isEditMode,
-      handleEdit: state?.handleEdit,
-      handleCancel: state?.handleCancel,
-      handleSave: state?.handleSave,
-    }));
+  const isEditMode = useContextSelector(
+    ProjectDetailContext,
+    (state) => state?.isEditMode
+  );
   const project = useContextSelector(
     ProjectDetailContext,
-    (state) => state?.project
+    (state) => state?.projectData
+  );
+  const methods = useContextSelector(
+    ProjectDetailContext,
+    (state) => state?.methods
+  );
+  const isLoading = useContextSelector(
+    ProjectDetailContext,
+    (state) => state?.isLoading
   );
 
-  return { isEditMode, handleEdit, handleCancel, handleSave, project };
+  return { isEditMode, project, methods, isLoading };
 };

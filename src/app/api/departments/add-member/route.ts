@@ -8,8 +8,10 @@ export async function PUT(req: Request) {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = searchParams.get("page") || "1";
-  const itemsPerPage = searchParams.get("itemsPerPage") || "10";
+  const limit = searchParams.get("limit") || "10";
   const departmentId = searchParams.get("departmentId") || "";
+  const roleId = searchParams.get("roleId") || "";
+  const keyword = searchParams.get("keyword") || "";
 
-  return getTeamMember(page, itemsPerPage, departmentId);
+  return getTeamMember(page, limit, departmentId, roleId, keyword);
 }

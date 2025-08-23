@@ -44,9 +44,9 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           <div className="lg:col-span-2 space-y-3">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-semibold text-lg">{project.title}</h3>
+                <h3 className="font-semibold text-lg">{project.name}</h3>
                 <p className="text-sm text-muted-foreground">
-                  ID: {project.id} • {project.category}
+                  Project ID: {project.id}
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -74,13 +74,11 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
               </div>
               <div className="flex items-center space-x-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span>Due: {project.completion}</span>
+                <span>Due: {project.targetDate}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Users className="h-4 w-4 text-muted-foreground" />
-                <span>
-                  {project.team} team members • {project.manager}
-                </span>
+                <span>{project.team} team members</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-muted-foreground" />

@@ -1,14 +1,19 @@
 export function getStatusColor(status: string) {
-  switch (status) {
-    case "On Track":
+  const formatStatus = status.toLowerCase();
+  switch (formatStatus) {
+    case "on track":
       return "bg-success-green text-white";
-    case "Delayed":
-      return "bg-warning-amber text-white";
-    case "At Risk":
-      return "bg-destructive text-white";
-    case "Planning":
+    case "not started":
+      return "bg-muted text-muted-foreground";
+    case "in progress":
       return "bg-rail-blue text-white";
-    case "Completed":
+    case "delayed":
+      return "bg-warning-amber text-white";
+    case "at risk":
+      return "bg-destructive text-white";
+    case "planning":
+      return "bg-rail-blue text-white";
+    case "completed":
       return "bg-rail-gold text-white";
     default:
       return "bg-muted text-muted-foreground";
@@ -16,12 +21,13 @@ export function getStatusColor(status: string) {
 }
 
 export function getRiskColor(level: string) {
-  switch (level) {
-    case "Low":
+  const formatLevel = level.toLowerCase();
+  switch (formatLevel) {
+    case "low":
       return "text-success-green";
-    case "Medium":
+    case "medium":
       return "text-warning-amber";
-    case "High":
+    case "high":
       return "text-destructive";
     default:
       return "text-muted-foreground";
