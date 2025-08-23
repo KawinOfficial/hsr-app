@@ -1,127 +1,41 @@
-import { useState } from "react";
-import { ProjectList } from "@/features/project-overview/schemas/Project.schema";
-
-const initialProjects: ProjectList = [
-  {
-    id: "TH-CN-001",
-    title: "Bangkok-Nakhon Ratchasima Mainline",
-    description:
-      "Construction of high-speed rail line connecting Bangkok to Nakhon Ratchasima with 8 intermediate stations",
-    status: "On Track",
-    progress: 68,
-    budget: 1200000000,
-    spent: 816000000,
-    variance: -2.1,
-    startDate: "2023-03-01",
-    completion: "2025-08-15",
-    location: "Bangkok - Nakhon Ratchasima",
-    category: "Infrastructure",
-    manager: "Somchai Tanakorn",
-    riskLevel: "Low",
-    team: 45,
-    milestones: { completed: 12, total: 18 },
-  },
-  {
-    id: "TH-CN-002",
-    title: "Nakhon Ratchasima-Nong Khai Extension",
-    description:
-      "Extension of the high-speed rail network from Nakhon Ratchasima to Nong Khai border crossing",
-    status: "Delayed",
-    progress: 34,
-    budget: 950000000,
-    spent: 323000000,
-    variance: 3.2,
-    startDate: "2023-06-01",
-    completion: "2026-02-28",
-    location: "Nakhon Ratchasima - Nong Khai",
-    category: "Infrastructure",
-    manager: "Liu Wei Chen",
-    riskLevel: "Medium",
-    team: 38,
-    milestones: { completed: 6, total: 16 },
-  },
-  {
-    id: "TH-CN-003",
-    title: "Rolling Stock Manufacturing & Procurement",
-    description:
-      "Manufacturing and procurement of high-speed train sets, maintenance equipment, and spare parts",
-    status: "On Track",
-    progress: 45,
-    budget: 700000000,
-    spent: 315000000,
-    variance: -1.8,
-    startDate: "2023-01-15",
-    completion: "2025-12-31",
-    location: "Beijing & Bangkok",
-    category: "Rolling Stock",
-    manager: "Chen Wei Ming",
-    riskLevel: "Low",
-    team: 28,
-    milestones: { completed: 8, total: 14 },
-  },
-  {
-    id: "TH-CN-004",
-    title: "Signaling & Communication Systems",
-    description:
-      "Installation of advanced signaling, communication, and train control systems",
-    status: "Planning",
-    progress: 15,
-    budget: 480000000,
-    spent: 72000000,
-    variance: 0.0,
-    startDate: "2024-01-01",
-    completion: "2025-09-30",
-    location: "Multiple Sections",
-    category: "Technology",
-    manager: "Thanakit Srisuwan",
-    riskLevel: "Medium",
-    team: 22,
-    milestones: { completed: 2, total: 12 },
-  },
-  {
-    id: "TH-CN-005",
-    title: "Power Supply & Electrification",
-    description:
-      "Installation of overhead power lines, substations, and electrical infrastructure",
-    status: "On Track",
-    progress: 52,
-    budget: 380000000,
-    spent: 197600000,
-    variance: -0.8,
-    startDate: "2023-09-01",
-    completion: "2025-07-31",
-    location: "Full Network",
-    category: "Electrical",
-    manager: "Pranee Chotirat",
-    riskLevel: "Low",
-    team: 35,
-    milestones: { completed: 9, total: 15 },
-  },
-  {
-    id: "TH-CN-006",
-    title: "Maintenance Facilities Construction",
-    description:
-      "Construction of maintenance depots, repair facilities, and operational centers",
-    status: "At Risk",
-    progress: 28,
-    budget: 320000000,
-    spent: 108800000,
-    variance: 5.4,
-    startDate: "2023-12-01",
-    completion: "2025-11-30",
-    location: "Bangkok & Nong Khai",
-    category: "Facilities",
-    manager: "Malee Jitpakdee",
-    riskLevel: "High",
-    team: 31,
-    milestones: { completed: 4, total: 11 },
-  },
-];
+import { useMemo, useState } from "react";
+import { useProjectList } from "@/features/project-overview/hooks/use-project-list";
+import { useDebouncedValue } from "@/hooks/use-debouce";
 
 export const useProjectProvider = () => {
-  const [projects] = useState<ProjectList>(initialProjects);
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+  const [status, setStatus] = useState("");
+  const debouncedKeyword = useDebouncedValue(keyword, 500);
+
+  const query = useMemo(() => {
+    return {
+      page,
+      limit: 10,
+      keyword: debouncedKeyword,
+      status: status === "all" ? "" : status.trim(),
+    };
+  }, [page, debouncedKeyword, status]);
+
+  const { data: projectData, isLoading } = useProjectList(query);
+
+  function handlePageChange(page: number) {
+    setPage(page);
+  }
+
+  function handleKeywordChange(keyword: string) {
+    setKeyword(keyword);
+  }
+
+  function handleStatusChange(status: string) {
+    setStatus(status);
+  }
 
   return {
-    projects,
+    projectData,
+    isLoading,
+    handlePageChange,
+    handleKeywordChange,
+    handleStatusChange,
   };
 };

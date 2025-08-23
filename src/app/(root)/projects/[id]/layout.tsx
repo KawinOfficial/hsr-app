@@ -2,13 +2,17 @@ import { ProjectDetailProvider } from "@/features/project-overview/components/pr
 import { MilestonesProvider } from "@/features/milestones/components/milestones-provider/MilestonesProvider";
 import { UsersProvider } from "@/features/team-members/components/users-provider";
 
-export default function ProjectDetailLayout({
+export default async function ProjectDetailLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: { id: string };
 }) {
+  const { id } = await params;
+
   return (
-    <ProjectDetailProvider>
+    <ProjectDetailProvider id={id}>
       <MilestonesProvider>
         <UsersProvider>{children}</UsersProvider>
       </MilestonesProvider>

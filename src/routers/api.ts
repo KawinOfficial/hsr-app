@@ -12,4 +12,6 @@ export const API_ROUTES = {
   milestone: "milestone",
   milestoneDetail: "milestone/:id",
   milestoneSummary: "milestone/summary",
+  project: "project",
+  projectDetail: "project/:id",
 };

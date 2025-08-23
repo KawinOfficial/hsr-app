@@ -136,8 +136,6 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
     }
     const { actualCost, startDate, targetDate } = selectedMilestone;
 
-    console.log(selectedMilestone);
-
     reset({
       ...selectedMilestone,
       actualCost: actualCost || 0,

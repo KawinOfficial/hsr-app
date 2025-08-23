@@ -3,7 +3,6 @@
 import PageHeader from "@/components/layout/page-haeder/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Edit, Save } from "lucide-react";
-import { useParams } from "next/navigation";
 import { useContextSelector } from "use-context-selector";
 import { ProjectDetailContext } from "@/features/project-overview/components/project-detail-provider";
 import { ProjectInformation } from "@/features/project-overview/components/project-information";
@@ -15,7 +14,6 @@ import { MilestonesTracker } from "@/features/project-overview/components/milest
 import { MilestoneDialog } from "@/features/milestones/components/milestone-dialog";
 
 export default function ProjectDetail() {
-  const params = useParams();
   const { isEditMode, handleEdit, handleCancel, handleSave } =
     useContextSelector(ProjectDetailContext, (state) => ({
       isEditMode: state?.isEditMode,
@@ -26,7 +24,7 @@ export default function ProjectDetail() {
 
   return (
     <div className="bg-background">
-      <PageHeader title="Project Detail" subTitle={params.id as string}>
+      <PageHeader title="Project Detail">
         {isEditMode ? (
           <div className="flex items-center space-x-2">
             <Button variant="outline" size="sm" onClick={handleCancel}>
