@@ -22,10 +22,9 @@ import {
 } from "@/features/project-overview/utils/badgeColor";
 import { useProjectInformation } from "./ProjectInformation.hook";
 import { STATUS_OPTIONS } from "@/features/project-overview/constants/options";
-// import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatDate } from "@/lib/format";
 import { PRIORITY_OPTIONS } from "@/features/milestones/constants/options";
 import { Controller } from "react-hook-form";
-import { formatDate } from "@/lib/format";
 
 const ProjectInformation = () => {
   const { isEditMode, project, form, methods } = useProjectInformation();
@@ -223,27 +222,26 @@ const ProjectInformation = () => {
           <div className="text-center p-4 bg-muted/50 rounded-lg">
             <p className="text-sm text-muted-foreground">Total Budget</p>
             <p className="text-2xl font-bold text-rail-blue">
-              {/* {formatCurrency(project?.budget || 0)} */}0
+              {formatCurrency(project?.budget || 0)}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="text-center p-3 bg-muted/30 rounded">
               <p className="text-xs text-muted-foreground">Spent</p>
               <p className="text-sm font-semibold text-construction-orange">
-                {/* {formatCurrency(project?.spent || 0)} */}0
+                {formatCurrency(project?.spent || 0)}
               </p>
             </div>
             <div className="text-center p-3 bg-muted/30 rounded">
               <p className="text-xs text-muted-foreground">Remaining</p>
               <p className="text-sm font-semibold text-success-green">
-                {/* {formatCurrency((project?.budget || 0) - (project?.spent || 0))} */}
-                0
+                {formatCurrency((project?.budget || 0) - (project?.spent || 0))}
               </p>
             </div>
           </div>
           <div className="text-center p-3 bg-muted/30 rounded">
             <p className="text-xs text-muted-foreground">Cost Variance</p>
-            {/* <p
+            <p
               className={`text-sm font-semibold ${
                 !!project?.variance && project?.variance >= 0
                   ? "text-success-green"
@@ -252,7 +250,7 @@ const ProjectInformation = () => {
             >
               {project?.variance ? "+" : ""}
               {project?.variance}%
-            </p> */}
+            </p>
           </div>
         </CardContent>
       </Card>
