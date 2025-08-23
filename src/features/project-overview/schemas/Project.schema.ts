@@ -15,6 +15,15 @@ export const ProjectSchema = z.object({
   managerId: z.string().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
+  budget: z.number(),
+  spent: z.number(),
+  progress: z.number(),
+  variance: z.number(),
+  milestones: z.object({
+    total: z.number(),
+    completed: z.number(),
+  }),
+  team: z.number(),
 });
 
 export const ProjectListSchema = z.object({

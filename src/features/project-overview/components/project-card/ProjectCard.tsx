@@ -78,16 +78,14 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
               </div>
               <div className="flex items-center space-x-2">
                 <Users className="h-4 w-4 text-muted-foreground" />
-                {/* <span>
-                  {project.team} team members • {project.manager}
-                </span> */}
+                <span>{project.team} team members</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                {/* <span>
+                <span>
                   {project.milestones.completed}/{project.milestones.total}{" "}
                   milestones
-                </span> */}
+                </span>
               </div>
             </div>
           </div>
@@ -96,20 +94,20 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             <div className="text-center p-3 bg-muted rounded-lg">
               <p className="text-xs text-muted-foreground">Progress</p>
               <p className="text-2xl font-bold text-primary">
-                {/* {project.progress}% */}
+                {project.progress}%
               </p>
             </div>
-            {/* <Progress value={project.progress} className="h-2" /> */}
+            <Progress value={project.progress} className="h-2" />
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="text-center p-2 bg-muted/30 rounded">
                 <p className="text-muted-foreground">Budget</p>
                 <p className="font-semibold">
-                  {/* {formatCurrency(project.budget)} */}
+                  {formatCurrency(project.budget)}
                 </p>
               </div>
               <div className="text-center p-2 bg-muted/30 rounded">
                 <p className="text-muted-foreground">Spent</p>
-                {/* <p className="font-semibold">{formatCurrency(project.spent)}</p> */}
+                <p className="font-semibold">{formatCurrency(project.spent)}</p>
               </div>
             </div>
           </div>
@@ -117,7 +115,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           <div className="space-y-3 h-full">
             <div className="text-center h-1/2 flex flex-col items-center justify-center bg-muted rounded-lg">
               <p className="text-xs text-muted-foreground">Cost Variance</p>
-              {/* <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center">
                 {!project.variance ? (
                   ""
                 ) : project.variance > 0 ? (
@@ -133,13 +131,13 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
                   {project.variance > 0 ? "+" : ""}
                   {project.variance}%
                 </p>
-              </div> */}
+              </div>
             </div>
 
             <div className="text-center h-1/2 flex flex-col items-center justify-center bg-muted rounded-lg">
               <p className="text-xs text-muted-foreground">Remaining Budget</p>
               <p className="text-sm font-bold text-success-green">
-                {/* {formatCurrency(project.budget - project.spent)} */}
+                {formatCurrency(project.budget - project.spent)}
               </p>
             </div>
           </div>
