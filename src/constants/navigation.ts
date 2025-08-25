@@ -46,6 +46,11 @@ export const NAVIGATION_ITEMS = [
         url: PAGE_ROUTES.DOCUMENT_TYPES,
         description: "Manage document types and approval workflows",
       },
+      {
+        title: "Category",
+        url: PAGE_ROUTES.CATEGORY,
+        description: "Manage project cost categories",
+      },
     ],
   },
   {
