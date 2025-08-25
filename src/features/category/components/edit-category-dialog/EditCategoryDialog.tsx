@@ -11,7 +11,7 @@ import { useEditCategoryDialog } from "./EditCategoryDialog.hook";
 import { CategoryForm } from "@/features/category/components/category-form";
 
 const EditCategoryDialog = () => {
-  const { editOpen, setEditOpen } = useEditCategoryDialog();
+  const { editOpen, setEditOpen, selectedCategory } = useEditCategoryDialog();
 
   return (
     <Dialog open={editOpen} onOpenChange={setEditOpen}>
@@ -23,7 +23,10 @@ const EditCategoryDialog = () => {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-6 mt-4">
-          <CategoryForm onClose={() => setEditOpen?.(false)} />
+          <CategoryForm
+            onClose={() => setEditOpen?.(false)}
+            id={selectedCategory?.id}
+          />
         </div>
       </DialogContent>
     </Dialog>

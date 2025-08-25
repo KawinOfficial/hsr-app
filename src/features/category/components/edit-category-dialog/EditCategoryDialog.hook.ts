@@ -10,6 +10,10 @@ export const useEditCategoryDialog = () => {
     CategoryContext,
     (state) => state?.setEditOpen
   );
+  const selectedCategory = useContextSelector(
+    CategoryContext,
+    (state) => state?.selectedCategory
+  );
 
-  return { editOpen, setEditOpen };
+  return { editOpen, setEditOpen, selectedCategory };
 };

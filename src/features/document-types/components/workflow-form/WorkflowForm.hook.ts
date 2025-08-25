@@ -120,11 +120,11 @@ export const useWorkflowForm = ({ id, onClose }: UseWorkflowForm) => {
   }
 
   useEffect(() => {
-    if (!id) {
+    if (!id || !selectedWorkflow) {
       reset(defaultValues);
       return;
     }
-    reset(selectedWorkflow ?? defaultValues);
+    reset(selectedWorkflow);
   }, [id, reset, selectedWorkflow]);
 
   return {

@@ -3,6 +3,9 @@ import { Category } from "@/features/category/schemas/Category.schema";
 import { useContextSelector } from "use-context-selector";
 import { CategoryContext } from "../category-provider/CategoryProvider";
 import { useEffect } from "react";
+import { useCreateCategory } from "@/features/category/hooks/use-create-category";
+import { useUpdateCategory } from "@/features/category/hooks/use-update-category";
+import { useToast } from "@/hooks/use-toast";
 
 const defaultValues: Category = {
   name: "",
@@ -13,10 +16,13 @@ const defaultValues: Category = {
 };
 
 export interface UseCategoryForm {
+  id?: string;
   onClose: () => void;
 }
 
-export const useCategoryForm = ({ onClose }: UseCategoryForm) => {
+export const useCategoryForm = ({ id, onClose }: UseCategoryForm) => {
+  const { toast } = useToast();
+
   const selectedCategory = useContextSelector(
     CategoryContext,
     (state) => state?.selectedCategory
@@ -25,6 +31,12 @@ export const useCategoryForm = ({ onClose }: UseCategoryForm) => {
     CategoryContext,
     (state) => state?.setSelectedCategory
   );
+  const refetch = useContextSelector(
+    CategoryContext,
+    (state) => state?.refetch
+  );
+  const { mutate: createCategory } = useCreateCategory();
+  const { mutate: updateCategory } = useUpdateCategory({ id: id ?? "" });
 
   const methods = useForm<Category>({
     defaultValues,
@@ -32,22 +44,65 @@ export const useCategoryForm = ({ onClose }: UseCategoryForm) => {
   const { handleSubmit, reset } = methods;
 
   function onSubmit(data: Category) {
-    console.log(data);
-    onClose();
-    setSelectedCategory?.(null);
+    if (id) {
+      updateCategory(data, {
+        onSuccess: () => {
+          toast({
+            variant: "success",
+            title: "Workflow Updated",
+            description: "Your workflow has been updated successfully.",
+          });
+          refetch?.();
+          setSelectedCategory?.(null);
+          onClose?.();
+        },
+        onError: (error) => {
+          const errorMessage =
+            error instanceof Error ? error.message : "Category update failed";
+          toast({
+            variant: "destructive",
+            title: "Category Update Failed",
+            description: errorMessage,
+          });
+        },
+      });
+      return;
+    }
+
+    createCategory(data, {
+      onSuccess: () => {
+        toast({
+          variant: "success",
+          title: "Category Created",
+          description: "Your category has been created successfully.",
+        });
+        refetch?.();
+        onClose();
+      },
+      onError: (error) => {
+        const errorMessage =
+          error instanceof Error ? error.message : "Category creation failed";
+        toast({
+          variant: "destructive",
+          title: "Category Creation Failed",
+          description: errorMessage,
+        });
+      },
+    });
   }
 
   function onReset() {
-    reset();
+    onClose();
+    reset(defaultValues);
   }
 
   useEffect(() => {
-    if (!selectedCategory) {
+    if (!selectedCategory || !id) {
       reset(defaultValues);
       return;
     }
     reset(selectedCategory);
-  }, [selectedCategory]);
+  }, [selectedCategory, reset, id]);
 
   return { methods, onSubmit: handleSubmit(onSubmit), onReset };
 };

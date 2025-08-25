@@ -1,3 +1,4 @@
+import { PaginationSchema } from "@/types/pagination";
 import { z } from "zod";
 
 export const CategorySchema = z.object({
@@ -11,7 +12,10 @@ export const CategorySchema = z.object({
   budget: z.number(),
 });
 
-const CategoryListSchema = z.array(CategorySchema);
+export const CategoryListSchema = z.object({
+  data: z.array(CategorySchema),
+  pagination: PaginationSchema,
+});
 
 export type Category = z.infer<typeof CategorySchema>;
 export type CategoryList = z.infer<typeof CategoryListSchema>;

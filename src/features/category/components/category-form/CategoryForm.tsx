@@ -12,9 +12,11 @@ import { useCategoryForm, UseCategoryForm } from "./CategoryForm.hook";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Save } from "lucide-react";
 
-const CategoryForm = ({ onClose }: UseCategoryForm) => {
-  const { methods, onSubmit, onReset } = useCategoryForm({ onClose });
+const CategoryForm = ({ id, onClose }: UseCategoryForm) => {
+  const { methods, onSubmit, onReset } = useCategoryForm({ id, onClose });
   return (
     <>
       <Form {...methods}>
@@ -96,6 +98,16 @@ const CategoryForm = ({ onClose }: UseCategoryForm) => {
                 </FormItem>
               )}
             />
+
+            <div className="col-span-2 flex gap-2 justify-end">
+              <Button variant="outline" type="reset">
+                Cancel
+              </Button>
+              <Button type="submit">
+                <Save className="h-4 w-4 mr-2" />
+                {id ? "Update Category" : "Create Category"}
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

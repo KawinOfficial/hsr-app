@@ -16,4 +16,6 @@ export const API_ROUTES = {
   projectDetail: "project/:id",
   workflows: "workflows",
   workflowDetail: "workflows/:id",
+  categories: "categories",
+  categoryDetail: "categories/:id",
 };

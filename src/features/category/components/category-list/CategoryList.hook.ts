@@ -14,6 +14,26 @@ export const useCategoryList = () => {
     CategoryContext,
     (state) => state?.onEditCategory
   );
+  const isLoading = useContextSelector(
+    CategoryContext,
+    (state) => state?.isLoading
+  );
+  const onChangePage = useContextSelector(
+    CategoryContext,
+    (state) => state?.onChangePage
+  );
+  const handleSearch = useContextSelector(
+    CategoryContext,
+    (state) => state?.handleSearch
+  );
 
-  return { categories, onOpenCreate, onEditCategory };
+  return {
+    list: categories?.data ?? [],
+    pagination: categories?.pagination,
+    onOpenCreate,
+    onEditCategory,
+    isLoading,
+    onChangePage,
+    handleSearch,
+  };
 };
