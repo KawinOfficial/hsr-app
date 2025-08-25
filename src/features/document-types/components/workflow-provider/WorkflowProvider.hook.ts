@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Workflow } from "@/features/document-types/schemas/Workflow.schema";
+import { useOptions } from "@/hooks/use-option";
+import { useWorkflow } from "@/features/document-types/hooks/use-workflow";
+import { useDebouncedValue } from "@/hooks/use-debouce";
 
 const workflowTemplates = [
   {
@@ -145,19 +148,48 @@ export const useWorkflowProvider = () => {
   const [selectedWorkflow, setSelectedWorkflow] = useState<Workflow | null>(
     null
   );
+  const [editWorkflowOpen, setEditWorkflowOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+  const debouncedKeyword = useDebouncedValue(keyword, 500);
 
-  function handleWorkflowDialog(workflow: Workflow) {
+  const { data: options } = useOptions();
+  const { data: workflows, refetch } = useWorkflow({
+    page,
+    limit: 10,
+    keyword: debouncedKeyword,
+  });
+
+  function handleWorkflowDialog(index: number) {
+    const workflow = workflows?.data[index] ?? null;
     setSelectedWorkflow(workflow);
     setWorkflowDialogOpen(true);
   }
 
+  function onChangePage(page: number) {
+    setPage(page);
+  }
+
+  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    setKeyword(e.target.value);
+  }
+
   return {
     workflowTemplates,
+
     createWorkflowOpen,
     setCreateWorkflowOpen,
     workflowDialogOpen,
     setWorkflowDialogOpen,
     selectedWorkflow,
+    setSelectedWorkflow,
     handleWorkflowDialog,
+    editWorkflowOpen,
+    setEditWorkflowOpen,
+    options,
+    workflows,
+    refetch,
+    onChangePage,
+    handleSearch,
   };
 };

@@ -8,6 +8,7 @@ import { DocumentDialog } from "@/features/document-types/components/document-di
 import { WorkflowList } from "@/features/document-types/components/workflow-list";
 import { CreateWorkflowDialog } from "@/features/document-types/components/create-workflow-dialog";
 import { WorkflowDialog } from "@/features/document-types/components/workflow-dialog";
+import EditWorkflowDialog from "@/features/document-types/components/edit-workflow-dialog/EditWorkflowDialog";
 
 export default function DocumentTypesPage() {
   return (
@@ -24,7 +25,7 @@ export default function DocumentTypesPage() {
           <TabsList className="grid w-full grid-cols-2">
             {TABS.map((tab, index) => (
               <TabsTrigger
-                key={index}
+                key={`${tab.value}-${index}`}
                 value={tab.value}
                 className="flex items-center"
               >
@@ -46,6 +47,7 @@ export default function DocumentTypesPage() {
         <DocumentDialog />
         <CreateWorkflowDialog />
         <WorkflowDialog />
+        <EditWorkflowDialog />
       </div>
     </div>
   );
