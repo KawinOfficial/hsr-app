@@ -7,11 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Eye, Plus, Search, Users } from "lucide-react";
+import { Eye, Plus, Search, Users, BadgePlus, TimerReset } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useWorkflowList } from "./WorkflowList.hook";
 import { Pagination } from "@/components/pagination";
+import { calculateTotalTimeLimit, formatDateWithTime } from "@/lib/format";
 
 const WorkflowList = () => {
   const {
@@ -21,7 +22,6 @@ const WorkflowList = () => {
     pagination,
     onChangePage,
     handleSearch,
-    calculateTotalTimeLimit,
   } = useWorkflowList();
 
   return (
@@ -70,10 +70,26 @@ const WorkflowList = () => {
                           {workflow.workflowId} • {workflow.description}
                         </p>
                       </div>
-                      <div className="flex items-center space-x-4 text-sm">
+                      <div className="space-y-2 text-sm">
                         <div className="flex items-center space-x-1">
                           <Users className="h-4 w-4 text-muted-foreground" />
                           <span>{workflow.steps.length} steps</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <BadgePlus className="h-4 w-4 text-muted-foreground" />
+                          <span>
+                            {workflow.createdAt
+                              ? formatDateWithTime(workflow.createdAt)
+                              : "N/A"}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <TimerReset className="h-4 w-4 text-muted-foreground" />
+                          <span>
+                            {workflow.updatedAt
+                              ? formatDateWithTime(workflow.updatedAt)
+                              : "N/A"}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -90,7 +106,7 @@ const WorkflowList = () => {
                           Total Time Limit
                         </p>
                         <p className="text-lg font-bold text-success-green">
-                          {calculateTotalTimeLimit(workflow.steps)} hours
+                          {calculateTotalTimeLimit(workflow.steps)}
                         </p>
                       </div>
                     </div>
@@ -124,7 +140,9 @@ const WorkflowList = () => {
                           variant="outline"
                           size="sm"
                           className="flex-1"
-                          onClick={() => handleWorkflowDialog?.(index)}
+                          onClick={() =>
+                            handleWorkflowDialog?.(workflow.id ?? "")
+                          }
                         >
                           <Eye className="h-4 w-4 mr-1" />
                           View

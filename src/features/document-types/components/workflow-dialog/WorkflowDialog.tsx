@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Edit } from "lucide-react";
 import { useWorkflowDialog } from "./WorkflowDialog.hook";
 import { Button } from "@/components/ui/button";
+import { calculateTotalTimeLimit } from "@/lib/format";
 
 const WorkflowDialog = () => {
   const {
@@ -19,7 +20,6 @@ const WorkflowDialog = () => {
     setWorkflowDialogOpen,
     selectedWorkflow,
     findRoleName,
-    calculateTotalTimeLimit,
     handleEditWorkflow,
   } = useWorkflowDialog();
 
@@ -46,7 +46,7 @@ const WorkflowDialog = () => {
             <div className="text-center p-4 bg-muted/50 rounded-lg">
               <p className="text-sm text-muted-foreground">Total Time Limit</p>
               <p className="text-2xl font-bold text-success-green">
-                {calculateTotalTimeLimit()} hours
+                {calculateTotalTimeLimit(selectedWorkflow.steps)}
               </p>
             </div>
           </div>

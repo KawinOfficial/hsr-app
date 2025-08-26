@@ -27,13 +27,6 @@ export const useWorkflowDialog = () => {
     return options?.users.find((role) => role.value === roleId)?.label;
   }
 
-  function calculateTotalTimeLimit() {
-    return selectedWorkflow?.steps.reduce(
-      (acc, step) => acc + Number(step.timeLimit),
-      0
-    );
-  }
-
   function handleEditWorkflow() {
     setEditWorkflowOpen?.(true);
     setWorkflowDialogOpen?.(false);
@@ -44,7 +37,6 @@ export const useWorkflowDialog = () => {
     setWorkflowDialogOpen,
     selectedWorkflow,
     findRoleName,
-    calculateTotalTimeLimit,
     handleEditWorkflow,
   };
 };

@@ -16,6 +16,11 @@ export const API_ROUTES = {
   projectDetail: "project/:id",
   workflows: "workflows",
   workflowDetail: "workflows/:id",
+  workflowOptions: "workflows/options",
   categories: "categories",
   categoryDetail: "categories/:id",
+  categoryOptions: "categories/options",
+  documentTypes: "documentTypes",
+  documentTypeDetail: "documentTypes/:id",
+  documentTypeOptions: "documentTypes/options",
 };

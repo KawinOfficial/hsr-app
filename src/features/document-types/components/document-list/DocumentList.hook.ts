@@ -2,18 +2,33 @@ import { useContextSelector } from "use-context-selector";
 import { DocumentContext } from "@/features/document-types/components/document-provider";
 
 export const useDocumentList = () => {
-  const documentTypes = useContextSelector(
+  const documentTypesData = useContextSelector(
     DocumentContext,
-    (state) => state?.documentTypes
+    (state) => state?.documentTypesData
   );
-  const setCreateOpen = useContextSelector(
+  const isLoading = useContextSelector(
     DocumentContext,
-    (state) => state?.setCreateOpen
+    (state) => state?.isLoading
+  );
+  const onOpenCreate = useContextSelector(
+    DocumentContext,
+    (state) => state?.onOpenCreate
   );
   const handleDetailView = useContextSelector(
     DocumentContext,
     (state) => state?.handleDetailView
   );
+  const onChangePage = useContextSelector(
+    DocumentContext,
+    (state) => state?.onChangePage
+  );
 
-  return { documentTypes, setCreateOpen, handleDetailView };
+  return {
+    list: documentTypesData?.data ?? [],
+    pagination: documentTypesData?.pagination,
+    isLoading,
+    onOpenCreate,
+    handleDetailView,
+    onChangePage,
+  };
 };

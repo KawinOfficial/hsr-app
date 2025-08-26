@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Search, Filter, Plus, Eye, Copy, Trash2 } from "lucide-react";
+import { Search, Plus, Eye, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,13 +20,20 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useDocumentList } from "./DocumentList.hook";
-import {
-  getCategoryColor,
-  getStatusColor,
-} from "@/features/document-types/utils/colorStatus";
+import { getStatusColor } from "@/features/document-types/utils/colorStatus";
+import { TableEmpty, TableLoading } from "@/components/table";
+import { calculateTotalTimeLimit } from "@/lib/format";
+import { Pagination } from "@/components/pagination";
 
 const DocumentList = () => {
-  const { documentTypes, setCreateOpen, handleDetailView } = useDocumentList();
+  const {
+    list,
+    pagination,
+    isLoading,
+    onOpenCreate,
+    handleDetailView,
+    onChangePage,
+  } = useDocumentList();
 
   return (
     <Card>
@@ -46,10 +53,8 @@ const DocumentList = () => {
                 className="pl-10 w-64"
               />
             </div>
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4" />
-            </Button>
-            <Button size="sm" onClick={() => setCreateOpen?.(true)}>
+
+            <Button size="sm" onClick={onOpenCreate}>
               <Plus className="h-4 w-4 mr-2" />
               New Document Type
             </Button>
@@ -72,71 +77,80 @@ const DocumentList = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {documentTypes?.map((docType) => (
-              <TableRow key={docType.id}>
-                <TableCell>
-                  <div>
-                    <p className="font-medium">{docType.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {docType.id}
+            {isLoading ? (
+              <TableLoading colSpan={8} className="py-[20vh]" />
+            ) : !list?.length ? (
+              <TableEmpty colSpan={8} className="py-[20vh]" />
+            ) : (
+              list?.map((docType, index) => (
+                <TableRow key={`${docType.id}-${index}`}>
+                  <TableCell>
+                    <div>
+                      <p>{docType.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {docType.documentId}
+                      </p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <p className="capitalize font-semibold">
+                      {docType.category?.name ?? "-"}
                     </p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Badge className={getCategoryColor(docType.category)}>
-                    {docType.category}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div>
-                    <p className="text-sm font-medium">
-                      {docType.workflowName}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {docType.workflowId}
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell>{docType.approvalLevels}</TableCell>
-                <TableCell>{docType.averageProcessingTime}</TableCell>
-                <TableCell>
-                  <div>
-                    <p className="font-medium">{docType.totalDocuments}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {docType.pendingDocuments} pending
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell className="text-center">
-                  <Badge
-                    className={getStatusColor(
-                      docType.active ? "Active" : "Inactive"
-                    )}
-                  >
-                    {docType.active ? "Active" : "Inactive"}
-                  </Badge>
-                </TableCell>
-                <TableCell className="flex justify-center">
-                  <div className="flex space-x-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDetailView?.(docType)}
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <p className="text-sm ">
+                        {docType.workflow?.name ?? "-"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {docType.workflow?.workflowId ?? "-"}
+                      </p>
+                    </div>
+                  </TableCell>
+                  <TableCell>{docType.workflow?.steps.length ?? 0}</TableCell>
+                  <TableCell>
+                    {calculateTotalTimeLimit(docType.workflow?.steps ?? [])}
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium">0</p>
+                      <p className="text-xs text-muted-foreground">0 pending</p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Badge
+                      className={getStatusColor(
+                        docType.isActive ? "Active" : "Inactive"
+                      )}
                     >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm">
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm">
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                      {docType.isActive ? "Active" : "Inactive"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="flex justify-center">
+                    <div className="flex space-x-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDetailView?.(docType.id ?? "")}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
+
+        <Pagination
+          totalPages={pagination?.totalPages ?? 0}
+          currentPage={pagination?.currentPage ?? 1}
+          onPageChange={onChangePage}
+        />
       </CardContent>
     </Card>
   );

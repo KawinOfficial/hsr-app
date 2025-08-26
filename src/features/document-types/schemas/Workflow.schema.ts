@@ -14,8 +14,8 @@ export const WorkflowSchema = z.object({
   workflowId: z.string(),
   description: z.string(),
   steps: z.array(WorkflowStepSchema),
-  createdDate: z.string().optional(),
-  updatedDate: z.string().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
 export const WorkflowListSchema = z.object({

@@ -131,9 +131,7 @@ const WorkflowForm = ({ id }: UseWorkflowForm) => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {WORKFLOW_STEPS.filter(
-                                  (option) => option.value !== "all"
-                                ).map((option) => (
+                                {WORKFLOW_STEPS.map((option) => (
                                   <SelectItem
                                     key={option.value}
                                     value={option.value}
@@ -189,9 +187,7 @@ const WorkflowForm = ({ id }: UseWorkflowForm) => {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {TIME_LIMITS.filter(
-                                  (option) => option.value !== "all"
-                                ).map((option) => (
+                                {TIME_LIMITS.map((option) => (
                                   <SelectItem
                                     key={option.value}
                                     value={option.value}

@@ -1,6 +1,5 @@
 import { useContextSelector } from "use-context-selector";
 import { WorkflowContext } from "@/features/document-types/components/workflow-provider";
-import { WorkflowStep } from "@/features/document-types/schemas/Workflow.schema";
 
 export const useWorkflowList = () => {
   const setCreateWorkflowOpen = useContextSelector(
@@ -24,10 +23,6 @@ export const useWorkflowList = () => {
     (state) => state?.handleSearch
   );
 
-  function calculateTotalTimeLimit(steps: WorkflowStep[]) {
-    return steps.reduce((acc, step) => acc + Number(step.timeLimit), 0);
-  }
-
   return {
     setCreateWorkflowOpen,
     handleWorkflowDialog,
@@ -35,6 +30,5 @@ export const useWorkflowList = () => {
     pagination: workflows?.pagination,
     onChangePage,
     handleSearch,
-    calculateTotalTimeLimit,
   };
 };

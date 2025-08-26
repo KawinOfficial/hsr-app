@@ -160,8 +160,9 @@ export const useWorkflowProvider = () => {
     keyword: debouncedKeyword,
   });
 
-  function handleWorkflowDialog(index: number) {
-    const workflow = workflows?.data[index] ?? null;
+  function handleWorkflowDialog(id: string) {
+    const workflow = workflows?.data?.find((workflow) => workflow.id === id);
+    if (!workflow) return;
     setSelectedWorkflow(workflow);
     setWorkflowDialogOpen(true);
   }

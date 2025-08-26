@@ -1,25 +1,22 @@
+import { PaginationSchema } from "@/types/pagination";
 import { z } from "zod";
 
 export const DocumentTypeSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
+  documentId: z.string(),
   name: z.string(),
-  category: z.string(),
+  categoryId: z.string(),
   description: z.string(),
-  active: z.boolean(),
   workflowId: z.string(),
-  workflowName: z.string(),
-  requiredFields: z.array(z.string()),
-  approvalLevels: z.number(),
-  averageProcessingTime: z.string(),
-  totalDocuments: z.number(),
-  pendingDocuments: z.number(),
-  createdBy: z.string(),
-  createdDate: z.string(),
-  lastModified: z.string(),
-  permissions: z.array(z.string()),
+  isActive: z.boolean(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
-export const DocumentTypesSchema = z.array(DocumentTypeSchema);
+export const DocumentListSchema = z.object({
+  data: z.array(DocumentTypeSchema),
+  pagination: PaginationSchema,
+});
 
 export type DocumentType = z.infer<typeof DocumentTypeSchema>;
-export type DocumentTypes = z.infer<typeof DocumentTypesSchema>;
+export type DocumentList = z.infer<typeof DocumentListSchema>;
