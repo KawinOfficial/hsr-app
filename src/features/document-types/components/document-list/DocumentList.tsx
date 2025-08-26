@@ -24,6 +24,13 @@ import { getStatusColor } from "@/features/document-types/utils/colorStatus";
 import { TableEmpty, TableLoading } from "@/components/table";
 import { calculateTotalTimeLimit } from "@/lib/format";
 import { Pagination } from "@/components/pagination";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const DocumentList = () => {
   const {
@@ -33,6 +40,9 @@ const DocumentList = () => {
     onOpenCreate,
     handleDetailView,
     onChangePage,
+    handleSearch,
+    onChangeCategory,
+    categoriesOptions,
   } = useDocumentList();
 
   return (
@@ -51,9 +61,25 @@ const DocumentList = () => {
               <Input
                 placeholder="Search document types..."
                 className="pl-10 w-64"
+                onChange={handleSearch}
               />
             </div>
 
+            <Select
+              defaultValue="all"
+              onValueChange={(value) => onChangeCategory?.(value)}
+            >
+              <SelectTrigger className="w-32">
+                <SelectValue className="line-clamp-1 truncate" />
+              </SelectTrigger>
+              <SelectContent>
+                {categoriesOptions?.map((option) => (
+                  <SelectItem key={option.value} value={option.value ?? ""}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Button size="sm" onClick={onOpenCreate}>
               <Plus className="h-4 w-4 mr-2" />
               New Document Type

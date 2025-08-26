@@ -26,7 +26,7 @@ import {
   WORKFLOW_STEPS,
 } from "@/features/document-types/constants/options";
 
-const WorkflowForm = ({ id }: UseWorkflowForm) => {
+const WorkflowForm = ({ id, onClose }: UseWorkflowForm) => {
   const {
     methods,
     onSubmit,
@@ -35,7 +35,7 @@ const WorkflowForm = ({ id }: UseWorkflowForm) => {
     onAddStep,
     onRemoveStep,
     usersOptions,
-  } = useWorkflowForm({ id });
+  } = useWorkflowForm({ id, onClose });
 
   return (
     <>

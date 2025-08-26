@@ -1,5 +1,6 @@
 import { useContextSelector } from "use-context-selector";
 import { DocumentContext } from "@/features/document-types/components/document-provider";
+import { useMemo } from "react";
 
 export const useDocumentList = () => {
   const documentTypesData = useContextSelector(
@@ -22,6 +23,33 @@ export const useDocumentList = () => {
     DocumentContext,
     (state) => state?.onChangePage
   );
+  const handleSearch = useContextSelector(
+    DocumentContext,
+    (state) => state?.handleSearch
+  );
+  const onChangeCategory = useContextSelector(
+    DocumentContext,
+    (state) => state?.onChangeCategory
+  );
+  const categories = useContextSelector(
+    DocumentContext,
+    (state) => state?.categories
+  );
+
+  const categoriesOptions = useMemo(() => {
+    const options =
+      categories?.map((category) => ({
+        label: category.name,
+        value: category.id,
+      })) ?? [];
+    return [
+      {
+        label: "All",
+        value: "all",
+      },
+      ...options,
+    ];
+  }, [categories]);
 
   return {
     list: documentTypesData?.data ?? [],
@@ -30,5 +58,8 @@ export const useDocumentList = () => {
     onOpenCreate,
     handleDetailView,
     onChangePage,
+    handleSearch,
+    onChangeCategory,
+    categoriesOptions,
   };
 };
