@@ -26,4 +26,5 @@ export const API_ROUTES = {
   documentTypeOptions: "documentTypes/options",
   payment: "payment",
   paymentDetail: "payment/:id",
+  paymentHistory: "paymentHistory",
 };

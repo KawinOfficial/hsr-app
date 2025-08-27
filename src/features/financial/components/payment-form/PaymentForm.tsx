@@ -25,6 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileUpload } from "@/components/ui/file-upload";
 import { formatCurrency } from "@/lib/format";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PaymentHistory } from "@/features/financial/components/payment-history";
 
 const PaymentForm = ({ onClose }: UsePaymentForm) => {
   const {
@@ -37,7 +38,6 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
     taxAmount,
     netAmount,
     selectedId,
-    approvalHistory,
   } = usePaymentForm({
     onClose,
   });
@@ -322,30 +322,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                   <CardTitle>Activity History</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {approvalHistory.map((entry, index) => (
-                      <div
-                        key={`${entry.user}-${index}`}
-                        className="flex items-start space-x-4"
-                      >
-                        <div className="w-2 h-2 rounded-full bg-primary mt-2" />
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <p className="font-medium">{entry.action}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {entry.date}
-                            </p>
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            {entry.user} • {entry.role}
-                          </p>
-                          {entry.comment && (
-                            <p className="text-sm mt-1">{entry.comment}</p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <PaymentHistory paymentId={selectedId} />
                 </CardContent>
               </Card>
             </TabsContent>

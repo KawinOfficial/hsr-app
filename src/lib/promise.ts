@@ -26,5 +26,5 @@ export async function checkUserAuth() {
 
 export async function getCurrentUser() {
   const session = await auth();
-  return session?.user.id;
+  return session?.user;
 }

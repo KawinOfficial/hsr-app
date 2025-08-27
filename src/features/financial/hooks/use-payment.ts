@@ -47,7 +47,7 @@ export function usePaymentDetail(id: string) {
       const response = await api
         .get<{ data: Payment }>(pathToUrl(API_ROUTES.paymentDetail, { id }))
         .json();
-      return validatedPromise(response.data, PaymentSchema, "payment");
+      return validatedPromise<Payment>(response.data, PaymentSchema, "payment");
     },
     retry: false,
     refetchOnWindowFocus: false,

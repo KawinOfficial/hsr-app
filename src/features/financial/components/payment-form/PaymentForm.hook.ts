@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Payment } from "@/features/financial/schemas/Payment.schema";
 import { useContextSelector } from "use-context-selector";
-import { FinancialContext } from "../financial-provider/FinancialProvider";
+import { FinancialContext } from "@/features/financial/components/financial-provider/FinancialProvider";
 import { useEffect } from "react";
 import {
   useCreatePayment,
@@ -9,31 +9,8 @@ import {
   useUpdatePayment,
 } from "@/features/financial/hooks/use-payment";
 import { toast } from "@/components/ui/use-toast";
-import { PaymentContext } from "../payment-provider";
-
-const approvalHistory = [
-  {
-    date: "2024-02-15 09:30",
-    action: "Created",
-    user: "Siriporn Wattana",
-    role: "Finance Manager",
-    comment: "Initial request created",
-  },
-  {
-    date: "2024-02-15 14:20",
-    action: "Reviewed",
-    user: "Somchai Tanakorn",
-    role: "Project Manager",
-    comment: "Reviewed and approved",
-  },
-  {
-    date: "2024-02-16 10:15",
-    action: "Processed",
-    user: "Malee Jitpakdee",
-    role: "Accounts Payable",
-    comment: "Payment processed via bank transfer",
-  },
-];
+import { PaymentContext } from "@/features/financial/components/payment-provider";
+import { formatDateInput } from "@/lib/format";
 
 const defaultValues: Payment = {
   name: "",
@@ -45,7 +22,7 @@ const defaultValues: Payment = {
   vendor: "",
   documentTypesId: "",
   projectId: "",
-  tax: 0,
+  tax: 7,
   vat: 0,
 };
 
@@ -151,7 +128,11 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
       reset(defaultValues);
       return;
     }
-    reset(paymentDetail);
+    const paymentDate = formatDateInput(paymentDetail?.paymentDate ?? "");
+    reset({
+      ...paymentDetail,
+      paymentDate,
+    });
   }, [paymentDetail, reset, id]);
 
   return {
@@ -164,7 +145,6 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     taxAmount,
     netAmount,
     selectedId,
-
-    approvalHistory,
+    history,
   };
 };
