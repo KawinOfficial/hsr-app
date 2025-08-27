@@ -107,7 +107,10 @@ const Payments = () => {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <DeletePaymentDialog id={payment.id ?? ""} />
+                      <DeletePaymentDialog
+                        id={payment.id ?? ""}
+                        type="payment"
+                      />
                     </div>
                   </TableCell>
                 </TableRow>

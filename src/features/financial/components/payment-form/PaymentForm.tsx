@@ -56,7 +56,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 name="projectId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Project</FormLabel>
+                    <FormLabel className="text-xs">Project</FormLabel>
                     <Select
                       {...field}
                       onValueChange={(value) => {
@@ -91,7 +91,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 name="documentTypesId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Document Type</FormLabel>
+                    <FormLabel className="text-xs">Document Type</FormLabel>
                     <Select
                       {...field}
                       onValueChange={(value) => {
@@ -127,7 +127,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Payment Name *</FormLabel>
+                      <FormLabel className="text-xs">Payment Name *</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter payment name" {...field} />
                       </FormControl>
@@ -143,7 +143,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel className="text-xs">Description</FormLabel>
                       <FormControl>
                         <Textarea placeholder="Enter description" {...field} />
                       </FormControl>
@@ -158,7 +158,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 name="priority"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Priority</FormLabel>
+                    <FormLabel className="text-xs">Priority</FormLabel>
                     <Select
                       {...field}
                       onValueChange={(value) => {
@@ -190,7 +190,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 name="vendor"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Vendor</FormLabel>
+                    <FormLabel className="text-xs">Vendor</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter vendor" {...field} />
                     </FormControl>
@@ -211,7 +211,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 name="paymentDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Payment Date</FormLabel>
+                    <FormLabel className="text-xs">Payment Date</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter payment date"
@@ -229,7 +229,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Amount (THB)</FormLabel>
+                    <FormLabel className="text-xs">Amount (THB)</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter amount"
@@ -247,7 +247,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 name="vat"
                 render={({ field }) => (
                   <FormItem className="relative">
-                    <FormLabel>
+                    <FormLabel className="text-xs">
                       VAT (%){" "}
                       <span className="text-xs text-muted-foreground">
                         (optional)
@@ -271,7 +271,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 name="tax"
                 render={({ field }) => (
                   <FormItem className="relative">
-                    <FormLabel>
+                    <FormLabel className="text-xs">
                       Withholding Tax (%){" "}
                       <span className="text-xs text-muted-foreground">
                         (optional)
@@ -316,7 +316,6 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
               />
             </TabsContent>
             <TabsContent value="history">
-              {" "}
               <Card>
                 <CardHeader>
                   <CardTitle>Activity History</CardTitle>

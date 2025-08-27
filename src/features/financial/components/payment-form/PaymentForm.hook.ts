@@ -22,8 +22,8 @@ const defaultValues: Payment = {
   vendor: "",
   documentTypesId: "",
   projectId: "",
-  tax: 7,
-  vat: 0,
+  tax: 0,
+  vat: 7,
 };
 
 export interface UsePaymentForm {

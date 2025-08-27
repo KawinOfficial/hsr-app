@@ -8,6 +8,7 @@ import { PAGE_ROUTES } from "@/routers/page";
 import { Banknote, Building2, Receipt } from "lucide-react";
 import Link from "next/link";
 import { PaymentDialog } from "@/features/financial/components/payment-dialog";
+import AssetsDialog from "@/features/financial/components/assets-dialog/AssetsDialog";
 
 export default async function PaymentsPage({
   params,
@@ -61,6 +62,7 @@ export default async function PaymentsPage({
       </div>
 
       <PaymentDialog />
+      <AssetsDialog />
     </div>
   );
 }

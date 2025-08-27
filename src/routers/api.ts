@@ -27,4 +27,7 @@ export const API_ROUTES = {
   payment: "payment",
   paymentDetail: "payment/:id",
   paymentHistory: "paymentHistory",
+  assets: "assets",
+  assetsDetail: "assets/:id",
+  maintanceHistory: "maintanceHistory",
 };
