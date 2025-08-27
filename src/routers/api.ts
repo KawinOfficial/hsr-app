@@ -14,6 +14,7 @@ export const API_ROUTES = {
   milestoneSummary: "milestone/summary",
   project: "project",
   projectDetail: "project/:id",
+  projectOptions: "project/options",
   workflows: "workflows",
   workflowDetail: "workflows/:id",
   workflowOptions: "workflows/options",
@@ -23,4 +24,6 @@ export const API_ROUTES = {
   documentTypes: "documentTypes",
   documentTypeDetail: "documentTypes/:id",
   documentTypeOptions: "documentTypes/options",
+  payment: "payment",
+  paymentDetail: "payment/:id",
 };

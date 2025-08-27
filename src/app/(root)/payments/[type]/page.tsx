@@ -7,8 +7,7 @@ import { Payments } from "@/features/financial/components/payments";
 import { PAGE_ROUTES } from "@/routers/page";
 import { Banknote, Building2, Receipt } from "lucide-react";
 import Link from "next/link";
-import DetailViewDialog from "@/features/financial/components/detail-view-dialog/DetailViewDialog";
-import { CreateDocumentDialog } from "@/features/financial/components/create-document-dialog";
+import { PaymentDialog } from "@/features/financial/components/payment-dialog";
 
 export default async function PaymentsPage({
   params,
@@ -61,8 +60,7 @@ export default async function PaymentsPage({
         </Tabs>
       </div>
 
-      <DetailViewDialog />
-      <CreateDocumentDialog />
+      <PaymentDialog />
     </div>
   );
 }

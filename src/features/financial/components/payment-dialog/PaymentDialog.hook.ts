@@ -1,5 +1,5 @@
 import { useContextSelector } from "use-context-selector";
-import { FinancialContext } from "../financial-provider/FinancialProvider";
+import { PaymentContext } from "../payment-provider";
 
 const documentTypes = {
   "purchase-request": {
@@ -53,20 +53,30 @@ const projectOptions = [
   { value: "TH-CN-003", label: "TH-CN-003 - Rolling Stock" },
 ];
 
-export const useCreateDocumentDialog = () => {
-  const createDocumentOpen = useContextSelector(
-    FinancialContext,
-    (state) => state?.createDocumentOpen
+export const usePaymentDialog = () => {
+  const paymentOpen = useContextSelector(
+    PaymentContext,
+    (state) => state?.paymentOpen
   );
-  const setCreateDocumentOpen = useContextSelector(
-    FinancialContext,
-    (state) => state?.setCreateDocumentOpen
+  const setPaymentOpen = useContextSelector(
+    PaymentContext,
+    (state) => state?.setPaymentOpen
+  );
+  const handleClosePayment = useContextSelector(
+    PaymentContext,
+    (state) => state?.handleClosePayment
+  );
+  const selectedId = useContextSelector(
+    PaymentContext,
+    (state) => state?.selectedId
   );
 
   return {
     documentTypes,
     projectOptions,
-    createDocumentOpen,
-    setCreateDocumentOpen,
+    paymentOpen,
+    setPaymentOpen,
+    handleClosePayment,
+    selectedId,
   };
 };

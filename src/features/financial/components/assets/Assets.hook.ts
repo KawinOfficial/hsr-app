@@ -74,10 +74,10 @@ export const useAssets = () => {
     FinancialContext,
     (state) => state?.handleViewItem
   );
-  const handleCreateDocument = useContextSelector(
+  const handleOpenPayment = useContextSelector(
     FinancialContext,
-    (state) => state?.handleCreateDocument
+    (state) => state?.handleOpenPayment
   );
 
-  return { assetsData, handleViewItem, handleCreateDocument };
+  return { assetsData, handleViewItem, handleOpenPayment };
 };

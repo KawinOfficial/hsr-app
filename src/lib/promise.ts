@@ -23,3 +23,8 @@ export async function checkUserAuth() {
   }
   return userId;
 }
+
+export async function getCurrentUser() {
+  const session = await auth();
+  return session?.user.id;
+}

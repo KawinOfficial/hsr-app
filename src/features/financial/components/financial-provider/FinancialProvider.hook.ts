@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Asset } from "@/features/financial/schemas/Asset.schema";
 import { Liability } from "@/features/financial/schemas/Liability.schema";
 import { Payment } from "@/features/financial/schemas/Payment.schema";
+import { useDocumentTypeOptions, useProjectOptions } from "@/hooks/use-option";
 
 const financialSummary = {
   totalBudget: 2850000000,
@@ -28,11 +29,15 @@ export type FinancialItem =
       type: "payment";
     };
 
+export type FinancialType = "asset" | "liability" | "payment";
+
 export const useFinancialProvider = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<FinancialItem>();
   const [editMode, setEditMode] = useState(false);
-  const [createDocumentOpen, setCreateDocumentOpen] = useState(false);
+
+  const { data: documentTypes } = useDocumentTypeOptions();
+  const { data: projectOptions } = useProjectOptions();
 
   function handleOpen() {
     setIsOpen(true);
@@ -56,14 +61,10 @@ export const useFinancialProvider = () => {
 
   function handleViewItem(
     item: Asset | Liability | Payment,
-    type: "asset" | "liability" | "payment"
+    type: FinancialType
   ) {
     setSelectedItem({ item, type } as FinancialItem);
     handleOpen();
-  }
-
-  function handleCreateDocument() {
-    setCreateDocumentOpen(true);
   }
 
   return {
@@ -78,8 +79,8 @@ export const useFinancialProvider = () => {
     handleEdit,
     handleCancel,
     handleSave,
-    createDocumentOpen,
-    setCreateDocumentOpen,
-    handleCreateDocument,
+
+    documentTypes,
+    projectOptions,
   };
 };

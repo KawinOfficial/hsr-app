@@ -7,6 +7,8 @@ import {
   CategoryOptionsSchema,
   DocumentTypeOptions,
   DocumentTypeOptionsSchema,
+  ProjectOptions,
+  ProjectOptionsSchema,
 } from "@/features/profile/schemas/Option.schema";
 import { api } from "@/lib/api";
 import { validatedPromise } from "@/lib/promise";
@@ -72,6 +74,24 @@ export const useDocumentTypeOptions = () => {
         data,
         DocumentTypeOptionsSchema,
         "document-type-options"
+      );
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useProjectOptions = () => {
+  return useQuery({
+    queryKey: ["project-options"],
+    queryFn: async () => {
+      const { data } = await api
+        .get<{ data: ProjectOptions }>(API_ROUTES.projectOptions)
+        .json();
+      return validatedPromise<ProjectOptions>(
+        data,
+        ProjectOptionsSchema,
+        "project-options"
       );
     },
     retry: false,
