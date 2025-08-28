@@ -13,26 +13,23 @@ export const useDepartmentMember = ({
   id,
   page,
   limit,
-  keyword,
   roleId,
 }: {
   id: string;
   page: number;
   limit: number;
-  keyword: string;
   roleId: string;
 }) => {
   const path = pathToUrl(API_ROUTES.departmentMember, { id });
 
   return useQuery({
-    queryKey: ["department-member", id, page, limit, keyword, roleId],
+    queryKey: ["department-member", id, page, limit, roleId],
     queryFn: async () => {
       const response = await api
         .get<{ data: ProfileList; pagination: Pagination }>(path, {
           searchParams: {
             page,
             limit,
-            keyword,
             roleId,
           },
         })

@@ -1,3 +1,5 @@
+"use client";
+
 import PageHeader from "@/components/layout/page-haeder/PageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FinancialOverview } from "@/features/financial/components/financial-overview";
@@ -10,25 +12,62 @@ import Link from "next/link";
 import { PaymentDialog } from "@/features/financial/components/payment-dialog";
 import AssetsDialog from "@/features/financial/components/assets-dialog/AssetsDialog";
 import LiabilityDialog from "@/features/financial/components/liability-dialog/LiabilityDialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useContextSelector } from "use-context-selector";
+import { FinancialContext } from "@/features/financial/components/financial-provider";
+import { useParams } from "next/navigation";
 
-export default async function PaymentsPage({
-  params,
-}: {
-  params: Promise<{ type?: string }>;
-}) {
-  const { type } = await params;
+export default function PaymentsPage() {
+  const { type } = useParams<{ type: string }>();
+  const projectOptions = useContextSelector(
+    FinancialContext,
+    (state) => state?.projectOptions
+  );
+  const onSelectProject = useContextSelector(
+    FinancialContext,
+    (state) => state?.onSelectProject
+  );
+  const selectedProject = useContextSelector(
+    FinancialContext,
+    (state) => state?.selectedProject
+  );
 
   return (
     <div className="bg-background">
       <PageHeader
         title="Financial Management"
         subTitle="Manage payments, assets, and liabilities for the HSR project"
-      />
+      >
+        <Select
+          onValueChange={onSelectProject}
+          value={selectedProject ?? "all"}
+        >
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="All project" />
+          </SelectTrigger>
+          <SelectContent>
+            {[
+              { value: "all", label: "All project" },
+              ...(projectOptions ?? []),
+            ]?.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </PageHeader>
 
       <div className="px-4 sm:px-6 py-8">
         <FinancialOverview />
 
-        <Tabs value={type} className="space-y-6">
+        <Tabs value={type ?? "management"} className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="management" asChild>
               <Link href={PAGE_ROUTES.PAYMENTS}>

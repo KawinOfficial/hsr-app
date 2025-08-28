@@ -1,4 +1,5 @@
 import { useDocumentTypeOptions, useProjectOptions } from "@/hooks/use-option";
+import { useState } from "react";
 
 const financialSummary = {
   totalBudget: 2850000000,
@@ -12,12 +13,18 @@ const financialSummary = {
 };
 
 export const useFinancialProvider = () => {
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const { data: documentTypes } = useDocumentTypeOptions();
   const { data: projectOptions } = useProjectOptions();
 
+  function onSelectProject(projectId: string) {
+    setSelectedProject(projectId);
+  }
+
   return {
     financialSummary,
-
+    selectedProject: selectedProject === "all" ? null : selectedProject,
+    onSelectProject,
     documentTypes,
     projectOptions,
   };

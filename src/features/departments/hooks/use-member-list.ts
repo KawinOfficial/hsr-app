@@ -12,16 +12,14 @@ export const useMemberList = ({
   limit,
   departmentId,
   roleId,
-  keyword,
 }: {
   page: number;
   limit: number;
   departmentId: string;
   roleId: string;
-  keyword: string;
 }) => {
   return useQuery({
-    queryKey: ["team-member", page, limit, departmentId, roleId, keyword],
+    queryKey: ["team-member", page, limit, departmentId, roleId],
     queryFn: async () => {
       const response = await api
         .get<{ data: ProfileList }>(API_ROUTES.departmentAddMember, {
@@ -30,7 +28,6 @@ export const useMemberList = ({
             limit,
             departmentId,
             roleId,
-            keyword,
           },
         })
         .json();

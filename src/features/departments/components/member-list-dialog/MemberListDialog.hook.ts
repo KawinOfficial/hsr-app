@@ -2,7 +2,6 @@ import { useContextSelector } from "use-context-selector";
 import { DepartmentContext } from "../department-provider/DepartmentProvider";
 import { useDepartmentMember } from "@/features/departments/hooks/use-department-member";
 import { useMemo, useState } from "react";
-import { useDebouncedValue } from "@/hooks/use-debouce";
 
 export const useMemberListDialog = () => {
   const memberOpen = useContextSelector(
@@ -27,18 +26,15 @@ export const useMemberListDialog = () => {
   );
 
   const [page, setPage] = useState(1);
-  const [keyword, setKeyword] = useState("");
   const [roleId, setRoleId] = useState("all");
-  const debouncedKeyword = useDebouncedValue(keyword, 500);
   const query = useMemo(
     () => ({
       id: selectedDepartment?.id || "",
       page,
       limit: 10,
-      keyword: debouncedKeyword,
       roleId: roleId === "all" ? "" : roleId,
     }),
-    [selectedDepartment?.id, page, debouncedKeyword, roleId]
+    [selectedDepartment?.id, page, roleId]
   );
 
   const { data: departmentMember, isLoading } = useDepartmentMember(query);
@@ -60,10 +56,6 @@ export const useMemberListDialog = () => {
     setPage(page);
   }
 
-  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
-    setKeyword(e.target.value);
-  }
-
   function handleRoleChange(roleId: string) {
     setRoleId(roleId);
   }
@@ -78,7 +70,6 @@ export const useMemberListDialog = () => {
     onEditDepartment,
     getRoleName,
     handlePageChange,
-    handleSearch,
     handleRoleChange,
     isLoading,
   };

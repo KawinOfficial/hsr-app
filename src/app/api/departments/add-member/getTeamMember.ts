@@ -6,8 +6,7 @@ export async function getTeamMember(
   page: string,
   limit: string,
   departmentId: string,
-  roleId?: string,
-  keyword?: string
+  roleId?: string
 ) {
   try {
     await checkUserAuth();

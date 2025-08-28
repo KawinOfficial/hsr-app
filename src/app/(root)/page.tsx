@@ -2,10 +2,9 @@ import PageHeader from "@/components/layout/page-haeder/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { KeyMetrics } from "@/features/dashboard/components/key-metrics";
-import { ProjectOverview } from "@/features/dashboard/components/project-overview";
-import { SystemStatus } from "@/features/dashboard/components/system-status";
 import { ActiveProject } from "@/features/dashboard/components/active-project";
-import { RecentActivities } from "@/features/dashboard/components/recent-activities";
+import { EfficiencyMetrics } from "@/features/dashboard/components/efficiency-metrics";
+import { MonthlyPerformance } from "@/features/dashboard/components/monthly-performance";
 
 export default function Dashboard() {
   return (
@@ -22,16 +21,11 @@ export default function Dashboard() {
 
       <div className="px-4 sm:px-6 py-8">
         <KeyMetrics />
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-8">
-          <ProjectOverview />
-          <SystemStatus />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-8">
+          <EfficiencyMetrics />
+          <MonthlyPerformance />
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          <ActiveProject />
-          <RecentActivities />
-        </div>
+        <ActiveProject />
       </div>
     </div>
   );

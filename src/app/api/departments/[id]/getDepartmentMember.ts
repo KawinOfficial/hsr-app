@@ -6,7 +6,6 @@ export async function getDepartmentMember(
   id: string,
   page: string = "1",
   limit: string = "10",
-  keyword: string = "",
   roleId: string = ""
 ) {
   try {

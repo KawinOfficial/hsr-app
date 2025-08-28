@@ -54,27 +54,6 @@ export const NAVIGATION_ITEMS = [
     ],
   },
   {
-    title: "Reports & Analytics",
-    iconName: "BarChart3",
-    items: [
-      {
-        title: "Financial Reports",
-        url: PAGE_ROUTES.REPORTS_FINANCIAL,
-        description: "Income and expense reports",
-      },
-      {
-        title: "Project Summary",
-        url: PAGE_ROUTES.REPORTS_SUMMARY,
-        description: "Comprehensive project reports",
-      },
-      {
-        title: "Cost Analysis",
-        url: PAGE_ROUTES.REPORTS_COST_ANALYSIS,
-        description: "Detailed cost analysis and forecasting",
-      },
-    ],
-  },
-  {
     title: "User Management",
     iconName: "Users",
     items: [
