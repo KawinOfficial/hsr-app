@@ -1,6 +1,6 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { useContextSelector } from "use-context-selector";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDateInput } from "@/lib/format";
 import { FinancialContext } from "@/features/financial/components/financial-provider";
@@ -59,9 +59,12 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
   );
 
   const id = selectedId ?? "";
-  const { data: liabilityDetail } = useLiabilityDetail(id);
-  const { mutate: createLiability } = useCreateLiability();
-  const { mutate: updateLiability } = useUpdateLiability(id);
+  const { data: liabilityDetail, isFetching: isLoadingLiabilityDetail } =
+    useLiabilityDetail(id);
+  const { mutate: createLiability, isPending: isLoadingCreateLiability } =
+    useCreateLiability();
+  const { mutate: updateLiability, isPending: isLoadingUpdateLiability } =
+    useUpdateLiability(id);
 
   const methods = useForm<Liability>({ defaultValues });
   const { handleSubmit, reset, control, watch } = methods;
@@ -78,6 +81,17 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
   const isExceedTotalAmount = Boolean(
     watch("amount") && totalAmount > watch("amount")
   );
+  const isLoading = useMemo(() => {
+    return (
+      isLoadingLiabilityDetail ||
+      isLoadingCreateLiability ||
+      isLoadingUpdateLiability
+    );
+  }, [
+    isLoadingLiabilityDetail,
+    isLoadingCreateLiability,
+    isLoadingUpdateLiability,
+  ]);
 
   function createPayload(data: Liability) {
     return {
@@ -184,5 +198,6 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     calcPaymentScheduleStatus,
     totalAmount,
     isExceedTotalAmount,
+    isLoading,
   };
 };

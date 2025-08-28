@@ -27,6 +27,7 @@ import { PaymentHistory } from "@/features/financial/components/payment-history"
 import { locations } from "@/constants/options";
 import { Progress } from "@/components/ui/progress";
 import { formatCurrency, formatPercent } from "@/lib/format";
+import { Loading } from "@/components/loading";
 
 const AssetsForm = ({ onClose }: UseAssetsForm) => {
   const {
@@ -41,11 +42,13 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
     fields,
     getCurrentValue,
     getDepreciation,
+    isLoading,
   } = useAssetsForm({ onClose });
 
   return (
     <Form {...methods}>
       <form onSubmit={onSubmit} onReset={onReset}>
+        {isLoading && <Loading />}
         <div className="max-h-[70vh] overflow-y-auto px-6 py-3 grid grid-cols-3 gap-4">
           <Card className="col-span-2 m-0">
             <CardHeader>

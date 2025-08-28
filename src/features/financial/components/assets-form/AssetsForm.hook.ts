@@ -10,7 +10,7 @@ import {
   useUpdateAsset,
 } from "../../hooks/use-assets";
 import { useToast } from "@/components/ui/use-toast";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { formatDateInput } from "@/lib/format";
 
 export interface UseAssetsForm {
@@ -54,9 +54,12 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
   const refetch = useContextSelector(AssetsContext, (state) => state?.refetch);
 
   const id = selectedId ?? "";
-  const { data: assetDetail } = useAssetDetail(id);
-  const { mutate: createAsset } = useCreateAsset();
-  const { mutate: updateAsset } = useUpdateAsset(id);
+  const { data: assetDetail, isFetching: isLoadingAssetDetail } =
+    useAssetDetail(id);
+  const { mutate: createAsset, isPending: isLoadingCreateAsset } =
+    useCreateAsset();
+  const { mutate: updateAsset, isPending: isLoadingUpdateAsset } =
+    useUpdateAsset(id);
 
   const methods = useForm<Asset>({ defaultValues });
   const { handleSubmit, reset, control, watch } = methods;
@@ -70,6 +73,9 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
   const amount = Number(watch("amount"));
   const getCurrentValue = amount - maintancesCost;
   const getDepreciation = (maintancesCost * 100) / amount || 0;
+  const isLoading = useMemo(() => {
+    return isLoadingAssetDetail || isLoadingCreateAsset || isLoadingUpdateAsset;
+  }, [isLoadingAssetDetail, isLoadingCreateAsset, isLoadingUpdateAsset]);
 
   function createPayload(data: Asset) {
     return {
@@ -180,5 +186,6 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
     fields,
     getCurrentValue,
     getDepreciation,
+    isLoading,
   };
 };

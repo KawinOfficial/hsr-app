@@ -37,6 +37,7 @@ import { PRIORITY_OPTIONS } from "@/features/financial/constants/options";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { Loading } from "@/components/loading";
 
 const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
   const {
@@ -52,11 +53,13 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
     calcPaymentScheduleStatus,
     totalAmount,
     isExceedTotalAmount,
+    isLoading,
   } = useLiabilityForm({ onClose });
 
   return (
     <Form {...methods}>
       <form onSubmit={onSubmit} onReset={onReset}>
+        {isLoading && <Loading />}
         <div className="max-h-[70vh] overflow-y-auto px-6 py-3 grid grid-cols-3 gap-4">
           <Card className="col-span-2 m-0">
             <CardHeader>

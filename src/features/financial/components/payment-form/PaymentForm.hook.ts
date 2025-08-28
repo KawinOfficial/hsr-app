@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Payment } from "@/features/financial/schemas/Payment.schema";
 import { useContextSelector } from "use-context-selector";
 import { FinancialContext } from "@/features/financial/components/financial-provider/FinancialProvider";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   useCreatePayment,
   usePaymentDetail,
@@ -49,9 +49,12 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
   );
 
   const id = selectedId ?? "";
-  const { data: paymentDetail } = usePaymentDetail(id);
-  const { mutate: createPayment } = useCreatePayment();
-  const { mutate: updatePayment } = useUpdatePayment(id);
+  const { data: paymentDetail, isFetching: isLoadingPaymentDetail } =
+    usePaymentDetail(id);
+  const { mutate: createPayment, isPending: isLoadingCreatePayment } =
+    useCreatePayment();
+  const { mutate: updatePayment, isPending: isLoadingUpdatePayment } =
+    useUpdatePayment(id);
 
   const methods = useForm<Payment>({ defaultValues });
   const { handleSubmit, reset, watch } = methods;
@@ -59,6 +62,11 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
   const vatAmount = watch("amount") * ((watch("vat") ?? 0) / 100);
   const taxAmount = watch("amount") * ((watch("tax") ?? 0) / 100);
   const netAmount = watch("amount") - vatAmount - taxAmount;
+  const isLoading = useMemo(() => {
+    return (
+      isLoadingPaymentDetail || isLoadingCreatePayment || isLoadingUpdatePayment
+    );
+  }, [isLoadingPaymentDetail, isLoadingCreatePayment, isLoadingUpdatePayment]);
 
   function createPayload(data: Payment) {
     return {
@@ -146,5 +154,6 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     netAmount,
     selectedId,
     history,
+    isLoading,
   };
 };

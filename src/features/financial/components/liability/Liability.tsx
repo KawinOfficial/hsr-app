@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/pagination";
 import { DeletePaymentDialog } from "../delete-payment-dialog";
+import { TableEmpty, TableLoading } from "@/components/table";
 
 const Liability = () => {
   const {
@@ -33,6 +34,7 @@ const Liability = () => {
     handleChangeKeyword,
     handleChangePage,
     getDocumentTypeName,
+    isLoading,
   } = useLiability();
 
   return (
@@ -77,46 +79,54 @@ const Liability = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {list.map((liability) => (
-              <TableRow key={liability.id}>
-                <TableCell className="font-semibold">
-                  {liability.liabilityId}
-                </TableCell>
-                <TableCell>{liability.name}</TableCell>
-                <TableCell>
-                  {getDocumentTypeName(liability.documentTypesId)}
-                </TableCell>
-                <TableCell>{liability.creditor}</TableCell>
-                <TableCell className="font-semibold">
-                  {formatCurrency(liability.amount)}
-                </TableCell>
-                <TableCell>{formatDate(liability.dueDate)}</TableCell>
-                <TableCell className="text-center">
-                  <span
-                    className={`font-medium ${getPriorityColor(
-                      liability.priority
-                    )}`}
-                  >
-                    {liability.priority}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <div className="flex space-x-1 justify-center">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleViewLiability?.(liability.id ?? "")}
+            {isLoading ? (
+              <TableLoading colSpan={7} className="py-[20vh]" />
+            ) : !list?.length ? (
+              <TableEmpty colSpan={7} className="py-[20vh]" />
+            ) : (
+              list.map((liability) => (
+                <TableRow key={liability.id}>
+                  <TableCell className="font-semibold">
+                    {liability.liabilityId}
+                  </TableCell>
+                  <TableCell>{liability.name}</TableCell>
+                  <TableCell>
+                    {getDocumentTypeName(liability.documentTypesId)}
+                  </TableCell>
+                  <TableCell>{liability.creditor}</TableCell>
+                  <TableCell className="font-semibold">
+                    {formatCurrency(liability.amount)}
+                  </TableCell>
+                  <TableCell>{formatDate(liability.dueDate)}</TableCell>
+                  <TableCell className="text-center">
+                    <span
+                      className={`font-medium ${getPriorityColor(
+                        liability.priority
+                      )}`}
                     >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <DeletePaymentDialog
-                      id={liability.id ?? ""}
-                      type="liability"
-                    />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                      {liability.priority}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex space-x-1 justify-center">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          handleViewLiability?.(liability.id ?? "")
+                        }
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <DeletePaymentDialog
+                        id={liability.id ?? ""}
+                        type="liability"
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
 

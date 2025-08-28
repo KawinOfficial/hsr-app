@@ -26,6 +26,7 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { formatCurrency } from "@/lib/format";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PaymentHistory } from "@/features/financial/components/payment-history";
+import { Loading } from "@/components/loading";
 
 const PaymentForm = ({ onClose }: UsePaymentForm) => {
   const {
@@ -38,6 +39,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
     taxAmount,
     netAmount,
     selectedId,
+    isLoading,
   } = usePaymentForm({
     onClose,
   });
@@ -45,6 +47,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
   return (
     <Form {...methods}>
       <form onSubmit={onSubmit} onReset={onReset}>
+        {isLoading && <Loading />}
         <div className="max-h-[70vh] overflow-y-auto px-6 py-3 grid grid-cols-3 gap-4">
           <Card className="col-span-2 m-0">
             <CardHeader>
@@ -332,7 +335,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
           <Button variant="outline" type="reset" onClick={onReset}>
             Cancel
           </Button>
-          <Button type="submit">
+          <Button type="submit" disabled={isLoading}>
             <Save className="h-4 w-4 mr-2" />
             {selectedId ? "Update Payment" : "Create Payment"}
           </Button>
