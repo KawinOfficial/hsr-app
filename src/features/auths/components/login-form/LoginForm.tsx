@@ -115,6 +115,7 @@ const LoginForm = () => {
                   variant="link"
                   className="text-sm text-rail-blue hover:underline"
                   onClick={() => setForgotPassword(true)}
+                  disabled
                 >
                   Forgot password?
                 </Button>
