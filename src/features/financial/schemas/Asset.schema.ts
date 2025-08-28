@@ -1,22 +1,26 @@
 import { z } from "zod";
+import { MaintanceListSchema } from "./Maintance.schema";
+import { PaginationSchema } from "@/types/pagination";
 
 export const AssetSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
+  updatedAt: z.string().optional(),
+  createdAt: z.string().optional(),
   name: z.string(),
-  category: z.string(),
+  assetId: z.string(),
   description: z.string(),
-  value: z.number(),
-  depreciation: z.number(),
-  currentValue: z.number(),
+  amount: z.number(),
+  purchaseDate: z.string(),
   location: z.string(),
-  condition: z.string(),
-  lastMaintenance: z.string(),
-  nextMaintenance: z.string(),
-  project: z.string(),
-  supplier: z.string(),
-  warrantyUntil: z.string(),
+  warrantyDate: z.string().optional().nullable(),
+  documentTypesId: z.string().optional(),
+  projectId: z.string().optional(),
+  maintances: MaintanceListSchema.optional().nullable(),
 });
 
-export const AssetsArraySchema = z.array(AssetSchema);
-
+export const AssetsListSchema = z.object({
+  data: z.array(AssetSchema),
+  pagination: PaginationSchema,
+});
 export type Asset = z.infer<typeof AssetSchema>;
+export type AssetsList = z.infer<typeof AssetsListSchema>;

@@ -2,10 +2,6 @@ import { useContextSelector } from "use-context-selector";
 import { WorkflowContext } from "@/features/document-types/components/workflow-provider";
 
 export const useWorkflowList = () => {
-  const workflowTemplates = useContextSelector(
-    WorkflowContext,
-    (state) => state?.workflowTemplates
-  );
   const setCreateWorkflowOpen = useContextSelector(
     WorkflowContext,
     (state) => state?.setCreateWorkflowOpen
@@ -14,6 +10,25 @@ export const useWorkflowList = () => {
     WorkflowContext,
     (state) => state?.handleWorkflowDialog
   );
+  const workflows = useContextSelector(
+    WorkflowContext,
+    (state) => state?.workflows
+  );
+  const onChangePage = useContextSelector(
+    WorkflowContext,
+    (state) => state?.onChangePage
+  );
+  const handleSearch = useContextSelector(
+    WorkflowContext,
+    (state) => state?.handleSearch
+  );
 
-  return { workflowTemplates, setCreateWorkflowOpen, handleWorkflowDialog };
+  return {
+    setCreateWorkflowOpen,
+    handleWorkflowDialog,
+    list: workflows?.data ?? [],
+    pagination: workflows?.pagination,
+    onChangePage,
+    handleSearch,
+  };
 };

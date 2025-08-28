@@ -7,25 +7,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Clock,
-  Edit,
-  Eye,
-  Filter,
-  Plus,
-  Search,
-  Target,
-  Users,
-} from "lucide-react";
+import { Eye, Plus, Search, Users, BadgePlus, TimerReset } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { getCategoryColor } from "@/features/document-types/utils/colorStatus";
 import { useWorkflowList } from "./WorkflowList.hook";
+import { Pagination } from "@/components/pagination";
+import { calculateTotalTimeLimit, formatDateWithTime } from "@/lib/format";
 
 const WorkflowList = () => {
-  const { workflowTemplates, setCreateWorkflowOpen, handleWorkflowDialog } =
-    useWorkflowList();
+  const {
+    setCreateWorkflowOpen,
+    handleWorkflowDialog,
+    list,
+    pagination,
+    onChangePage,
+    handleSearch,
+  } = useWorkflowList();
 
   return (
     <Card>
@@ -40,11 +37,12 @@ const WorkflowList = () => {
           <div className="flex items-center space-x-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search workflows..." className="pl-10 w-64" />
+              <Input
+                placeholder="Search workflows..."
+                className="pl-10 w-64"
+                onChange={handleSearch}
+              />
             </div>
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4" />
-            </Button>
             <Button size="sm" onClick={() => setCreateWorkflowOpen?.(true)}>
               <Plus className="h-4 w-4 mr-2" />
               New Workflow
@@ -52,108 +50,116 @@ const WorkflowList = () => {
           </div>
         </div>
       </CardHeader>
+
       <CardContent>
-        <div className="space-y-4">
-          {workflowTemplates?.map((workflow) => (
-            <Card
-              key={workflow.id}
-              className="hover:shadow-md transition-shadow"
-            >
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                  <div className="lg:col-span-2 space-y-3">
-                    <div className="flex items-start justify-between">
-                      <div>
+        <div className="space-y-4 h-[75vh] overflow-y-auto flex flex-col justify-between">
+          <div className="space-y-4">
+            {list?.map((workflow, index) => (
+              <Card
+                key={`${index}-${workflow.workflowId}`}
+                className="hover:shadow-md transition-shadow"
+              >
+                <CardContent className="p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div className="lg:col-span-2 space-y-3">
+                      <div className="space-y-1">
                         <h3 className="font-semibold text-lg">
                           {workflow.name}
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          {workflow.id} • {workflow.description}
+                          {workflow.workflowId} • {workflow.description}
                         </p>
                       </div>
-                      <Badge className={getCategoryColor(workflow.category)}>
-                        {workflow.category}
-                      </Badge>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center space-x-1">
+                          <Users className="h-4 w-4 text-muted-foreground" />
+                          <span>{workflow.steps.length} steps</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <BadgePlus className="h-4 w-4 text-muted-foreground" />
+                          <span>
+                            {workflow.createdAt
+                              ? formatDateWithTime(workflow.createdAt)
+                              : "N/A"}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <TimerReset className="h-4 w-4 text-muted-foreground" />
+                          <span>
+                            {workflow.updatedAt
+                              ? formatDateWithTime(workflow.updatedAt)
+                              : "N/A"}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-4 text-sm">
-                      <div className="flex items-center space-x-1">
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                        <span>{workflow.steps.length} steps</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-                        <span>{workflow.averageCompletionTime}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Target className="h-4 w-4 text-muted-foreground" />
-                        <span>{workflow.successRate}% success</span>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="space-y-3">
-                    <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">
-                        Total Executions
-                      </p>
-                      <p className="text-lg font-bold text-rail-blue">
-                        {workflow.totalExecutions}
-                      </p>
+                    <div className="space-y-3">
+                      <div className="text-center p-3 bg-muted/50 rounded-lg">
+                        <p className="text-xs text-muted-foreground">
+                          Total Executions
+                        </p>
+                        <p className="text-lg font-bold text-rail-blue">0</p>
+                      </div>
+                      <div className="text-center p-3 bg-muted/50 rounded-lg">
+                        <p className="text-xs text-muted-foreground">
+                          Total Time Limit
+                        </p>
+                        <p className="text-lg font-bold text-success-green">
+                          {calculateTotalTimeLimit(workflow.steps)}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <p className="text-xs text-muted-foreground">
-                        Success Rate
-                      </p>
-                      <p className="text-lg font-bold text-success-green">
-                        {workflow.successRate}%
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="space-y-3">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        Workflow Steps
-                      </p>
-                      <div className="space-y-1">
-                        {workflow.steps.slice(0, 3).map((step, index) => (
-                          <div
-                            key={step.id}
-                            className="flex items-center space-x-2 text-xs"
-                          >
-                            <div className="w-6 h-6 rounded-full bg-rail-blue text-white flex items-center justify-center font-medium">
-                              {index + 1}
+                    <div className="space-y-3 flex flex-col justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Workflow Steps
+                        </p>
+                        <div className="space-y-1">
+                          {workflow.steps.slice(0, 3).map((step, idx) => (
+                            <div
+                              key={`${idx}-${step.name}`}
+                              className="flex items-center space-x-2 text-xs"
+                            >
+                              <div className="w-6 h-6 rounded-full bg-rail-blue text-white flex items-center justify-center font-medium">
+                                {idx + 1}
+                              </div>
+                              <span className="truncate">{step.name}</span>
                             </div>
-                            <span className="truncate">{step.name}</span>
-                          </div>
-                        ))}
-                        {workflow.steps.length > 3 && (
-                          <p className="text-xs text-muted-foreground pl-8">
-                            +{workflow.steps.length - 3} more steps
-                          </p>
-                        )}
+                          ))}
+                          {workflow.steps.length > 3 && (
+                            <p className="text-xs text-muted-foreground pl-8">
+                              +{workflow.steps.length - 3} more steps
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                          onClick={() =>
+                            handleWorkflowDialog?.(workflow.id ?? "")
+                          }
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          View
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1"
-                        onClick={() => handleWorkflowDialog?.(workflow)}
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        View
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
-                        <Edit className="h-4 w-4 mr-1" />
-                        Edit
-                      </Button>
-                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <Pagination
+            totalPages={pagination?.totalPages ?? 0}
+            currentPage={pagination?.currentPage ?? 1}
+            onPageChange={onChangePage}
+          />
         </div>
       </CardContent>
     </Card>

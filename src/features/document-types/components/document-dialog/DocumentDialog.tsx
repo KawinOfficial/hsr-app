@@ -13,15 +13,17 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit } from "lucide-react";
-import {
-  getCategoryColor,
-  getStatusColor,
-} from "@/features/document-types/utils/colorStatus";
+import { getStatusColor } from "@/features/document-types/utils/colorStatus";
 import { useDocumentDialog } from "./DocumentDialog.hook";
+import { calculateTotalTimeLimit, formatDateWithTime } from "@/lib/format";
 
 const DocumentDialog = () => {
-  const { detailViewOpen, setDetailViewOpen, selectedDocumentType } =
-    useDocumentDialog();
+  const {
+    detailViewOpen,
+    setDetailViewOpen,
+    selectedDocumentType,
+    onOpenEdit,
+  } = useDocumentDialog();
 
   if (!selectedDocumentType) return null;
 
@@ -31,100 +33,81 @@ const DocumentDialog = () => {
         <DialogHeader>
           <DialogTitle>{selectedDocumentType.name}</DialogTitle>
           <DialogDescription>
-            Document Type ID: {selectedDocumentType.id} • Created:{" "}
-            {selectedDocumentType.createdDate}
+            Document Type ID: {selectedDocumentType.documentId} • Created:{" "}
+            {formatDateWithTime(selectedDocumentType.createdAt ?? "")}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-6 mt-4">
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <Label className="font-medium">Category</Label>
+              <Label className="font-medium text-muted-foreground">
+                Category
+              </Label>
               <div className="mt-1">
-                <Badge
-                  className={getCategoryColor(selectedDocumentType.category)}
-                >
-                  {selectedDocumentType.category}
-                </Badge>
+                {selectedDocumentType.category?.name ?? "-"}
               </div>
             </div>
             <div>
-              <Label className="font-medium">Status</Label>
+              <Label className="font-medium text-muted-foreground">
+                Status
+              </Label>
               <div className="mt-1">
                 <Badge
                   className={getStatusColor(
-                    selectedDocumentType.active ? "Active" : "Inactive"
+                    selectedDocumentType.isActive ? "Active" : "Inactive"
                   )}
                 >
-                  {selectedDocumentType.active ? "Active" : "Inactive"}
+                  {selectedDocumentType.isActive ? "Active" : "Inactive"}
                 </Badge>
               </div>
             </div>
           </div>
 
           <div>
-            <Label className="font-medium">Description</Label>
-            <p className="text-sm text-muted-foreground mt-1">
-              {selectedDocumentType.description}
-            </p>
+            <Label className="font-medium text-muted-foreground">
+              Description
+            </Label>
+            <p className="text-sm mt-1">{selectedDocumentType.description}</p>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <Label className="font-medium">Total Documents</Label>
-              <p className="text-2xl font-bold text-rail-blue">
-                {selectedDocumentType.totalDocuments}
-              </p>
+              <Label className="font-medium text-muted-foreground">
+                Total Documents
+              </Label>
+              <p className="text-2xl font-bold text-rail-blue">0</p>
             </div>
             <div>
-              <Label className="font-medium">Pending</Label>
-              <p className="text-2xl font-bold text-warning-amber">
-                {selectedDocumentType.pendingDocuments}
-              </p>
+              <Label className="font-medium text-muted-foreground">
+                Pending
+              </Label>
+              <p className="text-2xl font-bold text-warning-amber">0</p>
             </div>
             <div>
-              <Label className="font-medium">Avg Processing</Label>
+              <Label className="font-medium text-muted-foreground">
+                Processing Time
+              </Label>
               <p className="text-2xl font-bold text-success-green">
-                {selectedDocumentType.averageProcessingTime}
+                {calculateTotalTimeLimit(
+                  selectedDocumentType.workflow?.steps ?? []
+                )}
               </p>
-            </div>
-          </div>
-
-          <div>
-            <Label className="font-medium">Required Fields</Label>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {selectedDocumentType.requiredFields.map((field: string) => (
-                <Badge key={field} variant="outline">
-                  {field}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <Label className="font-medium">Permissions</Label>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {selectedDocumentType.permissions.map((permission: string) => (
-                <Badge
-                  key={permission}
-                  className="bg-muted text-muted-foreground"
-                >
-                  {permission}
-                </Badge>
-              ))}
             </div>
           </div>
 
           <Separator />
 
           <div>
-            <Label className="font-medium">Assigned Workflow</Label>
+            <Label className="font-medium text-muted-foreground">
+              Assigned Workflow
+            </Label>
             <div className="mt-2 p-4 border rounded-lg">
               <h4 className="font-medium">
-                {selectedDocumentType.workflowName}
+                {selectedDocumentType.workflow?.name ?? "-"}
               </h4>
               <p className="text-sm text-muted-foreground">
-                {selectedDocumentType.workflowId} •{" "}
-                {selectedDocumentType.approvalLevels} approval levels
+                {selectedDocumentType.workflow?.workflowId ?? "-"} •{" "}
+                {selectedDocumentType.workflow?.steps.length ?? 0} steps
               </p>
             </div>
           </div>
@@ -133,7 +116,7 @@ const DocumentDialog = () => {
           <Button variant="outline" onClick={() => setDetailViewOpen?.(false)}>
             Close
           </Button>
-          <Button>
+          <Button onClick={onOpenEdit}>
             <Edit className="h-4 w-4 mr-2" />
             Edit Document Type
           </Button>

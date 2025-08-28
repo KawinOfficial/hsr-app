@@ -9,13 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Eye, Search, Filter } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { formatCurrency } from "@/lib/format";
-import {
-  getStatusColor,
-  getPriorityColor,
-} from "@/features/financial/utils/color";
+import { Plus, Eye, Search } from "lucide-react";
+import { formatCurrency, formatDate } from "@/lib/format";
+import { getPriorityColor } from "@/features/financial/utils/color";
 import {
   Table,
   TableBody,
@@ -25,10 +21,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
+import { Pagination } from "@/components/pagination";
+import { DeletePaymentDialog } from "../delete-payment-dialog";
 
 const Liability = () => {
-  const { liabilitiesData, handleViewItem, handleCreateDocument } =
-    useLiability();
+  const {
+    handleViewLiability,
+    handleOpenLiability,
+    list,
+    pagination,
+    handleChangeKeyword,
+    handleChangePage,
+    getDocumentTypeName,
+  } = useLiability();
 
   return (
     <Card>
@@ -47,12 +52,10 @@ const Liability = () => {
               <Input
                 placeholder="Search liabilities..."
                 className="pl-10 w-64"
+                onChange={(e) => handleChangeKeyword?.(e.target.value)}
               />
             </div>
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4" />
-            </Button>
-            <Button size="sm" onClick={handleCreateDocument}>
+            <Button size="sm" onClick={handleOpenLiability}>
               <Plus className="h-4 w-4 mr-2" />
               New Liability
             </Button>
@@ -64,31 +67,31 @@ const Liability = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Liability ID</TableHead>
+              <TableHead>Name</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>Creditor</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>Due Date</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Priority</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="text-center">Priority</TableHead>
+              <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {liabilitiesData.map((liability) => (
+            {list.map((liability) => (
               <TableRow key={liability.id}>
-                <TableCell className="font-medium">{liability.id}</TableCell>
-                <TableCell>{liability.type}</TableCell>
+                <TableCell className="font-semibold">
+                  {liability.liabilityId}
+                </TableCell>
+                <TableCell>{liability.name}</TableCell>
+                <TableCell>
+                  {getDocumentTypeName(liability.documentTypesId)}
+                </TableCell>
                 <TableCell>{liability.creditor}</TableCell>
                 <TableCell className="font-semibold">
                   {formatCurrency(liability.amount)}
                 </TableCell>
-                <TableCell>{liability.dueDate}</TableCell>
-                <TableCell>
-                  <Badge className={getStatusColor(liability.status)}>
-                    {liability.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
+                <TableCell>{formatDate(liability.dueDate)}</TableCell>
+                <TableCell className="text-center">
                   <span
                     className={`font-medium ${getPriorityColor(
                       liability.priority
@@ -98,29 +101,30 @@ const Liability = () => {
                   </span>
                 </TableCell>
                 <TableCell>
-                  <div className="flex space-x-1">
+                  <div className="flex space-x-1 justify-center">
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleViewItem?.(liability, "liability")}
+                      onClick={() => handleViewLiability?.(liability.id ?? "")}
                     >
                       <Eye className="h-4 w-4" />
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      //   onClick={() =>
-                      //     handleEditItem(liability, "liability")
-                      //   }
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
+                    <DeletePaymentDialog
+                      id={liability.id ?? ""}
+                      type="liability"
+                    />
                   </div>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+
+        <Pagination
+          totalPages={pagination?.totalPages ?? 0}
+          currentPage={pagination?.currentPage ?? 1}
+          onPageChange={handleChangePage}
+        />
       </CardContent>
     </Card>
   );

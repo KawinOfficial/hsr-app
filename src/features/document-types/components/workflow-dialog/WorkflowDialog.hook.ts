@@ -14,6 +14,29 @@ export const useWorkflowDialog = () => {
     WorkflowContext,
     (state) => state?.selectedWorkflow
   );
+  const options = useContextSelector(
+    WorkflowContext,
+    (state) => state?.options
+  );
+  const setEditWorkflowOpen = useContextSelector(
+    WorkflowContext,
+    (state) => state?.setEditWorkflowOpen
+  );
 
-  return { workflowDialogOpen, setWorkflowDialogOpen, selectedWorkflow };
+  function findRoleName(roleId: string) {
+    return options?.users.find((role) => role.value === roleId)?.label;
+  }
+
+  function handleEditWorkflow() {
+    setEditWorkflowOpen?.(true);
+    setWorkflowDialogOpen?.(false);
+  }
+
+  return {
+    workflowDialogOpen,
+    setWorkflowDialogOpen,
+    selectedWorkflow,
+    findRoleName,
+    handleEditWorkflow,
+  };
 };

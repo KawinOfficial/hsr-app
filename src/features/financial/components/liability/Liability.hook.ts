@@ -1,67 +1,51 @@
 import { useContextSelector } from "use-context-selector";
-import { FinancialContext } from "../financial-provider/FinancialProvider";
-import { Liability } from "@/features/financial/schemas/Liability.schema";
-
-const liabilitiesData: Liability[] = [
-  {
-    id: "LIA-2024-001",
-    type: "Contract Obligation",
-    creditor: "Bangkok Construction Co.",
-    amount: 89000000,
-    dueDate: "2024-03-30",
-    status: "Current",
-    description: "Remaining payment for foundation work",
-    project: "TH-CN-001",
-    priority: "High",
-    terms: "Net 45 days",
-  },
-  {
-    id: "LIA-2024-002",
-    type: "Equipment Lease",
-    creditor: "Heavy Machinery Rental",
-    amount: 12000000,
-    dueDate: "2024-02-28",
-    status: "Overdue",
-    description: "Monthly lease for excavation equipment",
-    project: "TH-CN-002",
-    priority: "Critical",
-    terms: "Monthly payment",
-  },
-  {
-    id: "LIA-2024-003",
-    type: "Advance Received",
-    creditor: "Government of Thailand",
-    amount: 450000000,
-    dueDate: "2025-12-31",
-    status: "Long-term",
-    description: "Project advance funding",
-    project: "TH-CN-ALL",
-    priority: "Medium",
-    terms: "Project completion",
-  },
-  {
-    id: "LIA-2024-004",
-    type: "Supplier Credit",
-    creditor: "Steel Supply Thailand",
-    amount: 34000000,
-    dueDate: "2024-03-15",
-    status: "Current",
-    description: "Materials supplied on credit terms",
-    project: "TH-CN-002",
-    priority: "Medium",
-    terms: "Net 30 days",
-  },
-];
+import { LiabilityContext } from "../liability-provider";
+import { FinancialContext } from "../financial-provider";
 
 export const useLiability = () => {
-  const handleViewItem = useContextSelector(
-    FinancialContext,
-    (state) => state?.handleViewItem
+  const handleViewLiability = useContextSelector(
+    LiabilityContext,
+    (state) => state?.handleViewLiability
   );
-  const handleCreateDocument = useContextSelector(
+  const handleOpenLiability = useContextSelector(
+    LiabilityContext,
+    (state) => state?.handleOpenLiability
+  );
+  const liabilities = useContextSelector(
+    LiabilityContext,
+    (state) => state?.liabilities
+  );
+  const isLoading = useContextSelector(
+    LiabilityContext,
+    (state) => state?.isLoading
+  );
+  const handleChangePage = useContextSelector(
+    LiabilityContext,
+    (state) => state?.handleChangePage
+  );
+  const handleChangeKeyword = useContextSelector(
+    LiabilityContext,
+    (state) => state?.handleChangeKeyword
+  );
+  const documentTypes = useContextSelector(
     FinancialContext,
-    (state) => state?.handleCreateDocument
+    (context) => context?.documentTypes
   );
 
-  return { liabilitiesData, handleViewItem, handleCreateDocument };
+  function getDocumentTypeName(documentTypeId: string) {
+    return documentTypes?.find(
+      (documentType) => documentType.id === documentTypeId
+    )?.name;
+  }
+
+  return {
+    handleViewLiability,
+    handleOpenLiability,
+    list: liabilities?.data ?? [],
+    pagination: liabilities?.pagination,
+    isLoading,
+    handleChangePage,
+    handleChangeKeyword,
+    getDocumentTypeName,
+  };
 };

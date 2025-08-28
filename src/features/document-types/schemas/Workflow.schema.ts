@@ -1,31 +1,28 @@
+import { PaginationSchema } from "@/types/pagination";
 import { z } from "zod";
 
 export const WorkflowStepSchema = z.object({
-  id: z.string(),
   name: z.string(),
   type: z.string(),
-  assignedRole: z.string(),
-  assignedUsers: z.array(z.string()),
+  userId: z.string(),
   timeLimit: z.string(),
-  required: z.boolean(),
-  conditions: z.array(z.string()),
 });
 
 export const WorkflowSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string(),
+  workflowId: z.string(),
   description: z.string(),
-  category: z.string(),
-  active: z.boolean(),
   steps: z.array(WorkflowStepSchema),
-  averageCompletionTime: z.string(),
-  successRate: z.number(),
-  totalExecutions: z.number(),
-  createdBy: z.string(),
-  createdDate: z.string(),
-  lastModified: z.string(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
-export const WorkflowTemplatesSchema = z.array(WorkflowSchema);
+export const WorkflowListSchema = z.object({
+  data: z.array(WorkflowSchema),
+  pagination: PaginationSchema,
+});
 
 export type Workflow = z.infer<typeof WorkflowSchema>;
+export type WorkflowStep = z.infer<typeof WorkflowStepSchema>;
+export type WorkflowList = z.infer<typeof WorkflowListSchema>;

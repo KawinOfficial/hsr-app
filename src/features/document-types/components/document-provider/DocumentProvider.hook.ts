@@ -1,135 +1,123 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DocumentType } from "@/features/document-types/schemas/DocumentTypes.schema";
+import {
+  useCategoryOptions,
+  useDocumentTypeOptions,
+  useWorkflowOptions,
+} from "@/hooks/use-option";
+import { useDocumentType } from "@/features/document-types/hooks/use-document-type";
+import { useDebouncedValue } from "@/hooks/use-debouce";
+import { Workflow } from "@/features/document-types/schemas/Workflow.schema";
+import { Category } from "@/features/category/schemas/Category.schema";
 
-const documentTypes = [
-  {
-    id: "DT-001",
-    name: "Purchase Request",
-    category: "Procurement",
-    description: "Request for procurement of materials or services",
-    active: true,
-    workflowId: "WF-001",
-    workflowName: "Standard Procurement Approval",
-    requiredFields: ["vendor", "amount", "description", "projectCode"],
-    approvalLevels: 3,
-    averageProcessingTime: "2.5 days",
-    totalDocuments: 245,
-    pendingDocuments: 12,
-    createdBy: "Somchai Tanakorn",
-    createdDate: "2023-10-15",
-    lastModified: "2024-02-10",
-    permissions: ["Finance", "Procurement", "Project Manager"],
-  },
-  {
-    id: "DT-002",
-    name: "Purchase Order",
-    category: "Procurement",
-    description: "Formal order to vendor for goods or services",
-    active: true,
-    workflowId: "WF-002",
-    workflowName: "Purchase Order Processing",
-    requiredFields: ["vendor", "items", "totalAmount", "deliveryDate"],
-    approvalLevels: 2,
-    averageProcessingTime: "1.8 days",
-    totalDocuments: 189,
-    pendingDocuments: 8,
-    createdBy: "Malee Jitpakdee",
-    createdDate: "2023-10-16",
-    lastModified: "2024-02-08",
-    permissions: ["Procurement", "Finance"],
-  },
-  {
-    id: "DT-003",
-    name: "Contract Agreement",
-    category: "Legal",
-    description: "Legal contracts and agreements with vendors",
-    active: true,
-    workflowId: "WF-003",
-    workflowName: "Contract Review and Approval",
-    requiredFields: ["contractType", "vendor", "value", "duration", "terms"],
-    approvalLevels: 4,
-    averageProcessingTime: "5.2 days",
-    totalDocuments: 45,
-    pendingDocuments: 3,
-    createdBy: "Liu Wei Chen",
-    createdDate: "2023-10-20",
-    lastModified: "2024-02-05",
-    permissions: ["Legal", "Finance", "Project Manager", "Executive"],
-  },
-  {
-    id: "DT-004",
-    name: "Invoice",
-    category: "Finance",
-    description: "Vendor invoices for payment processing",
-    active: true,
-    workflowId: "WF-004",
-    workflowName: "Invoice Verification and Payment",
-    requiredFields: ["invoiceNumber", "vendor", "amount", "services", "tax"],
-    approvalLevels: 2,
-    averageProcessingTime: "1.5 days",
-    totalDocuments: 567,
-    pendingDocuments: 23,
-    createdBy: "Siriporn Wattana",
-    createdDate: "2023-10-12",
-    lastModified: "2024-02-12",
-    permissions: ["Finance", "Accounting"],
-  },
-  {
-    id: "DT-005",
-    name: "Payment Request",
-    category: "Finance",
-    description: "Request for payment to vendors or contractors",
-    active: true,
-    workflowId: "WF-005",
-    workflowName: "Payment Authorization",
-    requiredFields: ["paymentType", "recipient", "amount", "justification"],
-    approvalLevels: 3,
-    averageProcessingTime: "2.1 days",
-    totalDocuments: 334,
-    pendingDocuments: 15,
-    createdBy: "Anupong Thavorn",
-    createdDate: "2023-10-18",
-    lastModified: "2024-02-14",
-    permissions: ["Finance", "Project Manager"],
-  },
-  {
-    id: "DT-006",
-    name: "Work Delivery Note",
-    category: "Engineering",
-    description: "Documentation of completed work milestones",
-    active: true,
-    workflowId: "WF-006",
-    workflowName: "Work Completion Verification",
-    requiredFields: ["workDescription", "location", "completion", "quality"],
-    approvalLevels: 2,
-    averageProcessingTime: "1.2 days",
-    totalDocuments: 156,
-    pendingDocuments: 7,
-    createdBy: "Thanakit Srisuwan",
-    createdDate: "2023-11-01",
-    lastModified: "2024-02-13",
-    permissions: ["Engineering", "QA", "Project Manager"],
-  },
-];
+type SelectedDocumentType = DocumentType & {
+  category: Category;
+  workflow: Workflow;
+};
 
 export const useDocumentProvider = () => {
   const [createOpen, setCreateOpen] = useState(false);
   const [detailViewOpen, setDetailViewOpen] = useState(false);
   const [selectedDocumentType, setSelectedDocumentType] =
-    useState<DocumentType | null>(null);
+    useState<SelectedDocumentType | null>(null);
 
-  function handleDetailView(documentType: DocumentType) {
-    setSelectedDocumentType(documentType);
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const debouncedKeyword = useDebouncedValue(keyword, 500);
+
+  const {
+    data: documentTypesData,
+    refetch,
+    isLoading: documentTypesLoading,
+  } = useDocumentType({
+    page,
+    limit: 10,
+    keyword: debouncedKeyword,
+    categoryId: categoryId === "all" ? "" : categoryId,
+  });
+  const { data: categories, isLoading: categoriesLoading } =
+    useCategoryOptions();
+  const { data: workflows, isLoading: workflowsLoading } = useWorkflowOptions();
+  const { data: documentTypes, refetch: refetchDocumentTypes } =
+    useDocumentTypeOptions();
+
+  const formatDocumentType = useMemo(() => {
+    if (!documentTypesData?.data) return [];
+    return documentTypesData?.data?.map((documentType) => ({
+      ...documentType,
+      category: categories?.find(
+        (category) => category.id === documentType.categoryId
+      ),
+      workflow: workflows?.find(
+        (workflow) => workflow.id === documentType.workflowId
+      ),
+    })) as SelectedDocumentType[];
+  }, [documentTypesData?.data, categories, workflows]);
+  const isLoading = useMemo(() => {
+    return documentTypesLoading || categoriesLoading || workflowsLoading;
+  }, [documentTypesLoading, categoriesLoading, workflowsLoading]);
+
+  function handleDetailView(id: string) {
+    const findDocumentType = formatDocumentType?.find(
+      (documentType) => documentType.id === id
+    );
+    if (!findDocumentType) return;
+
+    setSelectedDocumentType(findDocumentType);
     setDetailViewOpen(true);
+  }
+
+  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    setKeyword(e.target.value);
+  }
+
+  function onChangePage(page: number) {
+    setPage(page);
+  }
+
+  function onChangeCategory(categoryId: string) {
+    setCategoryId(categoryId);
+  }
+
+  function onOpenCreate() {
+    setCreateOpen(true);
+    setDetailViewOpen(false);
+    setSelectedDocumentType(null);
+  }
+
+  function onOpenEdit() {
+    setCreateOpen(true);
+    setDetailViewOpen(false);
+  }
+
+  function handleRefetch() {
+    refetch();
+    refetchDocumentTypes();
   }
 
   return {
     documentTypes,
+
     createOpen,
     setCreateOpen,
     detailViewOpen,
     setDetailViewOpen,
     selectedDocumentType,
+    setSelectedDocumentType,
     handleDetailView,
+    categories,
+    workflows,
+    refetch: handleRefetch,
+    documentTypesData: {
+      data: formatDocumentType,
+      pagination: documentTypesData?.pagination,
+    },
+    handleSearch,
+    onChangePage,
+    onChangeCategory,
+    isLoading,
+    onOpenCreate,
+    onOpenEdit,
   };
 };

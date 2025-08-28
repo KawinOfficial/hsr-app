@@ -1,0 +1,58 @@
+import { useDebouncedValue } from "@/hooks/use-debouce";
+import { useState } from "react";
+import { usePaymentList } from "../../hooks/use-payment";
+
+export const usePaymentProvider = () => {
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string>();
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+  const debouncedKeyword = useDebouncedValue(keyword, 500);
+
+  const {
+    data: payments,
+    isLoading,
+    refetch,
+  } = usePaymentList({
+    page,
+    limit: 10,
+    keyword: debouncedKeyword,
+    projectId: "",
+  });
+
+  function handleChangePage(page: number) {
+    setPage(page);
+  }
+
+  function handleChangeKeyword(keyword: string) {
+    setKeyword(keyword);
+  }
+
+  function handleOpenPayment() {
+    setPaymentOpen(true);
+    setSelectedId(undefined);
+  }
+
+  function handleClosePayment() {
+    setPaymentOpen(false);
+  }
+
+  function handleViewPayment(id: string) {
+    setSelectedId(id);
+    setPaymentOpen(true);
+  }
+
+  return {
+    paymentOpen,
+    setPaymentOpen,
+    selectedId,
+    handleOpenPayment,
+    handleClosePayment,
+    handleViewPayment,
+    payments,
+    isLoading,
+    handleChangePage,
+    handleChangeKeyword,
+    refetch,
+  };
+};

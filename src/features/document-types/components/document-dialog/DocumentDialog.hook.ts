@@ -14,6 +14,15 @@ export const useDocumentDialog = () => {
     DocumentContext,
     (state) => state?.selectedDocumentType
   );
+  const onOpenEdit = useContextSelector(
+    DocumentContext,
+    (state) => state?.onOpenEdit
+  );
 
-  return { detailViewOpen, setDetailViewOpen, selectedDocumentType };
+  return {
+    detailViewOpen,
+    setDetailViewOpen,
+    selectedDocumentType,
+    onOpenEdit,
+  };
 };
