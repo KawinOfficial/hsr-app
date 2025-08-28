@@ -1,23 +1,27 @@
 import { checkUserAuth } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
-import { deleteHistory } from "../../paymentHistory/deleteHistory";
 
-export async function deleteLiability(id: string) {
+const tableMap = {
+  payment: "paymentId",
+  asset: "assetId",
+  liability: "liabilityId",
+};
+
+export async function deleteHistory({
+  id,
+  type,
+}: {
+  id: string;
+  type: "payment" | "asset" | "liability";
+}) {
   try {
     await checkUserAuth();
-    await deleteHistory({ id, type: "liability" });
-
-    const { error: paymentSchedulesError } = await supabase
-      .from("PaymentSchedule")
-      .delete()
-      .eq("liabilityId", id);
-    if (paymentSchedulesError) throw new Error(paymentSchedulesError.message);
 
     const { data, error } = await supabase
-      .from("Liability")
+      .from("PaymentHistory")
       .delete()
-      .eq("id", id);
+      .eq(tableMap[type], id);
     if (error) throw new Error(error.message);
 
     return NextResponse.json({ data });

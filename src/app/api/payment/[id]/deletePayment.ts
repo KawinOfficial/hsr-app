@@ -1,16 +1,19 @@
 import { checkUserAuth } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
+import { deleteHistory } from "../../paymentHistory/deleteHistory";
 
 export async function deletePayment(id: string) {
   try {
     await checkUserAuth();
+    await deleteHistory({ id, type: "payment" });
 
     const { data, error } = await supabase
       .from("Payment")
       .delete()
       .eq("id", id);
     if (error) throw new Error(error.message);
+
     return NextResponse.json({ data });
   } catch (error) {
     throw new Error(

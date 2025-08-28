@@ -9,8 +9,6 @@ export async function updateCategory(id: string, request: NextRequest) {
     await checkUserAuth();
     const { name, description, budgetLimit, isActive } = await request.json();
 
-    console.log({ id });
-
     const { data, error } = await supabase
       .from("Category")
       .update({ name, description, budgetLimit, isActive })

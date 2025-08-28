@@ -1,8 +1,6 @@
 "use client";
 
 import { PropsWithChildren } from "react";
-import { NotificationSystem } from "@/features/notification/components/notification-system";
-import { Badge } from "@/components/ui/badge";
 import {
   Sidebar,
   SidebarHeader,
@@ -12,7 +10,6 @@ import {
 import { Train } from "lucide-react";
 import SideBarMenu from "@/components/layout/navigation/SideBarMenu";
 import SideBarFooter from "@/components/layout/navigation/SideBarFooter";
-import { NotificationProvider } from "@/features/notification/components/notification-provider";
 
 const Navigation = ({ children }: PropsWithChildren) => {
   return (
@@ -41,17 +38,8 @@ const Navigation = ({ children }: PropsWithChildren) => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2 sm:space-x-4">
                 <SidebarTrigger />
-                {/* //! Hide Search */}
-                {/* <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Search projects, contracts, reports..."
-                    className="pl-10 pr-4 py-2 w-full max-w-96 text-sm border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-                  />
-                </div> */}
               </div>
-              <div className="flex items-center space-x-2 sm:space-x-4">
+              {/* <div className="flex items-center space-x-2 sm:space-x-4">
                 <NotificationProvider>
                   <NotificationSystem />
                 </NotificationProvider>
@@ -61,7 +49,7 @@ const Navigation = ({ children }: PropsWithChildren) => {
                 >
                   Phase 2A Active
                 </Badge>
-              </div>
+              </div> */}
             </div>
           </header>
 

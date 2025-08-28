@@ -1,3 +1,4 @@
+import { generatePaymentId } from "@/lib/format";
 import { createHistory } from "../paymentHistory/createHistory";
 import { checkUserAuth, getCurrentUser } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
@@ -8,7 +9,6 @@ export async function createPayment(request: NextRequest) {
     await checkUserAuth();
 
     const body = await request.json();
-    const payment = body;
     const user = await getCurrentUser();
     const status = "Pending Approval";
     const now = new Date();
@@ -23,22 +23,17 @@ export async function createPayment(request: NextRequest) {
       .order("createdAt", { ascending: false })
       .limit(1);
     if (fetchError) throw new Error(fetchError.message);
-    let runningNumber = 1;
-    if (lastPayments && lastPayments.length > 0) {
-      const lastPaymentId = lastPayments[0].paymentId;
-      const match = lastPaymentId.match(/PAY-\d{4}-(\d+)/);
-      if (match && match[1]) {
-        runningNumber = parseInt(match[1], 10) + 1;
-      }
-    }
-    const paymentId = `PAY-${month}${year}-${runningNumber
-      .toString()
-      .padStart(4, "0")}`;
+
+    const lastPaymentId =
+      lastPayments && lastPayments.length > 0
+        ? lastPayments[0].paymentId
+        : null;
+    const paymentId = generatePaymentId("PAY", lastPaymentId, month, year);
 
     const { data, error } = await supabase
       .from("Payment")
       .insert({
-        ...payment,
+        ...body,
         createdBy: user?.id,
         createdAt,
         status,
@@ -48,12 +43,11 @@ export async function createPayment(request: NextRequest) {
       .single();
     if (error) throw new Error(error.message);
 
-    const history = {
+    await createHistory({
       paymentId: data?.id,
       action: "Create",
       description: "Payment created",
-    };
-    await createHistory(history);
+    });
 
     return NextResponse.json({ data });
   } catch (error) {

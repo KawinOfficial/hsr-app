@@ -3,6 +3,7 @@ import { checkUserAuth, getCurrentUser } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 import { PaymentSchedule } from "@/features/financial/schemas/PaymentSchedule.schema";
+import { generatePaymentId } from "@/lib/format";
 
 export async function createLiability(request: NextRequest) {
   try {
@@ -23,17 +24,11 @@ export async function createLiability(request: NextRequest) {
       .order("createdAt", { ascending: false })
       .limit(1);
     if (fetchError) throw new Error(fetchError.message);
-    let runningNumber = 1;
-    if (lastLiabilities && lastLiabilities.length > 0) {
-      const lastLiabilityId = lastLiabilities[0].liabilityId;
-      const match = lastLiabilityId.match(/LIA-\d{4}-(\d+)/);
-      if (match && match[1]) {
-        runningNumber = parseInt(match[1], 10) + 1;
-      }
-    }
-    const liabilityId = `LIA-${month}${year}-${runningNumber
-      .toString()
-      .padStart(4, "0")}`;
+    const lastLiabilityId =
+      lastLiabilities && lastLiabilities.length > 0
+        ? lastLiabilities[0].liabilityId
+        : null;
+    const liabilityId = generatePaymentId("LIA", lastLiabilityId, month, year);
 
     const { data, error } = await supabase
       .from("Liability")

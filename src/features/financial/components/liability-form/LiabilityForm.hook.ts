@@ -75,7 +75,7 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
 
   const totalAmount =
     watch("paymentSchedules")?.reduce(
-      (acc, field) => acc + (field.amount ?? 0),
+      (acc, field) => acc + Number(field.amount ?? 0),
       0
     ) ?? 0;
   const isExceedTotalAmount = Boolean(

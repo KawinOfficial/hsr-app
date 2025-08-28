@@ -59,3 +59,22 @@ export const calculateTotalTimeLimit = (steps: WorkflowStep[]) => {
   }
   return `${totalHours} hour${totalHours !== 1 ? "s" : ""}`;
 };
+
+export const generatePaymentId = (
+  prefix: string,
+  lastPaymentId: string | null,
+  month: string,
+  year: string
+): string => {
+  let runningNumber = 1;
+  if (lastPaymentId) {
+    const regex = new RegExp(`^${prefix}-${month}${year}-(\\d{4})$`);
+    const match = lastPaymentId.match(regex);
+    if (match && match[1]) {
+      runningNumber = parseInt(match[1], 10) + 1;
+    }
+  }
+  return `${prefix}-${month}${year}-${runningNumber
+    .toString()
+    .padStart(4, "0")}`;
+};

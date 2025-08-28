@@ -18,9 +18,10 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { CheckCircle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatDate } from "@/lib/format";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 const UserDetailDialog = () => {
   const {
@@ -57,178 +58,157 @@ const UserDetailDialog = () => {
                 </div>
               </div>
             </div>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen?.(false)}
+            >
+              <X className="w-4 h-4" />
+            </Button>
           </div>
         </DialogHeader>
 
         <div className="space-y-6 p-6 pt-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* User Information */}
-            <Card className="lg:col-span-2">
+          <div className="grid grid-cols-2 gap-6">
+            <Card>
               <CardHeader>
                 <CardTitle>User Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Email Address
-                    </Label>
-                    <p className="mt-1 text-sm">{user.email}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Phone Number
-                    </Label>
-                    <p className="mt-1 text-sm">{user.phoneNumber}</p>
-                  </div>
+              <CardContent className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="font-medium text-muted-foreground">
+                    Email Address
+                  </p>
+                  <p>{user.email}</p>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Role
-                    </Label>
-                    <p className="mt-1 text-sm">
-                      {getRoleName?.(user.employeeInfo?.roleId ?? "")}
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Department
-                    </Label>
-                    <p className="mt-1 text-sm">
-                      {getDepartmentName?.(
-                        user.employeeInfo?.departmentId ?? ""
-                      )}
-                    </p>
-                  </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Phone Number
+                  </Label>
+                  <p>{user.phoneNumber}</p>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Location
-                    </Label>
-
-                    <p className="mt-1 text-sm">
-                      {user.employeeInfo?.workLocation}
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Created At
-                    </Label>
-                    <p className="mt-1 text-sm">{formatDate(user.createdAt)}</p>
-                  </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Role
+                  </Label>
+                  <p>{getRoleName?.(user.employeeInfo?.roleId ?? "")}</p>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Employee ID
-                    </Label>
-                    <p className="text-sm font-mono">
-                      {user.employeeInfo?.employeeId}
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Reporting Manager
-                    </Label>
-                    <p className="text-sm">{user.employeeInfo?.managerName}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">
-                      Work Location
-                    </Label>
-                    <p className="text-sm">{user.employeeInfo?.workLocation}</p>
-                  </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Department
+                  </Label>
+                  <p>
+                    {getDepartmentName?.(user.employeeInfo?.departmentId ?? "")}
+                  </p>
+                </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Location
+                  </Label>
+                  <p>{user.employeeInfo?.workLocation}</p>
+                </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Created At
+                  </Label>
+                  <p>{formatDate(user.createdAt)}</p>
+                </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Employee ID
+                  </Label>
+                  <p className="font-mono">{user.employeeInfo?.employeeId}</p>
+                </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Reporting Manager
+                  </Label>
+                  <p>{user.employeeInfo?.managerName}</p>
+                </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Work Location
+                  </Label>
+                  <p>{user.employeeInfo?.workLocation}</p>
+                </div>
+                <div>
+                  <Label className="font-medium text-muted-foreground">
+                    Nationality
+                  </Label>
+                  <p>
+                    {user.nationality === "Other"
+                      ? user.otherNationality
+                      : user.nationality}
+                  </p>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Account Status */}
+            {/* Access Permissions */}
             <Card>
               <CardHeader>
-                <CardTitle>Account Status</CardTitle>
+                <CardTitle>Access Permissions</CardTitle>
+                <CardDescription>
+                  Manage user access to different system modules
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Account Status</span>
-                    <Badge className={getStatusColor(user.status ?? "")}>
-                      {user.status}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Two-Factor Auth</span>
-                    <CheckCircle className="h-4 w-4 text-success-green" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Email Verified</span>
-                    <CheckCircle className="h-4 w-4 text-success-green" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profile Complete</span>
-                    <CheckCircle className="h-4 w-4 text-success-green" />
-                  </div>
+              <CardContent>
+                <div className="space-y-4">
+                  {Object.entries(user?.permissions ?? {}).map(
+                    ([module, perms]) => (
+                      <div key={module} className="border-b pb-4">
+                        <h4 className="font-medium mb-3 capitalize">
+                          {module.replace("-", " ")}
+                        </h4>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`${module}-read`}
+                              checked={perms.read}
+                              disabled
+                            />
+                            <Label
+                              htmlFor={`${module}-read`}
+                              className="text-sm"
+                            >
+                              Read Access
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`${module}-write`}
+                              checked={perms.write}
+                              disabled
+                            />
+                            <Label
+                              htmlFor={`${module}-write`}
+                              className="text-sm"
+                            >
+                              Write Access
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`${module}-admin`}
+                              checked={perms.admin}
+                              disabled
+                            />
+                            <Label
+                              htmlFor={`${module}-admin`}
+                              className="text-sm"
+                            >
+                              Admin Access
+                            </Label>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </div>
               </CardContent>
             </Card>
           </div>
-
-          {/* Access Permissions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Access Permissions</CardTitle>
-              <CardDescription>
-                Manage user access to different system modules
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {Object.entries(user.permissions).map(([module, perms]) => (
-                  <div key={module} className="border rounded-lg p-4">
-                    <h4 className="font-medium mb-3 capitalize">
-                      {module.replace("-", " ")}
-                    </h4>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`${module}-read`}
-                          checked={perms.read}
-                          disabled
-                        />
-                        <Label htmlFor={`${module}-read`} className="text-sm">
-                          Read Access
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`${module}-write`}
-                          checked={perms.write}
-                          disabled
-                        />
-                        <Label htmlFor={`${module}-write`} className="text-sm">
-                          Write Access
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`${module}-admin`}
-                          checked={perms.admin}
-                          disabled
-                        />
-                        <Label htmlFor={`${module}-admin`} className="text-sm">
-                          Admin Access
-                        </Label>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </DialogContent>
     </Dialog>
