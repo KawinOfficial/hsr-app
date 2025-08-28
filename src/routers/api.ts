@@ -30,4 +30,7 @@ export const API_ROUTES = {
   assets: "assets",
   assetsDetail: "assets/:id",
   maintanceHistory: "maintanceHistory",
+  liabilities: "liabilities",
+  liabilitiesDetail: "liabilities/:id",
+  paymentSchedule: "paymentSchedule",
 };

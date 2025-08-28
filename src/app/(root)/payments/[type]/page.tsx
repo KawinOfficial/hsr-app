@@ -9,6 +9,7 @@ import { Banknote, Building2, Receipt } from "lucide-react";
 import Link from "next/link";
 import { PaymentDialog } from "@/features/financial/components/payment-dialog";
 import AssetsDialog from "@/features/financial/components/assets-dialog/AssetsDialog";
+import LiabilityDialog from "@/features/financial/components/liability-dialog/LiabilityDialog";
 
 export default async function PaymentsPage({
   params,
@@ -63,6 +64,7 @@ export default async function PaymentsPage({
 
       <PaymentDialog />
       <AssetsDialog />
+      <LiabilityDialog />
     </div>
   );
 }

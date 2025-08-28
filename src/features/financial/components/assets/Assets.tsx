@@ -33,7 +33,6 @@ const Assets = () => {
     handleChangeKeyword,
     handleChangePage,
     isLoading,
-    getProjectName,
     getDocumentTypeName,
   } = useAssets();
 
@@ -86,17 +85,10 @@ const Assets = () => {
               list.map((asset) => {
                 return (
                   <TableRow key={asset.id}>
-                    <TableCell className="font-medium">
+                    <TableCell className="font-semibold">
                       {asset.assetId}
                     </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{asset.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {getProjectName(asset.projectId ?? "")}
-                        </p>
-                      </div>
-                    </TableCell>
+                    <TableCell>{asset.name}</TableCell>
                     <TableCell>
                       {getDocumentTypeName(asset.documentTypesId ?? "")}
                     </TableCell>

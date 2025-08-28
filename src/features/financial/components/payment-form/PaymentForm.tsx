@@ -127,7 +127,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">Payment Name *</FormLabel>
+                      <FormLabel className="text-xs">Payment Name</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter payment name" {...field} />
                       </FormControl>

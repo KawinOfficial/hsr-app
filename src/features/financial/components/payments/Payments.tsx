@@ -71,7 +71,7 @@ const Payments = () => {
               <TableHead>Name</TableHead>
               <TableHead>Vendor</TableHead>
               <TableHead className="text-right">Amount</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="text-center">Status</TableHead>
               <TableHead>Payment Date</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
@@ -84,7 +84,7 @@ const Payments = () => {
             ) : (
               list.map((payment, index) => (
                 <TableRow key={`${payment.id}-${index}`}>
-                  <TableCell className="font-medium">
+                  <TableCell className="font-semibold">
                     {payment.paymentId}
                   </TableCell>
                   <TableCell>{payment.name}</TableCell>
@@ -92,7 +92,7 @@ const Payments = () => {
                   <TableCell className="font-semibold text-right">
                     {formatCurrency(payment.amount)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
                     <Badge className={getStatusColor(payment.status ?? "")}>
                       {payment.status}
                     </Badge>

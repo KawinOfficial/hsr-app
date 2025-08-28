@@ -7,15 +7,17 @@ import { createHistory } from "../../paymentHistory/createHistory";
 export async function updateAssets(id: string, body: Asset) {
   try {
     await checkUserAuth();
+    const { maintances, ...rest } = body;
 
     const { data, error } = await supabase
       .from("Assets")
-      .update(body)
+      .update(rest)
       .eq("id", id);
     if (error) throw new Error(error.message);
 
-    if (body.maintances && Array.isArray(body.maintances)) {
-      for (const maintance of body.maintances) {
+    const createdAt = new Date();
+    if (maintances && Array.isArray(maintances)) {
+      for (const maintance of maintances) {
         if (maintance.id) {
           const { id: maintanceId, ...updateData } = maintance;
           const { error: maintancesError } = await supabase
@@ -30,6 +32,7 @@ export async function updateAssets(id: string, body: Asset) {
             .insert({
               ...maintance,
               assetId: id,
+              createdAt,
             });
           if (maintancesError) throw new Error(maintancesError.message);
         }

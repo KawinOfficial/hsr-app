@@ -24,18 +24,10 @@ export const useAssets = () => {
     AssetsContext,
     (state) => state?.handleChangePage
   );
-  const projectOptions = useContextSelector(
-    FinancialContext,
-    (context) => context?.projectOptions
-  );
   const documentTypes = useContextSelector(
     FinancialContext,
     (context) => context?.documentTypes
   );
-
-  function getProjectName(projectId: string) {
-    return projectOptions?.find((project) => project.id === projectId)?.name;
-  }
 
   function getDocumentTypeName(documentTypeId: string) {
     return documentTypes?.find(
@@ -51,7 +43,6 @@ export const useAssets = () => {
     handleChangeKeyword,
     handleChangePage,
     isLoading,
-    getProjectName,
     getDocumentTypeName,
   };
 };

@@ -128,7 +128,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">Asset Name *</FormLabel>
+                      <FormLabel className="text-xs">Asset Name</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter asset name" {...field} />
                       </FormControl>
