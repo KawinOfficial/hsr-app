@@ -2,6 +2,7 @@ export const API_ROUTES = {
   register: "register",
   users: "users",
   profile: "profile",
+  changePassword: "profile/change-password",
   permissions: "permissions",
   options: "options",
   departments: "departments",

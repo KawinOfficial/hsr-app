@@ -2,14 +2,11 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { useProfileHeader } from "./ProfileHeader.hook";
-import { Camera } from "lucide-react";
 import { getStatusColor } from "@/features/profile/utils/colorStatus";
 
 const ProfileHeader = () => {
-  const { userProfile, setProfileImageOpen, role, department } =
-    useProfileHeader();
+  const { userProfile, role, department } = useProfileHeader();
 
   if (!userProfile) return null;
 
@@ -41,14 +38,14 @@ const ProfileHeader = () => {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               onClick={() => setProfileImageOpen?.(true)}
             >
               <Camera className="h-4 w-4 mr-2" />
               Change Photo
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

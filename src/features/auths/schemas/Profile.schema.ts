@@ -1,3 +1,4 @@
+import { PermissionsMatrixSchema } from "@/features/permissions/schemas/Permission.schema";
 import { PaginationSchema } from "@/types/pagination";
 import { z } from "zod";
 
@@ -23,6 +24,7 @@ export const ProfileSchema = z.object({
   updatedAt: z.string(),
   employeeInfo: EmployeeInfoSchema.nullable(),
   status: z.string(),
+  permissions: PermissionsMatrixSchema.optional().nullable(),
 });
 
 export const ProfileListSchema = z.object({
