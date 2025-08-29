@@ -3,6 +3,7 @@ import { createHistory } from "../paymentHistory/createHistory";
 import { checkUserAuth, getCurrentUser } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
+import { createNotification } from "../notifications/createNotification";
 
 export async function createPayment(request: NextRequest) {
   try {
@@ -43,6 +44,10 @@ export async function createPayment(request: NextRequest) {
       .single();
     if (error) throw new Error(error.message);
 
+    await createNotification({
+      paymentId: data?.id,
+      documentTypesId: body.documentTypesId,
+    });
     await createHistory({
       paymentId: data?.id,
       action: "Create",

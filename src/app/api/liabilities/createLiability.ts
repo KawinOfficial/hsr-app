@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 import { PaymentSchedule } from "@/features/financial/schemas/PaymentSchedule.schema";
 import { generatePaymentId } from "@/lib/format";
+import { createNotification } from "../notifications/createNotification";
 
 export async function createLiability(request: NextRequest) {
   try {
@@ -55,12 +56,15 @@ export async function createLiability(request: NextRequest) {
       if (paymentSchedulesError) throw new Error(paymentSchedulesError.message);
     }
 
-    const history = {
+    await createNotification({
+      liabilityId: data?.id,
+      documentTypesId: body.documentTypesId,
+    });
+    await createHistory({
       liabilityId: data?.id,
       action: "Create",
       description: "Liability created",
-    };
-    await createHistory(history);
+    });
 
     return NextResponse.json({ data });
   } catch (error) {
