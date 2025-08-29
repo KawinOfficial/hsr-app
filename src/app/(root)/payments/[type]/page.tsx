@@ -2,7 +2,6 @@
 
 import PageHeader from "@/components/layout/page-haeder/PageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FinancialOverview } from "@/features/financial/components/financial-overview";
 import Assets from "@/features/financial/components/assets/Assets";
 import Liability from "@/features/financial/components/liability/Liability";
 import { Payments } from "@/features/financial/components/payments";
@@ -65,8 +64,6 @@ export default function PaymentsPage() {
       </PageHeader>
 
       <div className="px-4 sm:px-6 py-8">
-        <FinancialOverview />
-
         <Tabs value={type ?? "management"} className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="management" asChild>

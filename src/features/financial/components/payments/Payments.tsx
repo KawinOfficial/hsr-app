@@ -63,9 +63,9 @@ const Payments = () => {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="min-h-[62vh] flex flex-col">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             <TableRow>
               <TableHead>Payment ID</TableHead>
               <TableHead>Name</TableHead>
@@ -118,12 +118,13 @@ const Payments = () => {
             )}
           </TableBody>
         </Table>
-
-        <Pagination
-          totalPages={pagination?.totalPages ?? 0}
-          currentPage={pagination?.currentPage ?? 1}
-          onPageChange={handleChangePage}
-        />
+        <div className="mt-auto">
+          <Pagination
+            totalPages={pagination?.totalPages ?? 0}
+            currentPage={pagination?.currentPage ?? 1}
+            onPageChange={handleChangePage}
+          />
+        </div>
       </CardContent>
     </Card>
   );

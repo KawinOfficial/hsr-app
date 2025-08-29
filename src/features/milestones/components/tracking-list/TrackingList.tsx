@@ -82,9 +82,9 @@ const TrackingList = () => {
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="min-h-[60vh] flex flex-col">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             <TableRow>
               <TableHead>Milestone</TableHead>
               <TableHead>Project</TableHead>
@@ -166,12 +166,13 @@ const TrackingList = () => {
             )}
           </TableBody>
         </Table>
-
-        <Pagination
-          totalPages={pagination?.totalPages ?? 0}
-          currentPage={pagination?.currentPage ?? 1}
-          onPageChange={handlePageChange}
-        />
+        <div className="mt-auto">
+          <Pagination
+            totalPages={pagination?.totalPages ?? 0}
+            currentPage={pagination?.currentPage ?? 1}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </CardContent>
     </Card>
   );

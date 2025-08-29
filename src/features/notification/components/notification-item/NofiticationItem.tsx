@@ -1,21 +1,11 @@
 import { Notification } from "@/features/notification/schemas/Notification.schema";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   AlertTriangle,
   Bell,
   CheckCircle,
   Clock,
   FileText,
-  Mail,
-  Trash2,
 } from "lucide-react";
 import { useContextSelector } from "use-context-selector";
 import { NotificationContext } from "@/features/notification/components/notification-provider";
@@ -50,14 +40,6 @@ const NofiticationItem = ({ notification }: NofiticationItemProps) => {
     NotificationContext,
     (context) => context?.handleNotificationClick
   );
-  const markAsRead = useContextSelector(
-    NotificationContext,
-    (context) => context?.markAsRead
-  );
-  const deleteNotification = useContextSelector(
-    NotificationContext,
-    (context) => context?.deleteNotification
-  );
 
   return (
     <div
@@ -67,17 +49,11 @@ const NofiticationItem = ({ notification }: NofiticationItemProps) => {
       onClick={() => handleNotificationClick?.(notification)}
     >
       <div className="flex items-start space-x-3">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src={notification.avatar} />
-          <AvatarFallback>{notification.from}</AvatarFallback>
-        </Avatar>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center space-x-2">
-              {getNotificationIcon(notification.type)}
-              {!notification.isRead && (
-                <div className="w-2 h-2 bg-primary rounded-full" />
-              )}
+              <div>{getNotificationIcon(notification.type)}</div>
+              <h4 className="font-medium text-sm">{notification.title}</h4>
             </div>
             <div className="flex items-center space-x-1">
               <span
@@ -87,42 +63,9 @@ const NofiticationItem = ({ notification }: NofiticationItemProps) => {
               >
                 {notification.priority}
               </span>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    •••
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      markAsRead?.(notification.id);
-                    }}
-                  >
-                    <Mail className="h-4 w-4 mr-2" />
-                    Mark as read
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteNotification?.(notification.id);
-                    }}
-                    className="text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </div>
-          <h4 className="font-medium text-sm mb-1">{notification.title}</h4>
+
           <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
             {notification.message}
           </p>

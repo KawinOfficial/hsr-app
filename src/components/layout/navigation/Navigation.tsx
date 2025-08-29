@@ -10,6 +10,8 @@ import {
 import { Train } from "lucide-react";
 import SideBarMenu from "@/components/layout/navigation/SideBarMenu";
 import SideBarFooter from "@/components/layout/navigation/SideBarFooter";
+import { NotificationProvider } from "@/features/notification/components/notification-provider";
+import { NotificationSystem } from "@/features/notification/components/notification-system";
 
 const Navigation = ({ children }: PropsWithChildren) => {
   return (
@@ -33,23 +35,17 @@ const Navigation = ({ children }: PropsWithChildren) => {
           <SideBarFooter />
         </Sidebar>
 
-        <div className="flex-1 flex flex-col ">
+        <div className="flex-1 flex flex-col">
           <header className="border-b bg-background px-4 sm:px-6 sticky top-0 z-10 h-[61px] flex items-center">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between w-full">
               <div className="flex items-center space-x-2 sm:space-x-4">
                 <SidebarTrigger />
               </div>
-              {/* <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4">
                 <NotificationProvider>
                   <NotificationSystem />
                 </NotificationProvider>
-                <Badge
-                  variant="outline"
-                  className="text-primary border-primary"
-                >
-                  Phase 2A Active
-                </Badge>
-              </div> */}
+              </div>
             </div>
           </header>
 

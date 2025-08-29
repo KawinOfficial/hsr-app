@@ -7,20 +7,10 @@ import {
 import { Bell } from "lucide-react";
 import { useNotificationSystem } from "./NotificationSystem.hook";
 import { NofiticationItem } from "@/features/notification/components/notification-item";
-import { NotificationDialog } from "@/features/notification/components/notification-dialog";
-import { Separator } from "@/components/ui/separator";
 
 const NotificationSystem = () => {
-  const {
-    markAllAsRead,
-    unreadCount,
-    isOpen,
-    setIsOpen,
-    filter,
-    setFilter,
-    filteredNotifications,
-    filterOptions,
-  } = useNotificationSystem();
+  const { unreadCount, isOpen, setIsOpen, filteredNotifications } =
+    useNotificationSystem();
 
   return (
     <>
@@ -36,40 +26,14 @@ const NotificationSystem = () => {
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent
-          align="end"
-          className="w-96 max-h-96 overflow-y-auto"
-        >
-          <div className="p-3">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold">Notifications</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={markAllAsRead}
-                className="text-xs"
-              >
-                Mark all read
-              </Button>
-            </div>
+        <DropdownMenuContent align="end" className="w-[500px]">
+          <div className="p-3 relative pt-12">
+            <h3 className="font-semibold absolute top-3 left-3">
+              Notifications
+            </h3>
 
-            <div className="flex space-x-1 mb-3">
-              {filterOptions.map(({ label, value }) => (
-                <Button
-                  key={value}
-                  variant={filter === value ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setFilter(value)}
-                  className="text-xs"
-                >
-                  {label}
-                </Button>
-              ))}
-            </div>
-            <Separator className="mb-3" />
-
-            <div className="space-y-2">
-              {filteredNotifications.length === 0 ? (
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {!filteredNotifications.length ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <Bell className="h-8 w-8 mx-auto mb-2" />
                   <p className="text-sm">No notifications</p>
@@ -83,15 +47,6 @@ const NotificationSystem = () => {
                 ))
               )}
             </div>
-
-            {!!filteredNotifications.length && (
-              <>
-                <Separator className="my-3" />
-                <div className="text-center">
-                  <NotificationDialog />
-                </div>
-              </>
-            )}
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
