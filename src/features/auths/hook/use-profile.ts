@@ -19,6 +19,7 @@ export const useProfile = () => {
     retry: false,
     refetchOnWindowFocus: false,
     enabled: !!session.data?.user?.id,
+    staleTime: 1000 * 60 * 5,
   });
 };
 

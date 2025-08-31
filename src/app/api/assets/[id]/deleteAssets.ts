@@ -1,18 +1,23 @@
 import { checkUserAuth } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
+import { deleteHistory } from "../../paymentHistory/deleteHistory";
+import { deleteNotification } from "../../notifications/deleteNotification";
 
 export async function deleteAssets(id: string) {
   try {
     await checkUserAuth();
+    await deleteNotification({ assetId: id });
+    await deleteHistory({ id, type: "asset" });
 
-    const { data, error } = await supabase.from("Assets").delete().eq("id", id);
-    if (error) throw new Error(error.message);
     const { error: maintancesError } = await supabase
       .from("MaintenanceHistory")
       .delete()
       .eq("assetId", id);
     if (maintancesError) throw new Error(maintancesError.message);
+
+    const { data, error } = await supabase.from("Assets").delete().eq("id", id);
+    if (error) throw new Error(error.message);
 
     return NextResponse.json({ data });
   } catch (error) {

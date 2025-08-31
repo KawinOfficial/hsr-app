@@ -16,6 +16,16 @@ export const AssetSchema = z.object({
   documentTypesId: z.string().optional(),
   projectId: z.string().optional(),
   maintances: MaintanceListSchema.optional().nullable(),
+  createdBy: z.string().optional(),
+  status: z.string().optional(),
+  remark: z.string().optional().nullable(),
+  canDelete: z.boolean().optional(),
+  userCreatedBy: z
+    .object({
+      firstName: z.string(),
+      lastName: z.string(),
+    })
+    .optional(),
 });
 
 export const AssetsListSchema = z.object({

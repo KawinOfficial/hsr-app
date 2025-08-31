@@ -51,11 +51,11 @@ const PermissionDetail = () => {
               </DialogDescription>
             </DialogHeader>
 
-            <p className="text-2xl font-bold text-rail-blue">
+            <div className="text-2xl font-bold text-rail-blue">
               <Badge className={getStatusColor(selectedPermissionGroup.status)}>
                 {selectedPermissionGroup.status}
               </Badge>
-            </p>
+            </div>
           </div>
 
           <div className="space-y-6">

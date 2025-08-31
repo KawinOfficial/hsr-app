@@ -1,31 +1,25 @@
 import { useContextSelector } from "use-context-selector";
 import { NotificationContext } from "@/features/notification/components/notification-provider";
+import { useRouter } from "next/navigation";
+import { PAGE_ROUTES } from "@/routers/page";
 
 export const useNotificationSystem = () => {
-  const {
-    markAllAsRead,
-    unreadCount,
-    isOpen,
-    setIsOpen,
-    filter,
-    setFilter,
-    filteredNotifications,
-  } = useContextSelector(NotificationContext, (context) => context!);
+  const router = useRouter();
+  const { isOpen, setIsOpen, notifications, isLoading } = useContextSelector(
+    NotificationContext,
+    (context) => context!
+  );
 
-  const filterOptions = [
-    { label: "All", value: "all" },
-    { label: `Unread (${unreadCount})`, value: "unread" },
-    { label: "Priority", value: "priority" },
-  ];
+  function onOpenApprovals() {
+    setIsOpen(false);
+    router.push(PAGE_ROUTES.APPROVALS);
+  }
 
   return {
-    markAllAsRead,
-    unreadCount,
     isOpen,
     setIsOpen,
-    filter,
-    setFilter,
-    filteredNotifications,
-    filterOptions,
+    notifications,
+    isLoading,
+    onOpenApprovals,
   };
 };

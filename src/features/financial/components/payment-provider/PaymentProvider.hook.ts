@@ -1,8 +1,15 @@
 import { useDebouncedValue } from "@/hooks/use-debouce";
 import { useState } from "react";
-import { usePaymentList } from "../../hooks/use-payment";
+import { usePaymentList } from "@/features/financial/hooks/use-payment";
+import { useContextSelector } from "use-context-selector";
+import { FinancialContext } from "@/features/financial/components/financial-provider";
 
 export const usePaymentProvider = () => {
+  const selectedProject = useContextSelector(
+    FinancialContext,
+    (state) => state?.selectedProject
+  );
+
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
   const [page, setPage] = useState(1);
@@ -17,7 +24,7 @@ export const usePaymentProvider = () => {
     page,
     limit: 10,
     keyword: debouncedKeyword,
-    projectId: "",
+    projectId: selectedProject ?? "",
   });
 
   function handleChangePage(page: number) {

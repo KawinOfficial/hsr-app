@@ -7,46 +7,44 @@ import { createHistory } from "../../paymentHistory/createHistory";
 export async function updateLiability(id: string, body: Liability) {
   try {
     await checkUserAuth();
-    const { paymentSchedules, ...rest } = body;
+
+    const { paymentSchedules, ...liabilityData } = body;
 
     const { data, error } = await supabase
       .from("Liability")
-      .update(rest)
+      .update(liabilityData)
       .eq("id", id);
     if (error) throw new Error(error.message);
 
-    const createdAt = new Date();
-    if (paymentSchedules && Array.isArray(paymentSchedules)) {
-      for (const paymentSchedule of paymentSchedules) {
-        if (paymentSchedule.id) {
-          const { id: paymentScheduleId, ...updateData } = paymentSchedule;
-          const { error: paymentSchedulesError } = await supabase
+    if (Array.isArray(paymentSchedules)) {
+      const createdAt = new Date();
+      for (const schedule of paymentSchedules) {
+        if (schedule.id) {
+          const { id: paymentScheduleId, ...updateData } = schedule;
+          const { error: updateError } = await supabase
             .from("PaymentSchedule")
             .update(updateData)
             .eq("id", paymentScheduleId)
             .eq("liabilityId", id);
-          if (paymentSchedulesError)
-            throw new Error(paymentSchedulesError.message);
+          if (updateError) throw new Error(updateError.message);
         } else {
-          const { error: paymentSchedulesError } = await supabase
+          const { error: insertError } = await supabase
             .from("PaymentSchedule")
             .insert({
-              ...paymentSchedule,
+              ...schedule,
               liabilityId: id,
               createdAt,
             });
-          if (paymentSchedulesError)
-            throw new Error(paymentSchedulesError.message);
+          if (insertError) throw new Error(insertError.message);
         }
       }
     }
 
-    const history = {
+    await createHistory({
       liabilityId: id,
       action: "Update",
       description: "Liability updated",
-    };
-    await createHistory(history);
+    });
 
     return NextResponse.json({ data });
   } catch (error) {

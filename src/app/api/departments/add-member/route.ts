@@ -11,7 +11,6 @@ export async function GET(request: Request) {
   const limit = searchParams.get("limit") || "10";
   const departmentId = searchParams.get("departmentId") || "";
   const roleId = searchParams.get("roleId") || "";
-  const keyword = searchParams.get("keyword") || "";
 
-  return getTeamMember(page, limit, departmentId, roleId, keyword);
+  return getTeamMember(page, limit, departmentId, roleId);
 }

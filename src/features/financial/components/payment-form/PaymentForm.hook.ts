@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Payment } from "@/features/financial/schemas/Payment.schema";
 import { useContextSelector } from "use-context-selector";
 import { FinancialContext } from "@/features/financial/components/financial-provider/FinancialProvider";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   useCreatePayment,
   usePaymentDetail,
@@ -11,6 +11,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { PaymentContext } from "@/features/financial/components/payment-provider";
 import { formatDateInput } from "@/lib/format";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
 
 const defaultValues: Payment = {
   name: "",
@@ -47,11 +48,17 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     PaymentContext,
     (context) => context?.refetch
   );
-
+  const userId = useContextSelector(
+    ProfileContext,
+    (context) => context?.userProfile?.id
+  );
   const id = selectedId ?? "";
-  const { data: paymentDetail } = usePaymentDetail(id);
-  const { mutate: createPayment } = useCreatePayment();
-  const { mutate: updatePayment } = useUpdatePayment(id);
+  const { data: paymentDetail, isFetching: isLoadingPaymentDetail } =
+    usePaymentDetail(id);
+  const { mutate: createPayment, isPending: isLoadingCreatePayment } =
+    useCreatePayment();
+  const { mutate: updatePayment, isPending: isLoadingUpdatePayment } =
+    useUpdatePayment(id);
 
   const methods = useForm<Payment>({ defaultValues });
   const { handleSubmit, reset, watch } = methods;
@@ -59,6 +66,24 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
   const vatAmount = watch("amount") * ((watch("vat") ?? 0) / 100);
   const taxAmount = watch("amount") * ((watch("tax") ?? 0) / 100);
   const netAmount = watch("amount") - vatAmount - taxAmount;
+  const isLoading = useMemo(() => {
+    return (
+      isLoadingPaymentDetail || isLoadingCreatePayment || isLoadingUpdatePayment
+    );
+  }, [isLoadingPaymentDetail, isLoadingCreatePayment, isLoadingUpdatePayment]);
+  const isRejected = useMemo(() => {
+    return paymentDetail?.status === "rejected";
+  }, [paymentDetail?.status]);
+  const isCompleted = useMemo(() => {
+    return paymentDetail?.status === "completed";
+  }, [paymentDetail?.status]);
+  const canEdit = useMemo(() => {
+    return (
+      (!id || paymentDetail?.createdBy === userId) &&
+      !isRejected &&
+      !isCompleted
+    );
+  }, [id, paymentDetail?.createdBy, userId, isRejected, isCompleted]);
 
   function createPayload(data: Payment) {
     return {
@@ -67,6 +92,10 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
       tax: Number(data.tax) || 0,
       amount: Number(data.amount) || 0,
       paymentDate: new Date(data.paymentDate).toISOString(),
+      status: undefined,
+      remark: undefined,
+      canDelete: undefined,
+      userCreatedBy: undefined,
     };
   }
 
@@ -146,5 +175,9 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     netAmount,
     selectedId,
     history,
+    isLoading,
+    canEdit,
+    isRejected,
+    paymentDetail,
   };
 };

@@ -1,8 +1,15 @@
 import { useDebouncedValue } from "@/hooks/use-debouce";
 import { useState } from "react";
 import { useLiabilitiesList } from "@/features/financial/hooks/use-liability";
+import { FinancialContext } from "../financial-provider";
+import { useContextSelector } from "use-context-selector";
 
 export const useLiabilityProvider = () => {
+  const selectedProject = useContextSelector(
+    FinancialContext,
+    (state) => state?.selectedProject
+  );
+
   const [liabilityOpen, setLiabilityOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
   const [page, setPage] = useState(1);
@@ -17,7 +24,7 @@ export const useLiabilityProvider = () => {
     page,
     limit: 10,
     keyword: debouncedKeyword,
-    projectId: "",
+    projectId: selectedProject ?? "",
   });
 
   function handleChangePage(page: number) {

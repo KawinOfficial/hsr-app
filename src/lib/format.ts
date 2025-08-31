@@ -9,22 +9,14 @@ export const formatCurrency = (amount?: number) => {
   }).format(amount);
 };
 
+import dayjs from "dayjs";
+
 export const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString("us-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  return dayjs(date).format("DD/MM/YYYY");
 };
 
 export const formatDateWithTime = (date: string) => {
-  return new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  return dayjs(date).format("DD/MM/YYYY HH:mm");
 };
 
 export const formatPercent = (percent: number) => {
@@ -58,4 +50,23 @@ export const calculateTotalTimeLimit = (steps: WorkflowStep[]) => {
     return `${formattedDays} day${days !== 1 ? "s" : ""}`;
   }
   return `${totalHours} hour${totalHours !== 1 ? "s" : ""}`;
+};
+
+export const generatePaymentId = (
+  prefix: string,
+  lastPaymentId: string | null,
+  month: string,
+  year: string
+): string => {
+  let runningNumber = 1;
+  if (lastPaymentId) {
+    const regex = new RegExp(`^${prefix}-${month}${year}-(\\d{4})$`);
+    const match = lastPaymentId.match(regex);
+    if (match && match[1]) {
+      runningNumber = parseInt(match[1], 10) + 1;
+    }
+  }
+  return `${prefix}-${month}${year}-${runningNumber
+    .toString()
+    .padStart(4, "0")}`;
 };

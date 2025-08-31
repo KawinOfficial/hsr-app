@@ -14,13 +14,11 @@ import {
   CheckCircle,
   MapPin,
   Settings,
-  Search,
   Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMemberListDialog } from "./MemberListDialog.hook";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -54,7 +52,6 @@ const MemberListDialog = () => {
     onEditDepartment,
     getRoleName,
     handlePageChange,
-    handleSearch,
     handleRoleChange,
     isLoading,
   } = useMemberListDialog();
@@ -109,15 +106,7 @@ const MemberListDialog = () => {
             <div className="flex items-center space-x-2">
               <AddMemberDialog />
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search members..."
-                  className="pl-10 w-64"
-                  onChange={handleSearch}
-                />
-              </div>
+            <div className="flex items-center justify-end space-x-2">
               <Select defaultValue="all" onValueChange={handleRoleChange}>
                 <SelectTrigger className="w-32">
                   <SelectValue />

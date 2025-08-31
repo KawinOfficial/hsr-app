@@ -1,6 +1,6 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { useContextSelector } from "use-context-selector";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDateInput } from "@/lib/format";
 import { FinancialContext } from "@/features/financial/components/financial-provider";
@@ -12,6 +12,7 @@ import {
   useCreateLiability,
   useUpdateLiability,
 } from "@/features/financial/hooks/use-liability";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
 
 export interface UseLiabilityForm {
   onClose?: () => void;
@@ -57,11 +58,17 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     LiabilityContext,
     (state) => state?.refetch
   );
-
+  const userId = useContextSelector(
+    ProfileContext,
+    (context) => context?.userProfile?.id
+  );
   const id = selectedId ?? "";
-  const { data: liabilityDetail } = useLiabilityDetail(id);
-  const { mutate: createLiability } = useCreateLiability();
-  const { mutate: updateLiability } = useUpdateLiability(id);
+  const { data: liabilityDetail, isFetching: isLoadingLiabilityDetail } =
+    useLiabilityDetail(id);
+  const { mutate: createLiability, isPending: isLoadingCreateLiability } =
+    useCreateLiability();
+  const { mutate: updateLiability, isPending: isLoadingUpdateLiability } =
+    useUpdateLiability(id);
 
   const methods = useForm<Liability>({ defaultValues });
   const { handleSubmit, reset, control, watch } = methods;
@@ -72,16 +79,44 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
 
   const totalAmount =
     watch("paymentSchedules")?.reduce(
-      (acc, field) => acc + (field.amount ?? 0),
+      (acc, field) => acc + Number(field.amount ?? 0),
       0
     ) ?? 0;
   const isExceedTotalAmount = Boolean(
     watch("amount") && totalAmount > watch("amount")
   );
+  const isLoading = useMemo(() => {
+    return (
+      isLoadingLiabilityDetail ||
+      isLoadingCreateLiability ||
+      isLoadingUpdateLiability
+    );
+  }, [
+    isLoadingLiabilityDetail,
+    isLoadingCreateLiability,
+    isLoadingUpdateLiability,
+  ]);
+  const isRejected = useMemo(() => {
+    return liabilityDetail?.status === "rejected";
+  }, [liabilityDetail?.status]);
+  const isCompleted = useMemo(() => {
+    return liabilityDetail?.status === "completed";
+  }, [liabilityDetail?.status]);
+  const canEdit = useMemo(() => {
+    return (
+      (!id || liabilityDetail?.createdBy === userId) &&
+      !isRejected &&
+      !isCompleted
+    );
+  }, [id, liabilityDetail?.createdBy, userId, isRejected, isCompleted]);
 
   function createPayload(data: Liability) {
     return {
       ...data,
+      status: undefined,
+      remark: undefined,
+      canDelete: undefined,
+      userCreatedBy: undefined,
     };
   }
 
@@ -184,5 +219,9 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     calcPaymentScheduleStatus,
     totalAmount,
     isExceedTotalAmount,
+    isLoading,
+    canEdit,
+    isRejected,
+    liabilityDetail,
   };
 };

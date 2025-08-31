@@ -88,9 +88,9 @@ const DocumentList = () => {
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="min-h-[60vh] flex flex-col">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             <TableRow>
               <TableHead>Document Type</TableHead>
               <TableHead>Category</TableHead>
@@ -171,12 +171,13 @@ const DocumentList = () => {
             )}
           </TableBody>
         </Table>
-
-        <Pagination
-          totalPages={pagination?.totalPages ?? 0}
-          currentPage={pagination?.currentPage ?? 1}
-          onPageChange={onChangePage}
-        />
+        <div className="mt-auto">
+          <Pagination
+            totalPages={pagination?.totalPages ?? 0}
+            currentPage={pagination?.currentPage ?? 1}
+            onPageChange={onChangePage}
+          />
+        </div>
       </CardContent>
     </Card>
   );

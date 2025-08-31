@@ -46,7 +46,7 @@ const PersonalForm = () => {
           <Input
             id="email"
             type="email"
-            placeholder="your.email@thairail.go.th"
+            placeholder="Enter email address"
             className="pl-10"
             required
             {...register("email")}
@@ -61,7 +61,7 @@ const PersonalForm = () => {
           <Input
             id="phone"
             type="tel"
-            placeholder="+66-2-555-0123"
+            placeholder="Enter phone number"
             className="pl-10"
             required
             {...register("phone")}

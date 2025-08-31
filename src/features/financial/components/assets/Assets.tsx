@@ -23,6 +23,8 @@ import { Input } from "@/components/ui/input";
 import DeletePaymentDialog from "../delete-payment-dialog/DeletePaymentDialog";
 import { TableEmpty, TableLoading } from "@/components/table";
 import { Pagination } from "@/components/pagination";
+import { getActionColor } from "@/features/notification/utils/color";
+import { Badge } from "@/components/ui/badge";
 
 const Assets = () => {
   const {
@@ -62,17 +64,18 @@ const Assets = () => {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="min-h-[60vh] flex flex-col">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             <TableRow>
               <TableHead>Asset ID</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Document Type</TableHead>
-              <TableHead className="text-right">Original Value</TableHead>
+              <TableHead className="text-right">Value</TableHead>
               <TableHead>Location</TableHead>
               <TableHead>Purchase Date</TableHead>
-              <TableHead>Warranty Until</TableHead>
+              <TableHead className="text-center">Status</TableHead>
+              <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -88,19 +91,29 @@ const Assets = () => {
                     <TableCell className="font-semibold">
                       {asset.assetId}
                     </TableCell>
-                    <TableCell>{asset.name}</TableCell>
-                    <TableCell>
+                    <TableCell className="truncate max-w-[150px]">
+                      {asset.name}
+                    </TableCell>
+                    <TableCell className="truncate max-w-[150px]">
                       {getDocumentTypeName(asset.documentTypesId ?? "")}
                     </TableCell>
                     <TableCell className="font-semibold text-right">
                       {formatCurrency(asset.amount)}
                     </TableCell>
-                    <TableCell>{asset.location}</TableCell>
+                    <TableCell className="truncate max-w-[150px]">
+                      {asset.location}
+                    </TableCell>
                     <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
-                    <TableCell>
-                      {asset.warrantyDate
-                        ? formatDate(asset.warrantyDate)
-                        : "-"}
+                    <TableCell className="text-center">
+                      <Badge className={getActionColor(asset.status ?? "")}>
+                        {asset.status?.replace("_", " ")}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="truncate max-w-[150px]">
+                      {[
+                        asset.userCreatedBy?.firstName,
+                        asset.userCreatedBy?.lastName,
+                      ].join(" ")}
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center justify-center space-x-1">
@@ -111,10 +124,12 @@ const Assets = () => {
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <DeletePaymentDialog
-                          id={asset?.id ?? ""}
-                          type="asset"
-                        />
+                        {asset.canDelete && (
+                          <DeletePaymentDialog
+                            id={asset?.id ?? ""}
+                            type="asset"
+                          />
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -123,12 +138,13 @@ const Assets = () => {
             )}
           </TableBody>
         </Table>
-
-        <Pagination
-          totalPages={pagination?.totalPages ?? 0}
-          currentPage={pagination?.currentPage ?? 1}
-          onPageChange={handleChangePage}
-        />
+        <div className="mt-auto">
+          <Pagination
+            totalPages={pagination?.totalPages ?? 0}
+            currentPage={pagination?.currentPage ?? 1}
+            onPageChange={handleChangePage}
+          />
+        </div>
       </CardContent>
     </Card>
   );

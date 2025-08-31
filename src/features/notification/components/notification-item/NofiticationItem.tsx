@@ -1,142 +1,97 @@
-import { Notification } from "@/features/notification/schemas/Notification.schema";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { NotificationDetail } from "@/features/notification/schemas/Notification.schema";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   AlertTriangle,
   Bell,
   CheckCircle,
   Clock,
-  FileText,
-  Mail,
-  Trash2,
+  SquareDashed,
 } from "lucide-react";
+import { getActionColor } from "@/features/notification/utils/color";
+import { getPriorityColor } from "@/features/financial/utils/color";
+import { formatDateWithTime } from "@/lib/format";
+import { cn } from "@/lib/utils";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
 import { useContextSelector } from "use-context-selector";
-import { NotificationContext } from "@/features/notification/components/notification-provider";
-import {
-  getActionColor,
-  getPriorityColor,
-} from "@/features/notification/utils/color";
 
 export function getNotificationIcon(type: string) {
   switch (type) {
+    case "completed":
+      return <CheckCircle className="h-4 w-4 text-success-green" />;
     case "approval_request":
-      return <CheckCircle className="h-4 w-4 text-warning-amber" />;
-    case "status_update":
-      return <FileText className="h-4 w-4 text-success-green" />;
-    case "document_returned":
+      return <SquareDashed className="h-4 w-4 text-warning-amber" />;
+    case "rejected":
       return <AlertTriangle className="h-4 w-4 text-construction-orange" />;
     case "deadline_reminder":
       return <Clock className="h-4 w-4 text-destructive" />;
-    case "new_document":
-      return <Bell className="h-4 w-4 text-rail-blue" />;
     default:
       return <Bell className="h-4 w-4 text-muted-foreground" />;
   }
 }
 
 interface NofiticationItemProps {
-  notification: Notification;
+  notification: NotificationDetail;
 }
 
 const NofiticationItem = ({ notification }: NofiticationItemProps) => {
-  const handleNotificationClick = useContextSelector(
-    NotificationContext,
-    (context) => context?.handleNotificationClick
+  const userId = useContextSelector(
+    ProfileContext,
+    (context) => context?.userProfile?.id
   );
-  const markAsRead = useContextSelector(
-    NotificationContext,
-    (context) => context?.markAsRead
-  );
-  const deleteNotification = useContextSelector(
-    NotificationContext,
-    (context) => context?.deleteNotification
-  );
+  const { paymentId, assetId, liabilityId } = notification ?? {};
+  const isCurrentUser = notification.currentUserId === userId;
+  const item =
+    paymentId && notification?.payment
+      ? notification.payment
+      : assetId && notification?.asset
+      ? notification.asset
+      : liabilityId && notification?.liability
+      ? notification.liability
+      : null;
 
   return (
     <div
-      className={`p-3 rounded-lg border cursor-pointer transition-colors hover:bg-muted/50 ${
-        !notification.isRead ? "bg-muted/30" : ""
-      }`}
-      onClick={() => handleNotificationClick?.(notification)}
+      className={cn(
+        "p-3 rounded-lg border cursor-pointer transition-colors hover:bg-muted/50",
+        {
+          "border-destructive": isCurrentUser,
+        }
+      )}
     >
-      <div className="flex items-start space-x-3">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src={notification.avatar} />
-          <AvatarFallback>{notification.from}</AvatarFallback>
-        </Avatar>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center space-x-2">
-              {getNotificationIcon(notification.type)}
-              {!notification.isRead && (
-                <div className="w-2 h-2 bg-primary rounded-full" />
-              )}
-            </div>
-            <div className="flex items-center space-x-1">
-              <span
-                className={`text-xs font-medium ${getPriorityColor(
-                  notification.priority
-                )}`}
-              >
-                {notification.priority}
-              </span>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    •••
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      markAsRead?.(notification.id);
-                    }}
-                  >
-                    <Mail className="h-4 w-4 mr-2" />
-                    Mark as read
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteNotification?.(notification.id);
-                    }}
-                    className="text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+      <div className="flex-1 min-w-0 space-y-1">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div>{getNotificationIcon(notification.currentType)}</div>
+            <h4 className="font-medium text-sm">{item?.name}</h4>
           </div>
-          <h4 className="font-medium text-sm mb-1">{notification.title}</h4>
-          <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
-            {notification.message}
+          <div className="flex items-center space-x-1">
+            <span
+              className={`text-xs font-medium ${getPriorityColor(
+                item?.priority ?? ""
+              )}`}
+            >
+              {item?.priority}
+            </span>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground line-clamp-2">
+          {item?.description}
+        </p>
+        <div className="flex items-end justify-between">
+          <p className="text-xs text-muted-foreground">
+            {formatDateWithTime(notification.updatedAt)}
           </p>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-              <span>{notification.from}</span>
-              <span>•</span>
-              <span>{notification.createdAt}</span>
-            </div>
+
+          <div className="flex  flex-col space-y-1 items-end">
+            <p className="text-xs text-muted-foreground pr-3">
+              {notification.currentUser?.firstName}{" "}
+              {notification.currentUser?.lastName}
+            </p>
             <Badge
-              className={getActionColor(notification.action)}
+              className={getActionColor(notification.currentType)}
               variant="secondary"
             >
-              {notification.action.replace("_", " ")}
+              {notification.currentType.replace("_", " ")}
             </Badge>
           </div>
         </div>

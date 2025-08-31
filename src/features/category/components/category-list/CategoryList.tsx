@@ -65,7 +65,7 @@ const CategoryList = () => {
       </CardHeader>
       <CardContent>
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             <TableRow>
               <TableHead>Category</TableHead>
               <TableHead>Description</TableHead>

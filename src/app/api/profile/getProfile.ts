@@ -31,11 +31,20 @@ export async function getProfile() {
     if (employeeError && employeeError.code !== "PGRST116")
       throw new Error(employeeError.message);
 
+    const roleId = employeeInfo?.roleId;
+    const { data: permissionData, error: permissionError } = await supabase
+      .from("Role")
+      .select("*")
+      .eq("id", roleId)
+      .single();
+    if (permissionError) throw new Error(permissionError.message);
+
     return NextResponse.json({
       ...user,
       passwordHash: undefined,
       employeeInfo: employeeInfo || null,
       status: "active",
+      permissions: permissionData?.permissions,
     });
   } catch (error) {
     throw new Error(

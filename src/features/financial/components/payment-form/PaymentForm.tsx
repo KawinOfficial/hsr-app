@@ -26,6 +26,7 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { formatCurrency } from "@/lib/format";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PaymentHistory } from "@/features/financial/components/payment-history";
+import { Loading } from "@/components/loading";
 
 const PaymentForm = ({ onClose }: UsePaymentForm) => {
   const {
@@ -38,6 +39,10 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
     taxAmount,
     netAmount,
     selectedId,
+    isLoading,
+    canEdit,
+    isRejected,
+    paymentDetail,
   } = usePaymentForm({
     onClose,
   });
@@ -45,6 +50,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
   return (
     <Form {...methods}>
       <form onSubmit={onSubmit} onReset={onReset}>
+        {isLoading && <Loading />}
         <div className="max-h-[70vh] overflow-y-auto px-6 py-3 grid grid-cols-3 gap-4">
           <Card className="col-span-2 m-0">
             <CardHeader>
@@ -64,6 +70,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -99,6 +106,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -129,7 +137,11 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                     <FormItem>
                       <FormLabel className="text-xs">Payment Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter payment name" {...field} />
+                        <Input
+                          placeholder="Enter payment name"
+                          {...field}
+                          disabled={!canEdit}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -145,7 +157,11 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                     <FormItem>
                       <FormLabel className="text-xs">Description</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Enter description" {...field} />
+                        <Textarea
+                          placeholder="Enter description"
+                          {...field}
+                          disabled={!canEdit}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -166,6 +182,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -192,7 +209,11 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                   <FormItem>
                     <FormLabel className="text-xs">Vendor</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter vendor" {...field} />
+                      <Input
+                        placeholder="Enter vendor"
+                        {...field}
+                        disabled={!canEdit}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -217,6 +238,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                         placeholder="Enter payment date"
                         {...field}
                         type="date"
+                        disabled={!canEdit}
                       />
                     </FormControl>
                     <FormMessage />
@@ -235,6 +257,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                         placeholder="Enter amount"
                         {...field}
                         type="number"
+                        disabled={!canEdit}
                       />
                     </FormControl>
                     <FormMessage />
@@ -254,7 +277,11 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                       </span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter vat" {...field} />
+                      <Input
+                        placeholder="Enter vat"
+                        {...field}
+                        disabled={!canEdit}
+                      />
                     </FormControl>
                     <FormMessage />
                     {!!methods.watch("vat") && (
@@ -278,7 +305,11 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                       </span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter withholding tax" {...field} />
+                      <Input
+                        placeholder="Enter withholding tax"
+                        {...field}
+                        disabled={!canEdit}
+                      />
                     </FormControl>
                     <FormMessage />
                     {!!methods.watch("tax") && (
@@ -313,6 +344,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 accept={{
                   "image/*": [".png", ".jpg", ".jpeg", ".pdf"],
                 }}
+                disabled={!canEdit}
               />
             </TabsContent>
             <TabsContent value="history">
@@ -328,15 +360,24 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
           </Tabs>
         </div>
 
-        <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
-          <Button variant="outline" type="reset" onClick={onReset}>
-            Cancel
-          </Button>
-          <Button type="submit">
-            <Save className="h-4 w-4 mr-2" />
-            {selectedId ? "Update Payment" : "Create Payment"}
-          </Button>
-        </div>
+        {canEdit && (
+          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <Button variant="outline" type="reset" onClick={onReset}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isLoading}>
+              <Save className="h-4 w-4 mr-2" />
+              {selectedId ? "Update Payment" : "Create Payment"}
+            </Button>
+          </div>
+        )}
+        {isRejected && (
+          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <p className="text-destructive">
+              Rejected Reason: {paymentDetail?.remark}
+            </p>
+          </div>
+        )}
       </form>
     </Form>
   );
