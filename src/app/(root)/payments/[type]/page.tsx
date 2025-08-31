@@ -21,6 +21,7 @@ import {
 import { useContextSelector } from "use-context-selector";
 import { FinancialContext } from "@/features/financial/components/financial-provider";
 import { useParams } from "next/navigation";
+import EfficienctMetrics from "@/features/financial/components/efficiency-metrics/EfficienctMetrics";
 
 export default function PaymentsPage() {
   const { type } = useParams<{ type: string }>();
@@ -63,7 +64,11 @@ export default function PaymentsPage() {
         </Select>
       </PageHeader>
 
-      <div className="px-4 sm:px-6 py-8">
+      <div className="px-4 sm:px-6 pt-8">
+        <EfficienctMetrics />
+      </div>
+
+      <div className="px-4 sm:px-6 pb-8">
         <Tabs value={type ?? "management"} className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="management" asChild>
