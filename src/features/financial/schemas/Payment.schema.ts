@@ -28,6 +28,12 @@ export const PaymentSchema = z.object({
   vat: z.number().optional(),
   attachments: z.array(AttachmentSchema).optional(),
   status: z.string().optional(),
+  userCreatedBy: z
+    .object({
+      firstName: z.string(),
+      lastName: z.string(),
+    })
+    .optional(),
 });
 
 export const PaymentListSchema = z.object({

@@ -54,6 +54,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
     totalAmount,
     isExceedTotalAmount,
     isLoading,
+    canEdit,
   } = useLiabilityForm({ onClose });
 
   return (
@@ -79,6 +80,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -114,6 +116,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -144,7 +147,11 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                     <FormItem>
                       <FormLabel className="text-xs">Liability Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter liability name" {...field} />
+                        <Input
+                          placeholder="Enter liability name"
+                          {...field}
+                          disabled={!canEdit}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -160,7 +167,11 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                     <FormItem>
                       <FormLabel className="text-xs">Description</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Enter description" {...field} />
+                        <Textarea
+                          placeholder="Enter description"
+                          {...field}
+                          disabled={!canEdit}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -174,7 +185,11 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                   <FormItem>
                     <FormLabel className="text-xs">Creditor</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter creditor" {...field} />
+                      <Input
+                        placeholder="Enter creditor"
+                        {...field}
+                        disabled={!canEdit}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -194,6 +209,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -233,6 +249,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                         placeholder="Enter amount"
                         {...field}
                         type="number"
+                        disabled={!canEdit}
                       />
                     </FormControl>
                     <FormMessage />
@@ -251,6 +268,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                         placeholder="Enter due date"
                         {...field}
                         type="date"
+                        disabled={!canEdit}
                       />
                     </FormControl>
                     <FormMessage />
@@ -265,7 +283,11 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                   <FormItem>
                     <FormLabel className="text-xs">Terms</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter terms" {...field} />
+                      <Input
+                        placeholder="Enter terms"
+                        {...field}
+                        disabled={!canEdit}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -285,6 +307,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                         placeholder="Enter interest rate"
                         {...field}
                         type="number"
+                        disabled={!canEdit}
                       />
                     </FormControl>
                     <FormMessage />
@@ -334,6 +357,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                                       {...field}
                                       type="date"
                                       className="h-auto py-1"
+                                      disabled={!canEdit}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -353,6 +377,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                                       placeholder="Enter amount"
                                       className="h-auto py-1 text-right"
                                       type="number"
+                                      disabled={!canEdit}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -371,6 +396,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                                       {...field}
                                       placeholder="Enter description"
                                       className="h-auto py-1"
+                                      disabled={!canEdit}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -394,13 +420,15 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                             )}
                           </TableCell>
                           <TableCell className="text-center w-[50px] p-2">
-                            <button
-                              className="text-destructive disabled:text-muted-foreground disabled:cursor-not-allowed"
-                              disabled={fields.length === 1}
-                              onClick={() => onRemovePaymentSchedule(index)}
-                            >
-                              <Trash className="h-4 w-4 mr-2" />
-                            </button>
+                            {canEdit && (
+                              <button
+                                className="text-destructive disabled:text-muted-foreground disabled:cursor-not-allowed"
+                                disabled={fields.length === 1}
+                                onClick={() => onRemovePaymentSchedule(index)}
+                              >
+                                <Trash className="h-4 w-4 mr-2" />
+                              </button>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -418,15 +446,17 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                           />
                         </TableCell>
                         <TableCell className="text-right p-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={onAddPaymentSchedule}
-                            className="w-full"
-                          >
-                            <Plus className="h-4 w-4 mr-2" />
-                            Add Schedule
-                          </Button>
+                          {canEdit && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={onAddPaymentSchedule}
+                              className="w-full"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              Add Schedule
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     </TableFooter>
@@ -457,16 +487,17 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
             </TabsContent>
           </Tabs>
         </div>
-
-        <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
-          <Button variant="outline" type="reset" onClick={onReset}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isExceedTotalAmount}>
-            <Save className="h-4 w-4 mr-2" />
-            {selectedId ? "Update Asset" : "Create Asset"}
-          </Button>
-        </div>
+        {canEdit && (
+          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <Button variant="outline" type="reset" onClick={onReset}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isExceedTotalAmount}>
+              <Save className="h-4 w-4 mr-2" />
+              {selectedId ? "Update Asset" : "Create Asset"}
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );

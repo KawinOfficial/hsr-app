@@ -72,15 +72,16 @@ const Payments = () => {
               <TableHead>Vendor</TableHead>
               <TableHead className="text-right">Amount</TableHead>
               <TableHead className="text-center">Status</TableHead>
-              <TableHead>Payment Date</TableHead>
+              <TableHead>Created By</TableHead>
+              <TableHead className="text-center">Payment Date</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableLoading colSpan={7} className="py-[20vh]" />
+              <TableLoading colSpan={8} className="py-[20vh]" />
             ) : !list?.length ? (
-              <TableEmpty colSpan={7} className="py-[20vh]" />
+              <TableEmpty colSpan={8} className="py-[20vh]" />
             ) : (
               list.map((payment, index) => (
                 <TableRow key={`${payment.id}-${index}`}>
@@ -97,7 +98,15 @@ const Payments = () => {
                       {payment.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>{formatDate(payment.paymentDate)}</TableCell>
+                  <TableCell>
+                    {[
+                      payment.userCreatedBy?.firstName,
+                      payment.userCreatedBy?.lastName,
+                    ].join(" ")}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {formatDate(payment.paymentDate)}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center space-x-1">
                       <Button

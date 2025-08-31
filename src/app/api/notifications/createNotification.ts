@@ -2,6 +2,7 @@ import { checkUserAuth } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { Workflow } from "@/features/document-types/schemas/Workflow.schema";
 import { NextResponse } from "next/server";
+import { uniq } from "lodash";
 
 export async function createNotification({
   paymentId,
@@ -15,7 +16,7 @@ export async function createNotification({
   documentTypesId?: string;
 }) {
   try {
-    await checkUserAuth();
+    const userId = await checkUserAuth();
 
     let filter: string | null = null;
     let filterValue: string | null = null;
@@ -58,7 +59,7 @@ export async function createNotification({
     if (!steps.length) throw new Error("No steps found for the document type");
 
     const payload = {
-      userIds: steps.map((step) => step.userId),
+      userIds: uniq([userId, ...steps.map((step) => step.userId)]),
       currentType:
         steps[0].type === "approval" ? "approval_request" : "completed",
       currentUserId: steps[0].userId,

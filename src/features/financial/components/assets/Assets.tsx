@@ -69,10 +69,10 @@ const Assets = () => {
               <TableHead>Asset ID</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Document Type</TableHead>
-              <TableHead className="text-right">Original Value</TableHead>
+              <TableHead className="text-right">Value</TableHead>
               <TableHead>Location</TableHead>
               <TableHead>Purchase Date</TableHead>
-              <TableHead>Warranty Until</TableHead>
+              <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -98,9 +98,10 @@ const Assets = () => {
                     <TableCell>{asset.location}</TableCell>
                     <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
                     <TableCell>
-                      {asset.warrantyDate
-                        ? formatDate(asset.warrantyDate)
-                        : "-"}
+                      {[
+                        asset.userCreatedBy?.firstName,
+                        asset.userCreatedBy?.lastName,
+                      ].join(" ")}
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center justify-center space-x-1">

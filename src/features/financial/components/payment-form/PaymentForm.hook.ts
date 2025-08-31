@@ -11,6 +11,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { PaymentContext } from "@/features/financial/components/payment-provider";
 import { formatDateInput } from "@/lib/format";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
 
 const defaultValues: Payment = {
   name: "",
@@ -47,7 +48,10 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     PaymentContext,
     (context) => context?.refetch
   );
-
+  const userId = useContextSelector(
+    ProfileContext,
+    (context) => context?.userProfile?.id
+  );
   const id = selectedId ?? "";
   const { data: paymentDetail, isFetching: isLoadingPaymentDetail } =
     usePaymentDetail(id);
@@ -67,6 +71,9 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
       isLoadingPaymentDetail || isLoadingCreatePayment || isLoadingUpdatePayment
     );
   }, [isLoadingPaymentDetail, isLoadingCreatePayment, isLoadingUpdatePayment]);
+  const canEdit = useMemo(() => {
+    return !id || paymentDetail?.createdBy === userId;
+  }, [id, paymentDetail?.createdBy, userId]);
 
   function createPayload(data: Payment) {
     return {
@@ -155,5 +162,6 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     selectedId,
     history,
     isLoading,
+    canEdit,
   };
 };

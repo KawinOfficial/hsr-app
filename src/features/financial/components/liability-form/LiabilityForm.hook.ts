@@ -12,6 +12,7 @@ import {
   useCreateLiability,
   useUpdateLiability,
 } from "@/features/financial/hooks/use-liability";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
 
 export interface UseLiabilityForm {
   onClose?: () => void;
@@ -57,7 +58,10 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     LiabilityContext,
     (state) => state?.refetch
   );
-
+  const userId = useContextSelector(
+    ProfileContext,
+    (context) => context?.userProfile?.id
+  );
   const id = selectedId ?? "";
   const { data: liabilityDetail, isFetching: isLoadingLiabilityDetail } =
     useLiabilityDetail(id);
@@ -92,6 +96,9 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     isLoadingCreateLiability,
     isLoadingUpdateLiability,
   ]);
+  const canEdit = useMemo(() => {
+    return !id || liabilityDetail?.createdBy === userId;
+  }, [id, liabilityDetail?.createdBy, userId]);
 
   function createPayload(data: Liability) {
     return {
@@ -199,5 +206,6 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     totalAmount,
     isExceedTotalAmount,
     isLoading,
+    canEdit,
   };
 };

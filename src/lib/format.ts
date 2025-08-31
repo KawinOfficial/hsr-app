@@ -9,22 +9,14 @@ export const formatCurrency = (amount?: number) => {
   }).format(amount);
 };
 
+import dayjs from "dayjs";
+
 export const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString("us-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  return dayjs(date).format("DD/MM/YYYY");
 };
 
 export const formatDateWithTime = (date: string) => {
-  return new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  return dayjs(date).format("DD/MM/YYYY HH:mm");
 };
 
 export const formatPercent = (percent: number) => {

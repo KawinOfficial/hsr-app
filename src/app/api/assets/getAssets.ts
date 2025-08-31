@@ -18,7 +18,9 @@ export async function getAssets({
 
     let query = supabase
       .from("Assets")
-      .select("*", { count: "exact" })
+      .select("*,createdBy,userCreatedBy:User(firstName,lastName)", {
+        count: "exact",
+      })
       .order("updatedAt", { ascending: false });
     if (keyword) {
       query = query.ilike("name", `%${keyword}%`);

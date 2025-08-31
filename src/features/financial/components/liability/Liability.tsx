@@ -75,14 +75,15 @@ const Liability = () => {
               <TableHead>Amount</TableHead>
               <TableHead>Due Date</TableHead>
               <TableHead className="text-center">Priority</TableHead>
+              <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableLoading colSpan={7} className="py-[20vh]" />
+              <TableLoading colSpan={9} className="py-[20vh]" />
             ) : !list?.length ? (
-              <TableEmpty colSpan={7} className="py-[20vh]" />
+              <TableEmpty colSpan={9} className="py-[20vh]" />
             ) : (
               list.map((liability) => (
                 <TableRow key={liability.id}>
@@ -108,7 +109,13 @@ const Liability = () => {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <div className="flex space-x-1 justify-center">
+                    {[
+                      liability.userCreatedBy?.firstName,
+                      liability.userCreatedBy?.lastName,
+                    ].join(" ")}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center justify-center space-x-1">
                       <Button
                         variant="ghost"
                         size="sm"

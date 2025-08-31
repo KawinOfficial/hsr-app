@@ -1,17 +1,18 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { Asset } from "@/features/financial/schemas/Asset.schema";
 import { useContextSelector } from "use-context-selector";
-import { FinancialContext } from "../financial-provider";
-import { AssetsContext } from "../assets-provider";
-import { Maintance } from "../../schemas/Maintance.schema";
+import { FinancialContext } from "@/features/financial/components/financial-provider";
+import { AssetsContext } from "@/features/financial/components/assets-provider";
+import { Maintance } from "@/features/financial/schemas/Maintance.schema";
 import {
   useAssetDetail,
   useCreateAsset,
   useUpdateAsset,
-} from "../../hooks/use-assets";
+} from "@/features/financial/hooks/use-assets";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useMemo } from "react";
 import { formatDateInput } from "@/lib/format";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
 
 export interface UseAssetsForm {
   onClose?: () => void;
@@ -52,7 +53,10 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
     (state) => state?.selectedId
   );
   const refetch = useContextSelector(AssetsContext, (state) => state?.refetch);
-
+  const userId = useContextSelector(
+    ProfileContext,
+    (context) => context?.userProfile?.id
+  );
   const id = selectedId ?? "";
   const { data: assetDetail, isFetching: isLoadingAssetDetail } =
     useAssetDetail(id);
@@ -76,6 +80,9 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
   const isLoading = useMemo(() => {
     return isLoadingAssetDetail || isLoadingCreateAsset || isLoadingUpdateAsset;
   }, [isLoadingAssetDetail, isLoadingCreateAsset, isLoadingUpdateAsset]);
+  const canEdit = useMemo(() => {
+    return !id || assetDetail?.createdBy === userId;
+  }, [id, assetDetail?.createdBy, userId]);
 
   function createPayload(data: Asset) {
     return {
@@ -187,5 +194,6 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
     getCurrentValue,
     getDepreciation,
     isLoading,
+    canEdit,
   };
 };
