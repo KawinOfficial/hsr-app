@@ -71,9 +71,19 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
       isLoadingPaymentDetail || isLoadingCreatePayment || isLoadingUpdatePayment
     );
   }, [isLoadingPaymentDetail, isLoadingCreatePayment, isLoadingUpdatePayment]);
+  const isRejected = useMemo(() => {
+    return paymentDetail?.status === "rejected";
+  }, [paymentDetail?.status]);
+  const isCompleted = useMemo(() => {
+    return paymentDetail?.status === "completed";
+  }, [paymentDetail?.status]);
   const canEdit = useMemo(() => {
-    return !id || paymentDetail?.createdBy === userId;
-  }, [id, paymentDetail?.createdBy, userId]);
+    return (
+      (!id || paymentDetail?.createdBy === userId) &&
+      !isRejected &&
+      !isCompleted
+    );
+  }, [id, paymentDetail?.createdBy, userId, isRejected, isCompleted]);
 
   function createPayload(data: Payment) {
     return {
@@ -82,6 +92,10 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
       tax: Number(data.tax) || 0,
       amount: Number(data.amount) || 0,
       paymentDate: new Date(data.paymentDate).toISOString(),
+      status: undefined,
+      remark: undefined,
+      canDelete: undefined,
+      userCreatedBy: undefined,
     };
   }
 
@@ -163,5 +177,7 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     history,
     isLoading,
     canEdit,
+    isRejected,
+    paymentDetail,
   };
 };

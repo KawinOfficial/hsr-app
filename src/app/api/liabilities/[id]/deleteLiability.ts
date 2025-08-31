@@ -2,10 +2,12 @@ import { checkUserAuth } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 import { deleteHistory } from "../../paymentHistory/deleteHistory";
+import { deleteNotification } from "../../notifications/deleteNotification";
 
 export async function deleteLiability(id: string) {
   try {
     await checkUserAuth();
+    await deleteNotification({ liabilityId: id });
     await deleteHistory({ id, type: "liability" });
 
     const { error: paymentSchedulesError } = await supabase

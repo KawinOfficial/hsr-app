@@ -23,6 +23,8 @@ import { Input } from "@/components/ui/input";
 import DeletePaymentDialog from "../delete-payment-dialog/DeletePaymentDialog";
 import { TableEmpty, TableLoading } from "@/components/table";
 import { Pagination } from "@/components/pagination";
+import { getActionColor } from "@/features/notification/utils/color";
+import { Badge } from "@/components/ui/badge";
 
 const Assets = () => {
   const {
@@ -72,6 +74,7 @@ const Assets = () => {
               <TableHead className="text-right">Value</TableHead>
               <TableHead>Location</TableHead>
               <TableHead>Purchase Date</TableHead>
+              <TableHead className="text-center">Status</TableHead>
               <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
@@ -88,16 +91,25 @@ const Assets = () => {
                     <TableCell className="font-semibold">
                       {asset.assetId}
                     </TableCell>
-                    <TableCell>{asset.name}</TableCell>
-                    <TableCell>
+                    <TableCell className="truncate max-w-[150px]">
+                      {asset.name}
+                    </TableCell>
+                    <TableCell className="truncate max-w-[150px]">
                       {getDocumentTypeName(asset.documentTypesId ?? "")}
                     </TableCell>
                     <TableCell className="font-semibold text-right">
                       {formatCurrency(asset.amount)}
                     </TableCell>
-                    <TableCell>{asset.location}</TableCell>
+                    <TableCell className="truncate max-w-[150px]">
+                      {asset.location}
+                    </TableCell>
                     <TableCell>{formatDate(asset.purchaseDate)}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
+                      <Badge className={getActionColor(asset.status ?? "")}>
+                        {asset.status?.replace("_", " ")}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="truncate max-w-[150px]">
                       {[
                         asset.userCreatedBy?.firstName,
                         asset.userCreatedBy?.lastName,
@@ -112,10 +124,12 @@ const Assets = () => {
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <DeletePaymentDialog
-                          id={asset?.id ?? ""}
-                          type="asset"
-                        />
+                        {asset.canDelete && (
+                          <DeletePaymentDialog
+                            id={asset?.id ?? ""}
+                            type="asset"
+                          />
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

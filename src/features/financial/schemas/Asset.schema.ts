@@ -17,6 +17,9 @@ export const AssetSchema = z.object({
   projectId: z.string().optional(),
   maintances: MaintanceListSchema.optional().nullable(),
   createdBy: z.string().optional(),
+  status: z.string().optional(),
+  remark: z.string().optional().nullable(),
+  canDelete: z.boolean().optional(),
   userCreatedBy: z
     .object({
       firstName: z.string(),

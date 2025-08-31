@@ -4,6 +4,14 @@ import { PaymentSchema } from "@/features/financial/schemas/Payment.schema";
 import { formatDate, formatDateWithTime } from "@/lib/format";
 import { z } from "zod";
 
+export const ApproveFormSchema = z.object({
+  id: z.string(),
+  documentTypesId: z.string(),
+  isRejected: z.boolean(),
+  remark: z.string().optional().nullable(),
+  isInReview: z.boolean(),
+});
+
 export const ApprovalSchema = z.object({
   id: z.string().optional().nullable(),
   updatedAt: z.string(),
@@ -130,3 +138,4 @@ export const ApprovalListSchema = z.array(ApprovalDetailSchema);
 export type Approval = z.infer<typeof ApprovalSchema>;
 export type ApprovalDetail = z.infer<typeof ApprovalDetailSchema>;
 export type ApprovalList = z.infer<typeof ApprovalListSchema>;
+export type ApproveForm = z.infer<typeof ApproveFormSchema>;

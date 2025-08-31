@@ -44,6 +44,8 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
     getDepreciation,
     isLoading,
     canEdit,
+    isRejected,
+    assetDetail,
   } = useAssetsForm({ onClose });
 
   return (
@@ -480,10 +482,17 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
             <Button variant="outline" type="reset" onClick={onReset}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!canEdit}>
+            <Button type="submit" disabled={!isLoading}>
               <Save className="h-4 w-4 mr-2" />
               {selectedId ? "Update Asset" : "Create Asset"}
             </Button>
+          </div>
+        )}
+        {isRejected && (
+          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <p className="text-destructive">
+              Rejected Reason: {assetDetail?.remark}
+            </p>
           </div>
         )}
       </form>

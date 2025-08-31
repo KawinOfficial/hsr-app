@@ -96,13 +96,27 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     isLoadingCreateLiability,
     isLoadingUpdateLiability,
   ]);
+  const isRejected = useMemo(() => {
+    return liabilityDetail?.status === "rejected";
+  }, [liabilityDetail?.status]);
+  const isCompleted = useMemo(() => {
+    return liabilityDetail?.status === "completed";
+  }, [liabilityDetail?.status]);
   const canEdit = useMemo(() => {
-    return !id || liabilityDetail?.createdBy === userId;
-  }, [id, liabilityDetail?.createdBy, userId]);
+    return (
+      (!id || liabilityDetail?.createdBy === userId) &&
+      !isRejected &&
+      !isCompleted
+    );
+  }, [id, liabilityDetail?.createdBy, userId, isRejected, isCompleted]);
 
   function createPayload(data: Liability) {
     return {
       ...data,
+      status: undefined,
+      remark: undefined,
+      canDelete: undefined,
+      userCreatedBy: undefined,
     };
   }
 
@@ -207,5 +221,7 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     isExceedTotalAmount,
     isLoading,
     canEdit,
+    isRejected,
+    liabilityDetail,
   };
 };

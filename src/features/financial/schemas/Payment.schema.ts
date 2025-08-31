@@ -28,6 +28,8 @@ export const PaymentSchema = z.object({
   vat: z.number().optional(),
   attachments: z.array(AttachmentSchema).optional(),
   status: z.string().optional(),
+  remark: z.string().optional().nullable(),
+  canDelete: z.boolean().optional(),
   userCreatedBy: z
     .object({
       firstName: z.string(),

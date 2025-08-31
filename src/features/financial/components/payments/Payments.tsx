@@ -21,7 +21,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { usePayments } from "./Payments.hook";
-import { getStatusColor } from "@/features/financial/utils/color";
+import { getActionColor } from "@/features/notification/utils/color";
 import { TableEmpty, TableLoading } from "@/components/table";
 import { Pagination } from "@/components/pagination";
 import DeletePaymentDialog from "../delete-payment-dialog/DeletePaymentDialog";
@@ -71,8 +71,8 @@ const Payments = () => {
               <TableHead>Name</TableHead>
               <TableHead>Vendor</TableHead>
               <TableHead className="text-right">Amount</TableHead>
-              <TableHead className="text-center">Status</TableHead>
               <TableHead className="text-center">Payment Date</TableHead>
+              <TableHead className="text-center">Status</TableHead>
               <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
@@ -94,14 +94,14 @@ const Payments = () => {
                     {formatCurrency(payment.amount)}
                   </TableCell>
                   <TableCell className="text-center">
-                    <Badge className={getStatusColor(payment.status ?? "")}>
-                      {payment.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-center">
                     {formatDate(payment.paymentDate)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
+                    <Badge className={getActionColor(payment.status ?? "")}>
+                      {payment.status?.replace("_", " ")}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="truncate max-w-[150px]">
                     {[
                       payment.userCreatedBy?.firstName,
                       payment.userCreatedBy?.lastName,
@@ -116,10 +116,12 @@ const Payments = () => {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <DeletePaymentDialog
-                        id={payment.id ?? ""}
-                        type="payment"
-                      />
+                      {payment.canDelete && (
+                        <DeletePaymentDialog
+                          id={payment.id ?? ""}
+                          type="payment"
+                        />
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>

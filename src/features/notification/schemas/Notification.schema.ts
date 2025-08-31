@@ -23,10 +23,13 @@ export const NotificationDetailSchema = NotificationSchema.extend({
   payment: BaseNotificationSchema.optional().nullable(),
   asset: BaseNotificationSchema.optional().nullable(),
   liability: BaseNotificationSchema.optional().nullable(),
-  currentUser: z.object({
-    firstName: z.string(),
-    lastName: z.string(),
-  }),
+  currentUser: z
+    .object({
+      firstName: z.string(),
+      lastName: z.string(),
+    })
+    .optional()
+    .nullable(),
 });
 
 export const NotificationListSchema = z.array(NotificationDetailSchema);

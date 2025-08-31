@@ -80,9 +80,17 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
   const isLoading = useMemo(() => {
     return isLoadingAssetDetail || isLoadingCreateAsset || isLoadingUpdateAsset;
   }, [isLoadingAssetDetail, isLoadingCreateAsset, isLoadingUpdateAsset]);
+  const isRejected = useMemo(() => {
+    return assetDetail?.status === "rejected";
+  }, [assetDetail?.status]);
+  const isCompleted = useMemo(() => {
+    return assetDetail?.status === "completed";
+  }, [assetDetail?.status]);
   const canEdit = useMemo(() => {
-    return !id || assetDetail?.createdBy === userId;
-  }, [id, assetDetail?.createdBy, userId]);
+    return (
+      (!id || assetDetail?.createdBy === userId) && !isRejected && !isCompleted
+    );
+  }, [id, assetDetail?.createdBy, userId, isRejected, isCompleted]);
 
   function createPayload(data: Asset) {
     return {
@@ -97,6 +105,10 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
         date: new Date(maintance.date).toISOString(),
         cost: Number(maintance.cost),
       })),
+      status: undefined,
+      remark: undefined,
+      canDelete: undefined,
+      userCreatedBy: undefined,
     };
   }
 
@@ -195,5 +207,7 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
     getDepreciation,
     isLoading,
     canEdit,
+    isRejected,
+    assetDetail,
   };
 };

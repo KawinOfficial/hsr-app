@@ -55,6 +55,8 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
     isExceedTotalAmount,
     isLoading,
     canEdit,
+    isRejected,
+    liabilityDetail,
   } = useLiabilityForm({ onClose });
 
   return (
@@ -496,6 +498,13 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
               <Save className="h-4 w-4 mr-2" />
               {selectedId ? "Update Asset" : "Create Asset"}
             </Button>
+          </div>
+        )}
+        {isRejected && (
+          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <p className="text-destructive">
+              Rejected Reason: {liabilityDetail?.remark}
+            </p>
           </div>
         )}
       </form>

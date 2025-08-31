@@ -1,4 +1,4 @@
-import { checkUserAuth } from "@/lib/promise";
+import { checkUserAuth, getStatus } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { Workflow } from "@/features/document-types/schemas/Workflow.schema";
 import { NextResponse } from "next/server";
@@ -58,11 +58,12 @@ export async function createNotification({
     } = documentTypesData as unknown as { ApprovalWorkflow: Workflow };
     if (!steps.length) throw new Error("No steps found for the document type");
 
+    const status = getStatus(steps[0].type);
+
     const payload = {
       userIds: uniq([userId, ...steps.map((step) => step.userId)]),
-      currentType:
-        steps[0].type === "approval" ? "approval_request" : "completed",
-      currentUserId: steps[0].userId,
+      currentType: status,
+      currentUserId: status === "completed" ? null : steps[0].userId,
       paymentId: paymentId || null,
       assetId: assetId || null,
       liabilityId: liabilityId || null,

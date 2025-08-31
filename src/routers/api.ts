@@ -37,4 +37,7 @@ export const API_ROUTES = {
   notifications: "notifications",
   notificationDetail: "notifications/:id",
   approvals: "approvals",
+  approve: "approvals/approve",
+  reject: "approvals/reject",
+  inReview: "approvals/in-review",
 };

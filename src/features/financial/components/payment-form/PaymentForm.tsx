@@ -41,6 +41,8 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
     selectedId,
     isLoading,
     canEdit,
+    isRejected,
+    paymentDetail,
   } = usePaymentForm({
     onClose,
   });
@@ -367,6 +369,13 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
               <Save className="h-4 w-4 mr-2" />
               {selectedId ? "Update Payment" : "Create Payment"}
             </Button>
+          </div>
+        )}
+        {isRejected && (
+          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <p className="text-destructive">
+              Rejected Reason: {paymentDetail?.remark}
+            </p>
           </div>
         )}
       </form>

@@ -11,7 +11,6 @@ export async function createPayment(request: NextRequest) {
 
     const body = await request.json();
     const user = await getCurrentUser();
-    const status = "Pending Approval";
     const now = new Date();
     const createdAt = now.toISOString();
     const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -37,7 +36,6 @@ export async function createPayment(request: NextRequest) {
         ...body,
         createdBy: user?.id,
         createdAt,
-        status,
         paymentId,
       })
       .select()

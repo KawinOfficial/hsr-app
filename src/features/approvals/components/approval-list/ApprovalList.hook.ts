@@ -18,6 +18,18 @@ export const useApprovalList = () => {
     ApprovalContext,
     (context) => context?.documentTypes
   );
+  const handleOpenApprove = useContextSelector(
+    ApprovalContext,
+    (context) => context?.handleOpenApprove
+  );
+  const handleOpenReject = useContextSelector(
+    ApprovalContext,
+    (context) => context?.handleOpenReject
+  );
+  const handleOpenInReview = useContextSelector(
+    ApprovalContext,
+    (context) => context?.handleOpenInReview
+  );
 
   function getProject(value: string) {
     const project = projectOptions?.find((option) => option.value === value);
@@ -31,5 +43,13 @@ export const useApprovalList = () => {
     return documentType?.label || "-";
   }
 
-  return { approvals, isLoading, getProject, getDocumentType };
+  return {
+    approvals,
+    isLoading,
+    getProject,
+    getDocumentType,
+    handleOpenApprove,
+    handleOpenReject,
+    handleOpenInReview,
+  };
 };

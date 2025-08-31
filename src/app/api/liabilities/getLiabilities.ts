@@ -33,9 +33,41 @@ export async function getLiabilities({
     const { data, error, count } = await query;
     if (error) throw new Error(error.message);
 
+    if (!data.length) {
+      return NextResponse.json({
+        status: "success",
+        data: [],
+        pagination: {
+          totalItems: count ?? 0,
+          totalPages: Math.ceil((count ?? 0) / limit),
+          currentPage: Number(page),
+          itemsPerPage: Number(limit),
+        },
+      });
+    }
+
+    const liabilityIds = data.map((item) => item.id);
+    const { data: notifications, error: notificationsError } = await supabase
+      .from("Notifications")
+      .select("currentType,liabilityId,editedIds")
+      .in("liabilityId", liabilityIds)
+      .order("updatedAt", { ascending: false });
+    if (notificationsError) throw new Error(notificationsError.message);
+    const notificationMap = new Map(
+      (notifications ?? []).map((n) => [n.liabilityId, n.currentType])
+    );
+    const formattedData = data.map((item) => ({
+      ...item,
+      status: notificationMap.get(item.id) || "N/A",
+      canDelete: !(
+        notifications.find((n) => n.liabilityId === item.id)?.editedIds
+          ?.length ?? 0
+      ),
+    }));
+
     return NextResponse.json({
       status: "success",
-      data,
+      data: formattedData,
       pagination: {
         totalItems: count,
         totalPages: Math.ceil((count ?? 0) / limit),

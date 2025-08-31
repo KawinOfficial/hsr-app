@@ -2,10 +2,12 @@ import { checkUserAuth } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 import { deleteHistory } from "../../paymentHistory/deleteHistory";
+import { deleteNotification } from "../../notifications/deleteNotification";
 
 export async function deleteAssets(id: string) {
   try {
     await checkUserAuth();
+    await deleteNotification({ assetId: id });
     await deleteHistory({ id, type: "asset" });
 
     const { error: maintancesError } = await supabase

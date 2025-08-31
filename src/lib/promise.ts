@@ -28,3 +28,14 @@ export async function getCurrentUser() {
   const session = await auth();
   return session?.user;
 }
+
+export function getStatus(status: string) {
+  switch (status) {
+    case "approval":
+      return "approval_request";
+    case "review":
+      return "review_request";
+    default:
+      return "completed";
+  }
+}

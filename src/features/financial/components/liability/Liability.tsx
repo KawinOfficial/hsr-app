@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/pagination";
 import { DeletePaymentDialog } from "../delete-payment-dialog";
 import { TableEmpty, TableLoading } from "@/components/table";
+import { getActionColor } from "@/features/notification/utils/color";
+import { Badge } from "@/components/ui/badge";
 
 const Liability = () => {
   const {
@@ -75,6 +77,7 @@ const Liability = () => {
               <TableHead>Amount</TableHead>
               <TableHead>Due Date</TableHead>
               <TableHead className="text-center">Priority</TableHead>
+              <TableHead className="text-center">Status</TableHead>
               <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
@@ -91,10 +94,12 @@ const Liability = () => {
                     {liability.liabilityId}
                   </TableCell>
                   <TableCell>{liability.name}</TableCell>
-                  <TableCell>
+                  <TableCell className="truncate max-w-[150px]">
                     {getDocumentTypeName(liability.documentTypesId)}
                   </TableCell>
-                  <TableCell>{liability.creditor}</TableCell>
+                  <TableCell className="truncate max-w-[150px]">
+                    {liability.creditor}
+                  </TableCell>
                   <TableCell className="font-semibold">
                     {formatCurrency(liability.amount)}
                   </TableCell>
@@ -108,7 +113,12 @@ const Liability = () => {
                       {liability.priority}
                     </span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
+                    <Badge className={getActionColor(liability.status ?? "")}>
+                      {liability.status?.replace("_", " ")}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="truncate max-w-[150px]">
                     {[
                       liability.userCreatedBy?.firstName,
                       liability.userCreatedBy?.lastName,
