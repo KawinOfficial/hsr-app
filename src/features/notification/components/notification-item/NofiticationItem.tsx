@@ -10,6 +10,9 @@ import {
 import { getActionColor } from "@/features/notification/utils/color";
 import { getPriorityColor } from "@/features/financial/utils/color";
 import { formatDateWithTime } from "@/lib/format";
+import { cn } from "@/lib/utils";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
+import { useContextSelector } from "use-context-selector";
 
 export function getNotificationIcon(type: string) {
   switch (type) {
@@ -31,7 +34,12 @@ interface NofiticationItemProps {
 }
 
 const NofiticationItem = ({ notification }: NofiticationItemProps) => {
+  const userId = useContextSelector(
+    ProfileContext,
+    (context) => context?.userProfile?.id
+  );
   const { paymentId, assetId, liabilityId } = notification ?? {};
+  const isCurrentUser = notification.currentUserId === userId;
   const item =
     paymentId && notification?.payment
       ? notification.payment
@@ -43,7 +51,12 @@ const NofiticationItem = ({ notification }: NofiticationItemProps) => {
 
   return (
     <div
-      className={`p-3 rounded-lg border cursor-pointer transition-colors hover:bg-muted/50`}
+      className={cn(
+        "p-3 rounded-lg border cursor-pointer transition-colors hover:bg-muted/50",
+        {
+          "border-destructive": isCurrentUser,
+        }
+      )}
     >
       <div className="flex-1 min-w-0 space-y-1">
         <div className="flex items-center justify-between">
@@ -64,21 +77,23 @@ const NofiticationItem = ({ notification }: NofiticationItemProps) => {
         <p className="text-xs text-muted-foreground line-clamp-2">
           {item?.description}
         </p>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-            <span>
+        <div className="flex items-end justify-between">
+          <p className="text-xs text-muted-foreground">
+            {formatDateWithTime(notification.updatedAt)}
+          </p>
+
+          <div className="flex  flex-col space-y-1 items-end">
+            <p className="text-xs text-muted-foreground pr-3">
               {notification.currentUser?.firstName}{" "}
               {notification.currentUser?.lastName}
-            </span>
-            <span>•</span>
-            <span>{formatDateWithTime(notification.updatedAt)}</span>
+            </p>
+            <Badge
+              className={getActionColor(notification.currentType)}
+              variant="secondary"
+            >
+              {notification.currentType.replace("_", " ")}
+            </Badge>
           </div>
-          <Badge
-            className={getActionColor(notification.currentType)}
-            variant="secondary"
-          >
-            {notification.currentType.replace("_", " ")}
-          </Badge>
         </div>
       </div>
     </div>

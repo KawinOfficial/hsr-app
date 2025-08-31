@@ -9,7 +9,7 @@ import { useNotificationSystem } from "./NotificationSystem.hook";
 import { NofiticationItem } from "@/features/notification/components/notification-item";
 
 const NotificationSystem = () => {
-  const { isOpen, setIsOpen, notifications, isLoading } =
+  const { isOpen, setIsOpen, notifications, isLoading, onOpenApprovals } =
     useNotificationSystem();
 
   return (
@@ -28,9 +28,16 @@ const NotificationSystem = () => {
 
         <DropdownMenuContent align="end" className="w-[500px]">
           <div className="p-3 relative pt-12">
-            <h3 className="font-semibold absolute top-3 left-3">
-              Notifications
-            </h3>
+            <div className="flex items-center justify-between  absolute top-3 inset-x-3">
+              <h3 className="font-semibold">Notifications</h3>
+              <button
+                type="button"
+                className="text-sm text-muted-foreground hover:text-primary"
+                onClick={onOpenApprovals}
+              >
+                Show All Approvals
+              </button>
+            </div>
 
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {isLoading ? (

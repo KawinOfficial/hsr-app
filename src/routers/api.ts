@@ -36,4 +36,5 @@ export const API_ROUTES = {
   paymentSchedule: "paymentSchedule",
   notifications: "notifications",
   notificationDetail: "notifications/:id",
+  approvals: "approvals",
 };
