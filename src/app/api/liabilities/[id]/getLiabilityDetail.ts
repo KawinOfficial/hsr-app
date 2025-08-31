@@ -21,9 +21,18 @@ export async function getLiabilityDetail(id: string) {
         .order("createdAt", { ascending: false });
     if (paymentSchedulesError) throw new Error(paymentSchedulesError.message);
 
+    const { data: notifications, error: notificationsError } = await supabase
+      .from("Notifications")
+      .select("currentType,remark")
+      .eq("liabilityId", id)
+      .maybeSingle();
+    if (notificationsError) throw new Error(notificationsError.message);
+
     const formattedData = {
       ...data,
       paymentSchedules,
+      status: notifications?.currentType,
+      remark: notifications?.remark,
     };
 
     return NextResponse.json({ data: formattedData });

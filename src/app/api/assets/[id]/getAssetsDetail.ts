@@ -20,9 +20,18 @@ export async function getAssetsDetail(id: string) {
       .order("createdAt", { ascending: false });
     if (maintancesError) throw new Error(maintancesError.message);
 
+    const { data: notifications, error: notificationsError } = await supabase
+      .from("Notifications")
+      .select("currentType,remark")
+      .eq("assetId", id)
+      .maybeSingle();
+    if (notificationsError) throw new Error(notificationsError.message);
+
     const formattedData = {
       ...data,
       maintances,
+      status: notifications?.currentType,
+      remark: notifications?.remark,
     };
 
     return NextResponse.json({ data: formattedData });

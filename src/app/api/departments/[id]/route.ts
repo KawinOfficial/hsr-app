@@ -7,8 +7,7 @@ export async function GET(request: Request) {
 
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
-  const keyword = searchParams.get("keyword") || "";
   const roleId = searchParams.get("roleId") || "";
 
-  return getDepartmentMember(id, page, limit, keyword, roleId);
+  return getDepartmentMember(id, page, limit, roleId);
 }

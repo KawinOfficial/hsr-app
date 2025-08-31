@@ -3,6 +3,8 @@ import { createHistory } from "../paymentHistory/createHistory";
 import { checkUserAuth, getCurrentUser } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
+import { generatePaymentId } from "@/lib/format";
+import { createNotification } from "../notifications/createNotification";
 
 export async function createAssets(request: NextRequest) {
   try {
@@ -23,17 +25,9 @@ export async function createAssets(request: NextRequest) {
       .order("createdAt", { ascending: false })
       .limit(1);
     if (fetchError) throw new Error(fetchError.message);
-    let runningNumber = 1;
-    if (lastAssets && lastAssets.length > 0) {
-      const lastAssetId = lastAssets[0].assetId;
-      const match = lastAssetId.match(/AST-\d{4}-(\d+)/);
-      if (match && match[1]) {
-        runningNumber = parseInt(match[1], 10) + 1;
-      }
-    }
-    const assetId = `AST-${month}${year}-${runningNumber
-      .toString()
-      .padStart(4, "0")}`;
+    const lastAssetId =
+      lastAssets && lastAssets.length > 0 ? lastAssets[0].assetId : null;
+    const assetId = generatePaymentId("AST", lastAssetId, month, year);
 
     const { data, error } = await supabase
       .from("Assets")
@@ -60,12 +54,15 @@ export async function createAssets(request: NextRequest) {
       if (maintancesError) throw new Error(maintancesError.message);
     }
 
-    const history = {
+    await createNotification({
+      assetId: data?.id,
+      documentTypesId: body.documentTypesId,
+    });
+    await createHistory({
       assetId: data?.id,
       action: "Create",
       description: "Asset created",
-    };
-    await createHistory(history);
+    });
 
     return NextResponse.json({ data });
   } catch (error) {

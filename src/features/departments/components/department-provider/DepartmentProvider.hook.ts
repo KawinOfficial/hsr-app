@@ -51,6 +51,7 @@ export const useDepartmentProvider = () => {
           description: "Your department has been updated successfully.",
         });
         refetch();
+        setDepartmentEditOpen(false);
       },
       onError: (error) => {
         const errorMessage =

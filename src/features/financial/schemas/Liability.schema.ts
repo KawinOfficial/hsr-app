@@ -18,6 +18,16 @@ export const LiabilitySchema = z.object({
   projectId: z.string(),
   priority: z.string(),
   paymentSchedules: z.array(PaymentScheduleSchema).optional(),
+  createdBy: z.string().optional(),
+  status: z.string().optional(),
+  remark: z.string().optional().nullable(),
+  canDelete: z.boolean().optional(),
+  userCreatedBy: z
+    .object({
+      firstName: z.string(),
+      lastName: z.string(),
+    })
+    .optional(),
 });
 
 export const LiabilitiesListSchema = z.object({

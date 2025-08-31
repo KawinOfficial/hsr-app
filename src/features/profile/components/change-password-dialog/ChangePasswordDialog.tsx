@@ -8,17 +8,30 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useChangePasswordDialog } from "./ChangePasswordDialog.hook";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Save } from "lucide-react";
+import { Check, Eye, EyeOff, Save, X } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { cn } from "@/lib/utils";
 
 const ChangePasswordDialog = () => {
   const {
     changePasswordOpen,
     setChangePasswordOpen,
     showPassword,
-    setShowPassword,
+    toggleShowPassword,
+    methods,
+    onSubmit,
+    onReset,
+    passwordValidation,
+    isPending,
   } = useChangePasswordDialog();
 
   return (
@@ -30,63 +43,141 @@ const ChangePasswordDialog = () => {
             Enter your current password and choose a new one
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4 mt-4">
-          <div>
-            <Label htmlFor="current-password">Current Password</Label>
-            <div className="relative">
-              <Input
-                id="current-password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter current password"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full px-3"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
+        <Form {...methods}>
+          <form onSubmit={onSubmit} onReset={onReset}>
+            <div className="space-y-4 mt-4">
+              <FormField
+                control={methods.control}
+                name="currentPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Current Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="Enter current password"
+                          {...field}
+                          type={
+                            showPassword.currentPassword ? "text" : "password"
+                          }
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3"
+                          onClick={() => toggleShowPassword("currentPassword")}
+                        >
+                          {showPassword.currentPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </Button>
+              />
+
+              <FormField
+                control={methods.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">New Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="Enter new password"
+                          {...field}
+                          type={showPassword.newPassword ? "text" : "password"}
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3"
+                          onClick={() => toggleShowPassword("newPassword")}
+                        >
+                          {showPassword.newPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <div className="text-xs list-disc list-inside space-y-0.5">
+                {passwordValidation.map((requirement) => (
+                  <div
+                    key={requirement.id}
+                    className={cn(
+                      "flex items-center gap-2",
+                      requirement.isValid ? "text-green-600" : "text-red-500"
+                    )}
+                  >
+                    {requirement.isValid ? (
+                      <Check className="h-3 w-3" />
+                    ) : (
+                      <X className="h-3 w-3" />
+                    )}
+                    <p>{requirement.message}</p>
+                  </div>
+                ))}
+              </div>
+
+              <FormField
+                control={methods.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">Confirm Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="Enter confirm password"
+                          {...field}
+                          type={
+                            showPassword.confirmPassword ? "text" : "password"
+                          }
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3"
+                          onClick={() => toggleShowPassword("confirmPassword")}
+                        >
+                          {showPassword.confirmPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-          </div>
-          <div>
-            <Label htmlFor="new-password">New Password</Label>
-            <Input
-              id="new-password"
-              type="password"
-              placeholder="Enter new password"
-            />
-          </div>
-          <div>
-            <Label htmlFor="confirm-password">Confirm New Password</Label>
-            <Input
-              id="confirm-password"
-              type="password"
-              placeholder="Confirm new password"
-            />
-          </div>
-          <div className="text-xs text-muted-foreground">
-            Password must be at least 8 characters long and contain uppercase,
-            lowercase, numbers, and special characters.
-          </div>
-        </div>
-        <DialogFooter className="mt-4">
-          <Button
-            variant="outline"
-            onClick={() => setChangePasswordOpen?.(false)}
-          >
-            Cancel
-          </Button>
-          <Button>
-            <Save className="h-4 w-4 mr-2" />
-            Change Password
-          </Button>
-        </DialogFooter>
+
+            <DialogFooter className="mt-4">
+              <Button type="reset" variant="outline">
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                <Save className="h-4 w-4 mr-2" />
+                Change Password
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

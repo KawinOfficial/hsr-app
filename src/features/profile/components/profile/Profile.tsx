@@ -10,15 +10,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import {
-  CheckCircle,
-  AlertTriangle,
-  Save,
-  X,
-  Edit,
-  MapPin,
-} from "lucide-react";
+import { Save, X, Edit, MapPin } from "lucide-react";
 import { useProfile } from "./Profile.hook";
 import { getStatusColor } from "@/features/profile/utils/colorStatus";
 import { Button } from "@/components/ui/button";
@@ -44,6 +36,7 @@ const Profile = () => {
     onSubmit,
     departments,
     roles,
+    onChangePassword,
   } = useProfile();
 
   if (!userProfile) return null;
@@ -52,8 +45,8 @@ const Profile = () => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {isFetching && <Loading />}
       <form onSubmit={onSubmit} className="w-full lg:col-span-2">
-        {/* Personal Information */}
         <div className="space-y-6">
+          {/* Personal Information */}
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -130,7 +123,10 @@ const Profile = () => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          if (!value) return;
+                          field.onChange(value);
+                        }}
                         value={field.value}
                         disabled={!editMode}
                       >
@@ -186,7 +182,10 @@ const Profile = () => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          if (!value) return;
+                          field.onChange(value);
+                        }}
                         value={field.value}
                       >
                         <SelectTrigger>
@@ -214,7 +213,10 @@ const Profile = () => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          if (!value) return;
+                          field.onChange(value);
+                        }}
                         value={field.value}
                       >
                         <SelectTrigger>
@@ -250,7 +252,10 @@ const Profile = () => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          if (!value) return;
+                          field.onChange(value);
+                        }}
                         value={field.value}
                       >
                         <SelectTrigger className="pl-10">
@@ -273,76 +278,49 @@ const Profile = () => {
         </div>
       </form>
 
-      {/* Sidebar Information */}
       <div className="space-y-6">
-        {/* Quick Stats */}
+        {/* System Access */}
         <Card>
           <CardHeader>
-            <CardTitle>Profile Completion</CardTitle>
+            <CardTitle>System Access</CardTitle>
+            <CardDescription>
+              System modules and features access permissions
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div>
-                <div className="flex justify-between text-sm mb-2">
-                  <span>Profile Completeness</span>
-                  <span>80%</span>
-                </div>
-                <Progress value={80} className="h-2" />
-              </div>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-success-green" />
-                  <span>Personal Information</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-success-green" />
-                  <span>Work Information</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-success-green" />
-                  <span>Security Settings</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <AlertTriangle className="h-4 w-4 text-warning-amber" />
-                  <span>Certifications</span>
-                </div>
-              </div>
+              {userProfile?.permissions &&
+                Object.entries(userProfile?.permissions).map(
+                  ([module, accessList], index) => (
+                    <div
+                      key={`${module}-${index}`}
+                      className="flex items-center justify-between"
+                    >
+                      <span className="capitalize">{module}</span>
+                      <div className="flex items-center gap-2">
+                        {Object.entries(accessList).map(
+                          ([access, hasAccess], subIndex) => (
+                            <Badge
+                              key={`${access}-${hasAccess}-${index}-${subIndex}`}
+                              className={getStatusColor(
+                                hasAccess ? "Active" : "Inactive"
+                              )}
+                            >
+                              {access}
+                            </Badge>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )
+                )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Certifications */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Certifications</CardTitle>
-            <CardDescription>Professional certifications</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {userProfile.certifications.map((cert, index) => (
-                <div key={index} className="border rounded-lg p-3">
-                  <div className="space-y-2">
-                    <div className="flex items-start justify-between">
-                      <h4 className="font-medium text-sm">{cert.name}</h4>
-                      <Badge
-                        className={getStatusColor(cert.status)}
-                        variant="secondary"
-                      >
-                        {cert.status}
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      {cert.issuer}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Expires: {cert.expiryDate}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <Button variant="default" className="w-full" onClick={onChangePassword}>
+          Change Password
+        </Button>
       </div>
     </div>
   );

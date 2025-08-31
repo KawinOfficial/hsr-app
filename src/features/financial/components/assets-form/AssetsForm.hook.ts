@@ -1,17 +1,18 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { Asset } from "@/features/financial/schemas/Asset.schema";
 import { useContextSelector } from "use-context-selector";
-import { FinancialContext } from "../financial-provider";
-import { AssetsContext } from "../assets-provider";
-import { Maintance } from "../../schemas/Maintance.schema";
+import { FinancialContext } from "@/features/financial/components/financial-provider";
+import { AssetsContext } from "@/features/financial/components/assets-provider";
+import { Maintance } from "@/features/financial/schemas/Maintance.schema";
 import {
   useAssetDetail,
   useCreateAsset,
   useUpdateAsset,
-} from "../../hooks/use-assets";
+} from "@/features/financial/hooks/use-assets";
 import { useToast } from "@/components/ui/use-toast";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { formatDateInput } from "@/lib/format";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
 
 export interface UseAssetsForm {
   onClose?: () => void;
@@ -52,11 +53,17 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
     (state) => state?.selectedId
   );
   const refetch = useContextSelector(AssetsContext, (state) => state?.refetch);
-
+  const userId = useContextSelector(
+    ProfileContext,
+    (context) => context?.userProfile?.id
+  );
   const id = selectedId ?? "";
-  const { data: assetDetail } = useAssetDetail(id);
-  const { mutate: createAsset } = useCreateAsset();
-  const { mutate: updateAsset } = useUpdateAsset(id);
+  const { data: assetDetail, isFetching: isLoadingAssetDetail } =
+    useAssetDetail(id);
+  const { mutate: createAsset, isPending: isLoadingCreateAsset } =
+    useCreateAsset();
+  const { mutate: updateAsset, isPending: isLoadingUpdateAsset } =
+    useUpdateAsset(id);
 
   const methods = useForm<Asset>({ defaultValues });
   const { handleSubmit, reset, control, watch } = methods;
@@ -70,6 +77,20 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
   const amount = Number(watch("amount"));
   const getCurrentValue = amount - maintancesCost;
   const getDepreciation = (maintancesCost * 100) / amount || 0;
+  const isLoading = useMemo(() => {
+    return isLoadingAssetDetail || isLoadingCreateAsset || isLoadingUpdateAsset;
+  }, [isLoadingAssetDetail, isLoadingCreateAsset, isLoadingUpdateAsset]);
+  const isRejected = useMemo(() => {
+    return assetDetail?.status === "rejected";
+  }, [assetDetail?.status]);
+  const isCompleted = useMemo(() => {
+    return assetDetail?.status === "completed";
+  }, [assetDetail?.status]);
+  const canEdit = useMemo(() => {
+    return (
+      (!id || assetDetail?.createdBy === userId) && !isRejected && !isCompleted
+    );
+  }, [id, assetDetail?.createdBy, userId, isRejected, isCompleted]);
 
   function createPayload(data: Asset) {
     return {
@@ -84,6 +105,10 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
         date: new Date(maintance.date).toISOString(),
         cost: Number(maintance.cost),
       })),
+      status: undefined,
+      remark: undefined,
+      canDelete: undefined,
+      userCreatedBy: undefined,
     };
   }
 
@@ -180,5 +205,9 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
     fields,
     getCurrentValue,
     getDepreciation,
+    isLoading,
+    canEdit,
+    isRejected,
+    assetDetail,
   };
 };

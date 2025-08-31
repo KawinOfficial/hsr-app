@@ -39,6 +39,11 @@ export const useProfile = () => {
     ProfileContext,
     (state) => state?.isFetching
   );
+  const onChangePassword = useContextSelector(
+    ProfileContext,
+    (state) => state?.onChangePassword
+  );
+
   const options = useContextSelector(ProfileContext, (state) => state?.options);
 
   const { register, reset, control, watch, handleSubmit } = useForm<Profile>({
@@ -84,5 +89,6 @@ export const useProfile = () => {
     onSubmit: handleSubmit(onSubmit),
     departments: options?.departments || [],
     roles: options?.roles || [],
+    onChangePassword,
   };
 };

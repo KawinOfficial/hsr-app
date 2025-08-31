@@ -23,6 +23,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/pagination";
 import { DeletePaymentDialog } from "../delete-payment-dialog";
+import { TableEmpty, TableLoading } from "@/components/table";
+import { getActionColor } from "@/features/notification/utils/color";
+import { Badge } from "@/components/ui/badge";
 
 const Liability = () => {
   const {
@@ -33,6 +36,7 @@ const Liability = () => {
     handleChangeKeyword,
     handleChangePage,
     getDocumentTypeName,
+    isLoading,
   } = useLiability();
 
   return (
@@ -62,9 +66,9 @@ const Liability = () => {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="min-h-[60vh] flex flex-col">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             <TableRow>
               <TableHead>Liability ID</TableHead>
               <TableHead>Name</TableHead>
@@ -73,58 +77,82 @@ const Liability = () => {
               <TableHead>Amount</TableHead>
               <TableHead>Due Date</TableHead>
               <TableHead className="text-center">Priority</TableHead>
+              <TableHead className="text-center">Status</TableHead>
+              <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {list.map((liability) => (
-              <TableRow key={liability.id}>
-                <TableCell className="font-semibold">
-                  {liability.liabilityId}
-                </TableCell>
-                <TableCell>{liability.name}</TableCell>
-                <TableCell>
-                  {getDocumentTypeName(liability.documentTypesId)}
-                </TableCell>
-                <TableCell>{liability.creditor}</TableCell>
-                <TableCell className="font-semibold">
-                  {formatCurrency(liability.amount)}
-                </TableCell>
-                <TableCell>{formatDate(liability.dueDate)}</TableCell>
-                <TableCell className="text-center">
-                  <span
-                    className={`font-medium ${getPriorityColor(
-                      liability.priority
-                    )}`}
-                  >
-                    {liability.priority}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <div className="flex space-x-1 justify-center">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleViewLiability?.(liability.id ?? "")}
+            {isLoading ? (
+              <TableLoading colSpan={9} className="py-[20vh]" />
+            ) : !list?.length ? (
+              <TableEmpty colSpan={9} className="py-[20vh]" />
+            ) : (
+              list.map((liability) => (
+                <TableRow key={liability.id}>
+                  <TableCell className="font-semibold">
+                    {liability.liabilityId}
+                  </TableCell>
+                  <TableCell>{liability.name}</TableCell>
+                  <TableCell className="truncate max-w-[150px]">
+                    {getDocumentTypeName(liability.documentTypesId)}
+                  </TableCell>
+                  <TableCell className="truncate max-w-[150px]">
+                    {liability.creditor}
+                  </TableCell>
+                  <TableCell className="font-semibold">
+                    {formatCurrency(liability.amount)}
+                  </TableCell>
+                  <TableCell>{formatDate(liability.dueDate)}</TableCell>
+                  <TableCell className="text-center">
+                    <span
+                      className={`font-medium ${getPriorityColor(
+                        liability.priority
+                      )}`}
                     >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <DeletePaymentDialog
-                      id={liability.id ?? ""}
-                      type="liability"
-                    />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                      {liability.priority}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Badge className={getActionColor(liability.status ?? "")}>
+                      {liability.status?.replace("_", " ")}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="truncate max-w-[150px]">
+                    {[
+                      liability.userCreatedBy?.firstName,
+                      liability.userCreatedBy?.lastName,
+                    ].join(" ")}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center justify-center space-x-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          handleViewLiability?.(liability.id ?? "")
+                        }
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <DeletePaymentDialog
+                        id={liability.id ?? ""}
+                        type="liability"
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
-
-        <Pagination
-          totalPages={pagination?.totalPages ?? 0}
-          currentPage={pagination?.currentPage ?? 1}
-          onPageChange={handleChangePage}
-        />
+        <div className="mt-auto">
+          <Pagination
+            totalPages={pagination?.totalPages ?? 0}
+            currentPage={pagination?.currentPage ?? 1}
+            onPageChange={handleChangePage}
+          />
+        </div>
       </CardContent>
     </Card>
   );

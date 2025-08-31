@@ -27,6 +27,7 @@ import { PaymentHistory } from "@/features/financial/components/payment-history"
 import { locations } from "@/constants/options";
 import { Progress } from "@/components/ui/progress";
 import { formatCurrency, formatPercent } from "@/lib/format";
+import { Loading } from "@/components/loading";
 
 const AssetsForm = ({ onClose }: UseAssetsForm) => {
   const {
@@ -41,11 +42,16 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
     fields,
     getCurrentValue,
     getDepreciation,
+    isLoading,
+    canEdit,
+    isRejected,
+    assetDetail,
   } = useAssetsForm({ onClose });
 
   return (
     <Form {...methods}>
       <form onSubmit={onSubmit} onReset={onReset}>
+        {isLoading && <Loading />}
         <div className="max-h-[70vh] overflow-y-auto px-6 py-3 grid grid-cols-3 gap-4">
           <Card className="col-span-2 m-0">
             <CardHeader>
@@ -65,6 +71,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -100,6 +107,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -130,7 +138,11 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                     <FormItem>
                       <FormLabel className="text-xs">Asset Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter asset name" {...field} />
+                        <Input
+                          placeholder="Enter asset name"
+                          {...field}
+                          disabled={!canEdit}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -146,7 +158,11 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                     <FormItem>
                       <FormLabel className="text-xs">Description</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Enter description" {...field} />
+                        <Textarea
+                          placeholder="Enter description"
+                          {...field}
+                          disabled={!canEdit}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -167,6 +183,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                         placeholder="Enter amount"
                         {...field}
                         type="number"
+                        disabled={!canEdit}
                       />
                     </FormControl>
                     <FormMessage />
@@ -187,6 +204,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                         field.onChange(value);
                       }}
                       value={field.value}
+                      disabled={!canEdit}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -241,6 +259,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                           placeholder="Enter purchase date"
                           {...field}
                           type="date"
+                          disabled={!canEdit}
                         />
                       </FormControl>
                       <FormMessage />
@@ -259,6 +278,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                           {...field}
                           value={field.value ?? ""}
                           type="date"
+                          disabled={!canEdit}
                         />
                       </FormControl>
                       <FormMessage />
@@ -283,6 +303,11 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                   <CardTitle>Maintances History</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 px-4">
+                  {!fields.length && !canEdit && (
+                    <div className="text-center text-sm text-muted-foreground py-3">
+                      No maintances found
+                    </div>
+                  )}
                   {fields.map((field, index) => (
                     <div
                       key={`${field.id}-${index}`}
@@ -302,6 +327,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                                   {...field}
                                   placeholder="Enter name"
                                   className="h-auto py-1"
+                                  disabled={!canEdit}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -323,6 +349,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                                 {...field}
                                 type="date"
                                 className="h-auto py-1"
+                                disabled={!canEdit}
                               />
                             </FormControl>
                             <FormMessage />
@@ -344,6 +371,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                                   {...field}
                                   placeholder="Enter description"
                                   className="h-auto py-1"
+                                  disabled={!canEdit}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -366,6 +394,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                                 type="number"
                                 placeholder="Enter cost"
                                 className="h-auto py-1"
+                                disabled={!canEdit}
                               />
                             </FormControl>
                             <FormMessage />
@@ -387,6 +416,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                                   {...field}
                                   placeholder="Enter maintenance by"
                                   className="h-auto py-1"
+                                  disabled={!canEdit}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -394,27 +424,31 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                           )}
                         />
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => onRemoveMaintenance(index)}
-                        className="max-w-[100px] absolute bottom-2 right-3 text-xs text-destructive"
-                      >
-                        <Trash className="h-2 w-2" />
-                        Remove
-                      </Button>
+                      {canEdit && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onRemoveMaintenance(index)}
+                          className="max-w-[100px] absolute bottom-2 right-3 text-xs text-destructive"
+                        >
+                          <Trash className="h-2 w-2" />
+                          Remove
+                        </Button>
+                      )}
                     </div>
                   ))}
 
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={onAddMaintenance}
-                    className="w-full"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Maintenance
-                  </Button>
+                  {canEdit && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={onAddMaintenance}
+                      className="w-full"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Maintenance
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -427,6 +461,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                 accept={{
                   "image/*": [".png", ".jpg", ".jpeg", ".pdf"],
                 }}
+                disabled={!canEdit}
               />
             </TabsContent>
             <TabsContent value="history">
@@ -442,15 +477,24 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
           </Tabs>
         </div>
 
-        <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
-          <Button variant="outline" type="reset" onClick={onReset}>
-            Cancel
-          </Button>
-          <Button type="submit">
-            <Save className="h-4 w-4 mr-2" />
-            {selectedId ? "Update Asset" : "Create Asset"}
-          </Button>
-        </div>
+        {canEdit && (
+          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <Button variant="outline" type="reset" onClick={onReset}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={!isLoading}>
+              <Save className="h-4 w-4 mr-2" />
+              {selectedId ? "Update Asset" : "Create Asset"}
+            </Button>
+          </div>
+        )}
+        {isRejected && (
+          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <p className="text-destructive">
+              Rejected Reason: {assetDetail?.remark}
+            </p>
+          </div>
+        )}
       </form>
     </Form>
   );

@@ -13,7 +13,20 @@ export async function getPaymentDetail(id: string) {
       .single();
     if (error) throw new Error(error.message);
 
-    return NextResponse.json({ data });
+    const { data: notifications, error: notificationsError } = await supabase
+      .from("Notifications")
+      .select("currentType,remark")
+      .eq("paymentId", id)
+      .maybeSingle();
+    if (notificationsError) throw new Error(notificationsError.message);
+
+    return NextResponse.json({
+      data: {
+        ...data,
+        status: notifications?.currentType,
+        remark: notifications?.remark,
+      },
+    });
   } catch (error) {
     throw new Error(
       error instanceof Error ? error.message : "Internal server error"

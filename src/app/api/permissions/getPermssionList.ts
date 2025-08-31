@@ -9,7 +9,7 @@ export async function getPermissionList() {
     const { data: roles, error } = await supabase
       .from("Role")
       .select("*")
-      .order("createdAt", { ascending: false });
+      .order("updatedAt", { ascending: false });
     if (error) throw new Error(error.message);
 
     return NextResponse.json({

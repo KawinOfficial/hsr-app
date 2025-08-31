@@ -21,7 +21,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { usePayments } from "./Payments.hook";
-import { getStatusColor } from "@/features/financial/utils/color";
+import { getActionColor } from "@/features/notification/utils/color";
 import { TableEmpty, TableLoading } from "@/components/table";
 import { Pagination } from "@/components/pagination";
 import DeletePaymentDialog from "../delete-payment-dialog/DeletePaymentDialog";
@@ -63,24 +63,25 @@ const Payments = () => {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="min-h-[62vh] flex flex-col">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-muted">
             <TableRow>
               <TableHead>Payment ID</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Vendor</TableHead>
               <TableHead className="text-right">Amount</TableHead>
+              <TableHead className="text-center">Payment Date</TableHead>
               <TableHead className="text-center">Status</TableHead>
-              <TableHead>Payment Date</TableHead>
+              <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableLoading colSpan={7} className="py-[20vh]" />
+              <TableLoading colSpan={8} className="py-[20vh]" />
             ) : !list?.length ? (
-              <TableEmpty colSpan={7} className="py-[20vh]" />
+              <TableEmpty colSpan={8} className="py-[20vh]" />
             ) : (
               list.map((payment, index) => (
                 <TableRow key={`${payment.id}-${index}`}>
@@ -93,11 +94,19 @@ const Payments = () => {
                     {formatCurrency(payment.amount)}
                   </TableCell>
                   <TableCell className="text-center">
-                    <Badge className={getStatusColor(payment.status ?? "")}>
-                      {payment.status}
+                    {formatDate(payment.paymentDate)}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Badge className={getActionColor(payment.status ?? "")}>
+                      {payment.status?.replace("_", " ")}
                     </Badge>
                   </TableCell>
-                  <TableCell>{formatDate(payment.paymentDate)}</TableCell>
+                  <TableCell className="truncate max-w-[150px]">
+                    {[
+                      payment.userCreatedBy?.firstName,
+                      payment.userCreatedBy?.lastName,
+                    ].join(" ")}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center space-x-1">
                       <Button
@@ -107,10 +116,12 @@ const Payments = () => {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <DeletePaymentDialog
-                        id={payment.id ?? ""}
-                        type="payment"
-                      />
+                      {payment.canDelete && (
+                        <DeletePaymentDialog
+                          id={payment.id ?? ""}
+                          type="payment"
+                        />
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>
@@ -118,12 +129,13 @@ const Payments = () => {
             )}
           </TableBody>
         </Table>
-
-        <Pagination
-          totalPages={pagination?.totalPages ?? 0}
-          currentPage={pagination?.currentPage ?? 1}
-          onPageChange={handleChangePage}
-        />
+        <div className="mt-auto">
+          <Pagination
+            totalPages={pagination?.totalPages ?? 0}
+            currentPage={pagination?.currentPage ?? 1}
+            onPageChange={handleChangePage}
+          />
+        </div>
       </CardContent>
     </Card>
   );

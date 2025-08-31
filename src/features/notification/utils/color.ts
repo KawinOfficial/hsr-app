@@ -1,26 +1,15 @@
-export function getPriorityColor(priority: string) {
-  switch (priority) {
-    case "High":
-      return "text-destructive";
-    case "Medium":
-      return "text-warning-amber";
-    case "Low":
-      return "text-success-green";
-    default:
-      return "text-muted-foreground";
-  }
-}
-
 export function getActionColor(action: string) {
   switch (action) {
-    case "approval_required":
+    case "approval_request":
       return "bg-warning-amber text-white";
-    case "revision_required":
+    case "review_request":
       return "bg-construction-orange text-white";
-    case "status_update":
+    case "rejected":
+      return "bg-red-500 text-white";
+    case "completed":
       return "bg-success-green text-white";
-    case "deadline_reminder":
-      return "bg-destructive text-white";
+    case "in_review":
+      return "bg-construction-orange text-white";
     default:
       return "bg-rail-blue text-white";
   }

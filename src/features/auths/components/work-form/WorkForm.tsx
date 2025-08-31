@@ -30,7 +30,7 @@ const WorkForm = ({ departments, roles, locations }: WorkFormProps) => {
           <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             id="employeeId"
-            placeholder="EMP-2024-001"
+            placeholder="Enter employee ID"
             className="pl-10"
             required
             {...register("employeeId")}

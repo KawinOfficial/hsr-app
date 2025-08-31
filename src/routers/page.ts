@@ -18,4 +18,5 @@ export const PAGE_ROUTES = {
   REGISTER: "/register",
   RESET_PASSWORD: "/reset-password",
   CATEGORY: "/payments/category",
+  APPROVALS: "/approvals",
 };

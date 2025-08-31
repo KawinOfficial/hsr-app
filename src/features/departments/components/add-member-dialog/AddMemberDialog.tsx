@@ -27,9 +27,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Plus, Users, Search } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 import { getStatusColor } from "@/features/departments/utils/colorStatus";
-import { Input } from "@/components/ui/input";
 import { useAddMemberDialog } from "./AddMemberDialog.hook";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Pagination } from "@/components/pagination";
@@ -46,7 +45,6 @@ const AddmemberDialog = () => {
     onCheckMember,
     isChecked,
     onAddMember,
-    handleSearch,
     handleRoleChange,
     roleOptions,
   } = useAddMemberDialog();
@@ -67,15 +65,7 @@ const AddmemberDialog = () => {
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search available members..."
-                className="pl-10"
-                onChange={handleSearch}
-              />
-            </div>
+          <div className="flex items-center justify-end space-x-2">
             <Select defaultValue="all" onValueChange={handleRoleChange}>
               <SelectTrigger className="w-40">
                 <SelectValue />
