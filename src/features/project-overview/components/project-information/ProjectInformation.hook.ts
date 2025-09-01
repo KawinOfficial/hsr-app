@@ -1,5 +1,6 @@
 import { useContextSelector } from "use-context-selector";
 import { ProjectDetailContext } from "@/features/project-overview/components/project-detail-provider";
+import { ProfileContext } from "@/features/profile/components/profile-provider";
 
 export const useProjectInformation = () => {
   const isEditMode = useContextSelector(
@@ -18,6 +19,15 @@ export const useProjectInformation = () => {
     ProjectDetailContext,
     (state) => state?.isLoading
   );
+  const options = useContextSelector(ProfileContext, (state) => state?.options);
 
-  return { isEditMode, project, methods, isLoading };
+  function getDepartmentName(departmentId: string) {
+    return (
+      options?.departments?.find(
+        (department) => department.value === departmentId
+      )?.label ?? "-"
+    );
+  }
+
+  return { isEditMode, project, methods, isLoading, getDepartmentName };
 };

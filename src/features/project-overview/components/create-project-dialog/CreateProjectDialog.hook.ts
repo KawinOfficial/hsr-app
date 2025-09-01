@@ -5,23 +5,27 @@ import { useForm } from "react-hook-form";
 import { CreateProject } from "@/features/project-overview/schemas/CreateProject.schema";
 import { useCreateProject } from "@/features/project-overview/hooks/use-create-project";
 import { useToast } from "@/components/ui/use-toast";
+import { useContextSelector } from "use-context-selector";
+import { ProfileContext } from "@/features/profile/components/profile-provider/ProfileProvider";
 
 const defaultValues: CreateProject = {
   name: "",
   description: "",
-  status: "On Track",
+  status: "Not Started",
   budget: 0,
   startDate: "",
-  completion: "",
+  targetDate: "",
   location: "",
-  category: "",
-  manager: "",
   riskLevel: "Low",
+  departmentId: "",
+  projectId: "",
 };
 
 export const useCreateProjectDialog = () => {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
+
+  const options = useContextSelector(ProfileContext, (state) => state?.options);
 
   const { mutate: createProject, isPending: isSubmitting } = useCreateProject();
 
@@ -45,17 +49,11 @@ export const useCreateProjectDialog = () => {
     fieldStartDate: methods.register("startDate", {
       required: "Start date is required",
     }),
-    fieldCompletion: methods.register("completion", {
+    fieldTargetDate: methods.register("targetDate", {
       required: "Completion date is required",
     }),
     fieldLocation: methods.register("location", {
       required: "Location is required",
-    }),
-    fieldCategory: methods.register("category", {
-      required: "Category is required",
-    }),
-    fieldManager: methods.register("manager", {
-      required: "Project manager is required",
     }),
     fieldRiskLevel: methods.register("riskLevel", {
       required: "Risk level is required",
@@ -96,5 +94,6 @@ export const useCreateProjectDialog = () => {
     setIsOpen,
     closeDialog,
     onSubmit: form.handleSubmit(onSubmit),
+    departmentOptions: options?.departments ?? [],
   };
 };

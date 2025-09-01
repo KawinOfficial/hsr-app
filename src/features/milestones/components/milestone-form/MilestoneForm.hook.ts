@@ -20,6 +20,7 @@ const defaultValues: MilestoneForm = {
   deliverables: [{ name: "" }],
   milestoneId: "",
   status: "Not Started",
+  projectId: "",
 };
 
 export interface UseMilestoneForm {
@@ -36,6 +37,14 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
   const refetch = useContextSelector(
     MilestonesContext,
     (state) => state?.refetch
+  );
+  const projectOptions = useContextSelector(
+    MilestonesContext,
+    (state) => state?.projectOptions
+  );
+  const projectId = useContextSelector(
+    MilestonesContext,
+    (state) => state?.projectId
   );
 
   const { mutate: createMilestone } = useCreateMilestone();
@@ -70,9 +79,12 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
   };
 
   function onSubmit(data: MilestoneForm) {
-    console.log(data);
+    const payload = {
+      ...data,
+      projectId: projectId ?? "",
+    };
     if (!id) {
-      createMilestone(data, {
+      createMilestone(payload, {
         onSuccess: () => {
           toast({
             variant: "success",
@@ -95,7 +107,7 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
       return;
     }
 
-    updateMilestone(data, {
+    updateMilestone(payload, {
       onSuccess: () => {
         toast({
           variant: "success",
@@ -131,7 +143,7 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
 
   useEffect(() => {
     if (!id || !selectedMilestone) {
-      reset(defaultValues);
+      reset({ ...defaultValues, projectId: projectId ?? "" });
       return;
     }
     const { actualCost, startDate, targetDate } = selectedMilestone;
@@ -142,7 +154,7 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
       startDate: formatDateInput(startDate),
       targetDate: formatDateInput(targetDate),
     });
-  }, [selectedMilestone, reset, id]);
+  }, [selectedMilestone, reset, id, projectId]);
 
   return {
     form,
@@ -151,5 +163,7 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
     onRemoveResponsibility,
     onAddResponsibility,
     onReset,
+    projectOptions,
+    projectId,
   };
 };

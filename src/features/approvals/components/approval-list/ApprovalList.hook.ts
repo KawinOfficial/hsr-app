@@ -1,7 +1,11 @@
 import { ApprovalContext } from "@/features/approvals/components/approval-provider";
 import { useContextSelector } from "use-context-selector";
+import { ApprovalDetail } from "@/features/approvals/schemas/Approval.schema";
+import { PAGE_ROUTES } from "@/routers/page";
+import { useRouter } from "next/navigation";
 
 export const useApprovalList = () => {
+  const router = useRouter();
   const approvals = useContextSelector(
     ApprovalContext,
     (context) => context?.approvals
@@ -43,6 +47,18 @@ export const useApprovalList = () => {
     return documentType?.label || "-";
   }
 
+  function onViewApproval(approval: ApprovalDetail) {
+    const isPayment = !!approval.paymentId;
+    const isAsset = !!approval.assetId;
+    const path = isPayment
+      ? PAGE_ROUTES.PAYMENTS
+      : isAsset
+      ? PAGE_ROUTES.ASSETS
+      : PAGE_ROUTES.LIABILITIES;
+    const params = ["id", approval.approveItems.approveId].join("=");
+    router.push([path, params].join("?"));
+  }
+
   return {
     approvals,
     isLoading,
@@ -51,5 +67,6 @@ export const useApprovalList = () => {
     handleOpenApprove,
     handleOpenReject,
     handleOpenInReview,
+    onViewApproval,
   };
 };

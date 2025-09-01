@@ -12,7 +12,6 @@ export const ProjectSchema = z.object({
   targetDate: z.string(),
   location: z.string(),
   departmentId: z.string().nullable(),
-  managerId: z.string().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
   budget: z.number(),

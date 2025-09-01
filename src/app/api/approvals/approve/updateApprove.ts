@@ -2,6 +2,7 @@ import { Workflow } from "@/features/document-types/schemas/Workflow.schema";
 import { checkUserAuth, getStatus } from "@/lib/promise";
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
+import { createHistory } from "../../paymentHistory/createHistory";
 
 export async function updateApprove(req: Request) {
   try {
@@ -56,11 +57,21 @@ export async function updateApprove(req: Request) {
           editedIds: editedIds,
         };
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("Notifications")
       .update(payload)
-      .eq("id", id);
+      .eq("id", id)
+      .select("paymentId,assetId,liabilityId")
+      .single();
     if (error) throw new Error(error.message);
+
+    await createHistory({
+      paymentId: data?.paymentId,
+      assetId: data?.assetId,
+      liabilityId: data?.liabilityId,
+      action: isRejected ? "Reject" : isInReview ? "In Review" : "Approve",
+      description: "Approval updated",
+    });
 
     return NextResponse.json({ message: "Approve updated" });
   } catch (error) {

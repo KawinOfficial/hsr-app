@@ -31,21 +31,46 @@ export async function getProjects({
     const { data, error, count } = await query;
     if (error) throw new Error(error.message);
 
-    // TODO: Remove this after backend is implemented
-    const budget = 1000000;
-    const spent = 500000;
-    const progress = 50;
-    const variance = budget ? Math.round(((budget - spent) / budget) * 100) : 0;
-    const milestones = {
-      total: 10,
-      completed: 5,
-    };
-    const team = 30;
+    const { data: milestonesData, error: milestonesError } = await supabase
+      .from("Milestone")
+      .select("*")
+      .in("projectId", data?.map((item) => item.id) ?? []);
+    if (milestonesError) throw new Error(milestonesError.message);
+
+    const { data: teamData, error: teamError } = await supabase
+      .from("EmployeeInfo")
+      .select("id,departmentId", { count: "exact" })
+      .in("departmentId", data?.map((item) => item.departmentId) ?? []);
+    if (teamError) throw new Error(teamError.message);
 
     const formattedData = data?.map((item) => {
+      const filteredMilestones = milestonesData?.filter(
+        (milestone) => milestone.projectId === item.id
+      );
+
+      const budget = Number(item.budget);
+      const totalMilestones = filteredMilestones?.length;
+      const completedMilestones = filteredMilestones?.filter(
+        (milestone) => milestone.status === "Completed"
+      )?.length;
+      const milestones = {
+        total: totalMilestones,
+        completed: completedMilestones,
+      };
+      const spent = filteredMilestones?.reduce(
+        (acc, milestone) => acc + Number(milestone.actualCost),
+        0
+      );
+      const variance = budget
+        ? Math.round(((budget - spent) / budget) * 100)
+        : 0;
+      const progress = totalMilestones ? Math.round((spent / budget) * 100) : 0;
+      const team = teamData.filter(
+        (team) => team.departmentId === item.departmentId
+      )?.length;
+
       return {
         ...item,
-        budget,
         spent,
         progress,
         variance,

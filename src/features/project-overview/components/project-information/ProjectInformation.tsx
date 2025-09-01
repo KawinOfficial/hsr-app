@@ -28,7 +28,8 @@ import { Controller } from "react-hook-form";
 import { Loading } from "@/components/loading";
 
 const ProjectInformation = () => {
-  const { isEditMode, project, methods, isLoading } = useProjectInformation();
+  const { isEditMode, project, methods, isLoading, getDepartmentName } =
+    useProjectInformation();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -208,7 +209,9 @@ const ProjectInformation = () => {
                     )}
                   />
                 ) : (
-                  <p className="mt-1 text-sm">{project?.departmentId}</p>
+                  <p className="mt-1 text-sm">
+                    {getDepartmentName(project?.departmentId || "")}
+                  </p>
                 )}
               </div>
             </div>

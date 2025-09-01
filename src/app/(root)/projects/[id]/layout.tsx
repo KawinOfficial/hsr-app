@@ -1,6 +1,5 @@
 import { ProjectDetailProvider } from "@/features/project-overview/components/project-detail-provider";
 import { MilestonesProvider } from "@/features/milestones/components/milestones-provider/MilestonesProvider";
-import { UsersProvider } from "@/features/team-members/components/users-provider";
 
 export default async function ProjectDetailLayout({
   children,
@@ -13,9 +12,7 @@ export default async function ProjectDetailLayout({
 
   return (
     <ProjectDetailProvider id={id}>
-      <MilestonesProvider>
-        <UsersProvider>{children}</UsersProvider>
-      </MilestonesProvider>
+      <MilestonesProvider projectId={id}>{children}</MilestonesProvider>
     </ProjectDetailProvider>
   );
 }

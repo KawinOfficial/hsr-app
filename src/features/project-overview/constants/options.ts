@@ -10,6 +10,5 @@ export const STATUS_OPTIONS = [
 
 export const TABS = [
   { label: "Milestones", value: "milestones" },
-  { label: "Team", value: "team" },
   { label: "Documents", value: "documents" },
 ];

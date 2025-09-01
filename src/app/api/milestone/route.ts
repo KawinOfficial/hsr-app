@@ -8,8 +8,15 @@ export async function GET(request: NextRequest) {
   const limit = searchParams.get("limit") ?? "10";
   const keyword = searchParams.get("keyword") ?? "";
   const status = searchParams.get("status") ?? "";
+  const projectId = searchParams.get("projectId") ?? "";
 
-  return getMilestoneList(Number(page), Number(limit), keyword, status);
+  return getMilestoneList(
+    Number(page),
+    Number(limit),
+    keyword,
+    status,
+    projectId
+  );
 }
 
 export async function POST(request: NextRequest) {

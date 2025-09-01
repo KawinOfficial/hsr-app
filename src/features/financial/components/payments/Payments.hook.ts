@@ -26,6 +26,7 @@ export const usePayments = () => {
     PaymentContext,
     (state) => state?.handleChangeKeyword
   );
+  const keyword = useContextSelector(PaymentContext, (state) => state?.keyword);
 
   return {
     handleViewPayment,
@@ -35,5 +36,6 @@ export const usePayments = () => {
     isLoading,
     handleChangePage,
     handleChangeKeyword,
+    keyword,
   };
 };

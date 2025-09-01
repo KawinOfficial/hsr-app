@@ -15,6 +15,7 @@ const ApprovalList = () => {
     handleOpenApprove,
     handleOpenReject,
     handleOpenInReview,
+    onViewApproval,
   } = useApprovalList();
 
   return (
@@ -70,7 +71,12 @@ const ApprovalList = () => {
                   </Button>
                 )}
               </div>
-              <Button variant="outline" size="sm" className="w-full">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={() => onViewApproval(approval)}
+              >
                 <Eye className="h-4 w-4 mr-2" />
                 View Details
               </Button>

@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Save, Trash2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
-const MilestoneForm = (props: UseMilestoneForm) => {
+const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
   const {
     form,
     onSubmit,
@@ -28,7 +28,9 @@ const MilestoneForm = (props: UseMilestoneForm) => {
     onRemoveResponsibility,
     onAddResponsibility,
     onReset,
-  } = useMilestoneForm(props);
+    projectOptions,
+    projectId,
+  } = useMilestoneForm({ ...props });
 
   return (
     <form
@@ -61,12 +63,19 @@ const MilestoneForm = (props: UseMilestoneForm) => {
             control={form.control}
             name="projectId"
             render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value || ""}>
+              <Select
+                onValueChange={(value) => {
+                  if (!value) return;
+                  field.onChange(value);
+                }}
+                value={field.value || ""}
+                disabled={!!projectId}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select project" />
                 </SelectTrigger>
                 <SelectContent>
-                  {[{ value: "1", label: "Project 1" }].map((option) => (
+                  {projectOptions?.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
@@ -232,7 +241,7 @@ const MilestoneForm = (props: UseMilestoneForm) => {
         </div>
       </div>
 
-      <div className="pt-4 flex justify-end gap-2 sticky bottom-0 bg-white">
+      <div className="py-4 flex justify-end gap-2 sticky -bottom-4 bg-white">
         <Button variant="outline" type="reset">
           Cancel
         </Button>
