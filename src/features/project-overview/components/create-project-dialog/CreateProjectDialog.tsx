@@ -29,16 +29,21 @@ import {
 } from "@/components/ui/select";
 import { useCreateProjectDialog } from "./CreateProjectDialog.hook";
 import { STATUS_OPTIONS } from "@/features/project-overview/constants/options";
-import {
-  PROJECT_CATEGORIES,
-  RISK_LEVELS,
-  PROJECT_MANAGERS,
-} from "@/features/project-overview/constants/projectOptions";
+import { RISK_LEVELS } from "@/features/project-overview/constants/projectOptions";
 import { Plus } from "lucide-react";
+import { locations } from "@/constants/options";
 
 const CreateProjectDialog = () => {
-  const { form, isOpen, isSubmitting, closeDialog, onSubmit, setIsOpen } =
-    useCreateProjectDialog();
+  const {
+    form,
+    isOpen,
+    isSubmitting,
+    closeDialog,
+    onSubmit,
+    setIsOpen,
+    userOptions,
+    departmentOptions,
+  } = useCreateProjectDialog();
 
   return (
     <>
@@ -78,6 +83,20 @@ const CreateProjectDialog = () => {
 
                 <FormField
                   control={form.control}
+                  name="projectId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Project ID *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter project ID" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
                   name="status"
                   render={({ field }) => (
                     <FormItem>
@@ -108,26 +127,26 @@ const CreateProjectDialog = () => {
 
                 <FormField
                   control={form.control}
-                  name="category"
+                  name="departmentId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category *</FormLabel>
+                      <FormLabel>Department *</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
+                            <SelectValue placeholder="Select department" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {PROJECT_CATEGORIES.map((category) => (
+                          {departmentOptions.map((department) => (
                             <SelectItem
-                              key={category.value}
-                              value={category.value}
+                              key={department.value}
+                              value={department.value ?? ""}
                             >
-                              {category.label}
+                              {department.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -139,7 +158,7 @@ const CreateProjectDialog = () => {
 
                 <FormField
                   control={form.control}
-                  name="manager"
+                  name="managerId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Project Manager *</FormLabel>
@@ -153,7 +172,7 @@ const CreateProjectDialog = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {PROJECT_MANAGERS.map((manager) => (
+                          {userOptions.map((manager) => (
                             <SelectItem
                               key={manager.value}
                               value={manager.value}
@@ -163,6 +182,27 @@ const CreateProjectDialog = () => {
                           ))}
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="budget"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Total Budget (THB) *</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="0"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(parseFloat(e.target.value) || 0)
+                          }
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -184,33 +224,12 @@ const CreateProjectDialog = () => {
 
                 <FormField
                   control={form.control}
-                  name="completion"
+                  name="targetDate"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Expected Completion *</FormLabel>
                       <FormControl>
                         <Input type="date" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="budget"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Total Budget (THB) *</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="0"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(parseFloat(e.target.value) || 0)
-                          }
-                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -245,24 +264,34 @@ const CreateProjectDialog = () => {
                   )}
                 />
 
-                <div className="col-span-2">
-                  <FormField
-                    control={form.control}
-                    name="location"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Location *</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter project location"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Location *</FormLabel>
+                      <FormControl>
+                        <Select
+                          {...field}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select location" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {locations.map((loc) => (
+                              <SelectItem key={loc} value={loc}>
+                                {loc}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <div className="col-span-2">
                   <FormField

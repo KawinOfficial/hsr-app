@@ -42,6 +42,7 @@ const TrackingList = () => {
     handlePageChange,
     handleSearch,
     handleStatusChange,
+    getProjectName,
   } = useTrackingList();
 
   return (
@@ -114,7 +115,7 @@ const TrackingList = () => {
                   <TableCell>
                     <div>
                       <p className="text-sm">
-                        {milestone.projectId ?? "No project"}
+                        {getProjectName(milestone?.projectId ?? "")}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {milestone.phase}

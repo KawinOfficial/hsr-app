@@ -8,8 +8,11 @@ export async function createProject(request: NextRequest) {
 
     const body = await request.json();
     const project = body;
+    const createdAt = new Date().toISOString();
 
-    const { data, error } = await supabase.from("Project").insert(project);
+    const { data, error } = await supabase
+      .from("Project")
+      .insert({ ...project, createdAt });
     if (error) throw new Error(error.message);
 
     return NextResponse.json({ data });

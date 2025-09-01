@@ -12,18 +12,26 @@ export const useMilestone = ({
   limit,
   keyword,
   status,
+  projectId,
 }: {
   page: number;
   limit: number;
   keyword: string;
   status: string;
+  projectId?: string;
 }) => {
   return useQuery({
-    queryKey: ["milestone", page, limit, keyword, status],
+    queryKey: ["milestone", page, limit, keyword, status, projectId],
     queryFn: async () => {
       const response = await api
         .get<MilestoneList>(API_ROUTES.milestone, {
-          searchParams: { page, limit, keyword, status },
+          searchParams: {
+            page,
+            limit,
+            keyword,
+            status,
+            projectId: projectId ?? "",
+          },
         })
         .json();
 

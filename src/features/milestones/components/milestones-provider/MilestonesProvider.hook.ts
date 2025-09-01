@@ -2,8 +2,13 @@ import { useMemo, useState } from "react";
 import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
 import { useMilestone } from "@/features/milestones/hooks/use-milestone";
 import { useDebouncedValue } from "@/hooks/use-debouce";
+import { useProjectOptions } from "@/hooks/use-option";
 
-export const useMilestonesProvider = () => {
+interface UseMilestonesProvider {
+  projectId?: string;
+}
+
+export const useMilestonesProvider = ({ projectId }: UseMilestonesProvider) => {
   const [selectedMilestone, setSelectedMilestone] = useState<Milestone>();
   const [detailViewOpen, setDetailViewOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -18,6 +23,7 @@ export const useMilestonesProvider = () => {
       limit: 10,
       keyword: debouncedKeyword.trim(),
       status: status === "all" ? "" : status.trim(),
+      projectId,
     };
   }, [page, debouncedKeyword, status]);
 
@@ -28,10 +34,7 @@ export const useMilestonesProvider = () => {
   } = useMilestone({
     ...query,
   });
-
-  const projectOptions = useMemo(() => {
-    return [];
-  }, []);
+  const { data: projectOptions } = useProjectOptions();
 
   function handleViewMilestone(milestone: Milestone) {
     setSelectedMilestone(milestone);
@@ -69,5 +72,6 @@ export const useMilestonesProvider = () => {
     milestonesData,
     isLoading,
     refetch,
+    projectId,
   };
 };

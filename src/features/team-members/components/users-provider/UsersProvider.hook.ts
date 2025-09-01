@@ -3,7 +3,11 @@ import { useTeamMember } from "@/features/team-members/hooks/use-team-member";
 import { useOptions } from "@/hooks/use-option";
 import { useDebouncedValue } from "@/hooks/use-debouce";
 
-export const useUsersProvider = () => {
+interface UseUsersProvider {
+  projectId?: string;
+}
+
+export const useUsersProvider = ({ projectId }: UseUsersProvider) => {
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
   const [isOpen, setIsOpen] = useState(false);

@@ -1,11 +1,24 @@
 import { PAGE_ROUTES } from "@/routers/page";
 
-export const NAVIGATION_ITEMS = [
-  {
-    title: "Dashboard",
-    url: PAGE_ROUTES.DASHBOARD,
-    iconName: "Home",
-  },
+interface NavigationItem {
+  title: string;
+  url?: string;
+  description?: string;
+}
+
+interface Navigations {
+  title: string;
+  url?: string;
+  iconName: string;
+  items?: NavigationItem[];
+}
+
+export const NAVIGATION_ITEMS: Navigations[] = [
+  // {
+  //   title: "Dashboard",
+  //   url: PAGE_ROUTES.DASHBOARD,
+  //   iconName: "Home",
+  // },
   {
     title: "Project Management",
     iconName: "Building2",

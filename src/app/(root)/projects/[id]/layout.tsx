@@ -13,8 +13,8 @@ export default async function ProjectDetailLayout({
 
   return (
     <ProjectDetailProvider id={id}>
-      <MilestonesProvider>
-        <UsersProvider>{children}</UsersProvider>
+      <MilestonesProvider projectId={id}>
+        <UsersProvider projectId={id}>{children}</UsersProvider>
       </MilestonesProvider>
     </ProjectDetailProvider>
   );
