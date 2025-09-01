@@ -9,7 +9,15 @@ export const useTrackingList = () => {
     handleSearch,
     handleStatusChange,
     handleViewMilestone,
+    projectOptions,
   } = useContextSelector(MilestonesContext, (state) => state!);
+
+  function getProjectName(projectId?: string) {
+    return (
+      projectOptions?.find((option) => option.value === projectId)?.label ||
+      "No project"
+    );
+  }
 
   return {
     handleViewMilestone,
@@ -19,5 +27,6 @@ export const useTrackingList = () => {
     handlePageChange,
     handleSearch,
     handleStatusChange,
+    getProjectName,
   };
 };

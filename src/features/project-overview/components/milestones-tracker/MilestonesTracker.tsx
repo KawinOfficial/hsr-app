@@ -1,12 +1,12 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Target, Plus } from "lucide-react";
+import { Target } from "lucide-react";
 import { useMilestonesTracker } from "./MilestonesTracker.hook";
 import { MilestoneDialog } from "@/features/milestones/components/milestone-dialog";
 import { TrackingList } from "@/features/milestones/components/tracking-list";
+import { CreateProjectMilestoneDialog } from "@/features/project-overview/components/create-proect-milestone-dialog";
 
 const MilestonesTracker = () => {
   const { calculateOverallProgress, getCount } = useMilestonesTracker();
@@ -23,10 +23,7 @@ const MilestonesTracker = () => {
               </CardTitle>
             </div>
             <div className="flex items-center space-x-2">
-              <Button size="sm" variant="outline">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Milestone
-              </Button>
+              <CreateProjectMilestoneDialog />
             </div>
           </div>
         </CardHeader>

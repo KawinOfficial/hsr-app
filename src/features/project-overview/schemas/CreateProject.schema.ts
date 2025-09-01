@@ -6,11 +6,11 @@ export const CreateProjectSchema = z.object({
   status: z.string(),
   budget: z.number(),
   startDate: z.string(),
-  completion: z.string(),
+  targetDate: z.string(),
   location: z.string(),
-  category: z.string(),
-  manager: z.string(),
+  departmentId: z.string(),
   riskLevel: z.string(),
+  projectId: z.string(),
 });
 
 export type CreateProject = z.infer<typeof CreateProjectSchema>;

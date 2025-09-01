@@ -23,7 +23,7 @@ export async function getPayment({
       })
       .order("updatedAt", { ascending: false });
     if (keyword) {
-      query = query.ilike("name", `%${keyword}%`);
+      query = query.or(`name.ilike.%${keyword}%,paymentId.ilike.%${keyword}%`);
     }
     if (projectId) {
       query = query.eq("projectId", projectId);

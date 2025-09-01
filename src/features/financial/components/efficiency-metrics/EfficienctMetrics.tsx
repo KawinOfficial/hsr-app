@@ -1,36 +1,38 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatNumberWithDecimals } from "@/lib/format";
 import { TrendingUp, TrendingDown, Calculator } from "lucide-react";
+import { useEfficiencyMetrics } from "./EfficienctMetrics.hook";
 
 const EfficienctMetrics = () => {
+  const { calculateEVM } = useEfficiencyMetrics();
   const efficiencyMetrics = [
     {
       title: "Cost Performance Index (CPI)",
-      value: "1.08",
+      value: formatNumberWithDecimals(calculateEVM.CPI),
       subtitle: "Above 1.0 indicates under budget",
-      icon: TrendingUp,
-      color: "text-success-green",
+      icon: calculateEVM.CPI >= 1 ? TrendingUp : TrendingDown,
+      color: calculateEVM.CPI >= 1 ? "text-success-green" : "text-destructive",
     },
     {
       title: "Schedule Performance Index (SPI)",
-      value: "0.94",
+      value: formatNumberWithDecimals(calculateEVM.SPI),
       subtitle: "Below 1.0 indicates behind schedule",
-      icon: TrendingDown,
-      color: "text-warning-amber",
+      icon: calculateEVM.SPI < 1 ? TrendingDown : TrendingUp,
+      color: calculateEVM.SPI < 1 ? "text-destructive" : "text-success-green",
     },
     {
       title: "Estimate at Completion (EAC)",
-      value: formatCurrency(2780000000),
+      value: formatCurrency(calculateEVM.EAC),
       subtitle: "Total projected project cost",
       icon: Calculator,
       color: "text-foreground",
     },
     {
       title: "Variance at Completion (VAC)",
-      value: formatCurrency(70000000),
+      value: formatCurrency(calculateEVM.VAC),
       subtitle: "Positive value indicates cost savings",
-      icon: TrendingUp,
-      color: "text-success-green",
+      icon: calculateEVM.VAC > 0 ? TrendingUp : TrendingDown,
+      color: calculateEVM.VAC > 0 ? "text-success-green" : "text-destructive",
     },
   ];
 

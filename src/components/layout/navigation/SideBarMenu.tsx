@@ -51,10 +51,10 @@ const SideBarMenu = () => {
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton
                           asChild
-                          isActive={isActive(subItem.url)}
+                          isActive={isActive(subItem.url ?? "")}
                         >
                           <Link
-                            href={subItem.url}
+                            href={subItem.url ?? ""}
                             className="block rounded-lg p-1  text-sm transition-colors hover:bg-accent"
                           >
                             <div>

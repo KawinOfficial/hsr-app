@@ -6,7 +6,8 @@ export async function getMilestoneList(
   page: number,
   limit: number,
   keyword?: string,
-  status?: string
+  status?: string,
+  projectId?: string
 ) {
   try {
     await checkUserAuth();
@@ -22,6 +23,10 @@ export async function getMilestoneList(
 
     if (status) {
       query = query.eq("status", status);
+    }
+
+    if (projectId) {
+      query = query.eq("projectId", projectId);
     }
 
     query = query.range((page - 1) * limit, page * limit - 1);

@@ -35,6 +35,7 @@ const Payments = () => {
     handleOpenPayment,
     handleChangePage,
     handleChangeKeyword,
+    keyword,
   } = usePayments();
 
   return (
@@ -51,6 +52,7 @@ const Payments = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
+                value={keyword}
                 placeholder="Search payments..."
                 className="pl-10 w-64"
                 onChange={(e) => handleChangeKeyword?.(e.target.value)}

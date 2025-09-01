@@ -3,8 +3,11 @@ import { useState } from "react";
 import { usePaymentList } from "@/features/financial/hooks/use-payment";
 import { useContextSelector } from "use-context-selector";
 import { FinancialContext } from "@/features/financial/components/financial-provider";
+import { useSearchParams } from "next/navigation";
 
 export const usePaymentProvider = () => {
+  const params = useSearchParams();
+
   const selectedProject = useContextSelector(
     FinancialContext,
     (state) => state?.selectedProject
@@ -13,7 +16,7 @@ export const usePaymentProvider = () => {
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
   const [page, setPage] = useState(1);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(params.get("id") ?? "");
   const debouncedKeyword = useDebouncedValue(keyword, 500);
 
   const {
@@ -61,5 +64,6 @@ export const usePaymentProvider = () => {
     handleChangePage,
     handleChangeKeyword,
     refetch,
+    keyword,
   };
 };

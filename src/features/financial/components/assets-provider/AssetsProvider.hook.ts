@@ -3,8 +3,11 @@ import { useState } from "react";
 import { useAssetsList } from "@/features/financial/hooks/use-assets";
 import { useContextSelector } from "use-context-selector";
 import { FinancialContext } from "../financial-provider";
+import { useSearchParams } from "next/navigation";
 
 export const useAssetsProvider = () => {
+  const params = useSearchParams();
+
   const selectedProject = useContextSelector(
     FinancialContext,
     (state) => state?.selectedProject
@@ -13,7 +16,7 @@ export const useAssetsProvider = () => {
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
   const [page, setPage] = useState(1);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(params.get("id") ?? "");
   const debouncedKeyword = useDebouncedValue(keyword, 500);
 
   const {
@@ -61,5 +64,6 @@ export const useAssetsProvider = () => {
     handleChangePage,
     handleChangeKeyword,
     refetch,
+    keyword,
   };
 };

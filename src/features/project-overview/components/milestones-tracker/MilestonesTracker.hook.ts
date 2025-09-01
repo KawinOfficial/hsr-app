@@ -18,7 +18,7 @@ export const useMilestonesTracker = () => {
       (sum, m) => sum + m.progress,
       0
     );
-    return Math.round(totalProgress / milestonesData.data?.length);
+    return Math.round(totalProgress / milestonesData.data?.length) || 0;
   }
 
   const getCount = useMemo(() => {

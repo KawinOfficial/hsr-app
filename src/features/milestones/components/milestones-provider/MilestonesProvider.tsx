@@ -8,8 +8,11 @@ export const MilestonesContext = createContext<ReturnType<
   typeof useMilestonesProvider
 > | null>(null);
 
-export const MilestonesProvider = ({ children }: PropsWithChildren) => {
-  const context = useMilestonesProvider();
+export const MilestonesProvider = ({
+  children,
+  projectId,
+}: PropsWithChildren<{ projectId?: string }>) => {
+  const context = useMilestonesProvider({ projectId });
   return (
     <MilestonesContext.Provider value={context}>
       {children}

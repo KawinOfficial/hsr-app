@@ -494,7 +494,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
             <Button variant="outline" type="reset" onClick={onReset}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isExceedTotalAmount}>
+            <Button type="submit" disabled={isExceedTotalAmount || isLoading}>
               <Save className="h-4 w-4 mr-2" />
               {selectedId ? "Update Asset" : "Create Asset"}
             </Button>
