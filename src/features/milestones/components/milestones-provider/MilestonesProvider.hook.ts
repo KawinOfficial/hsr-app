@@ -25,7 +25,7 @@ export const useMilestonesProvider = ({ projectId }: UseMilestonesProvider) => {
       status: status === "all" ? "" : status.trim(),
       projectId,
     };
-  }, [page, debouncedKeyword, status]);
+  }, [page, debouncedKeyword, status, projectId]);
 
   const {
     data: milestonesData,

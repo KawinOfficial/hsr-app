@@ -8,7 +8,6 @@ import { ProjectDetailContext } from "@/features/project-overview/components/pro
 import { ProjectInformation } from "@/features/project-overview/components/project-information";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TABS } from "@/features/project-overview/constants/options";
-import { Team } from "@/features/project-overview/components/team";
 import { Document } from "@/features/project-overview/components/document";
 import { MilestonesTracker } from "@/features/project-overview/components/milestones-tracker";
 import { MilestoneDialog } from "@/features/milestones/components/milestone-dialog";
@@ -47,7 +46,7 @@ export default function ProjectDetail() {
         <ProjectInformation />
 
         <Tabs defaultValue="milestones" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             {TABS.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
                 {tab.label}
@@ -56,9 +55,6 @@ export default function ProjectDetail() {
           </TabsList>
           <TabsContent value="milestones">
             <MilestonesTracker />
-          </TabsContent>
-          <TabsContent value="team">
-            <Team />
           </TabsContent>
           <TabsContent value="documents">
             <Document />

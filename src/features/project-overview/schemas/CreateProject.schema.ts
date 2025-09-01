@@ -9,7 +9,6 @@ export const CreateProjectSchema = z.object({
   targetDate: z.string(),
   location: z.string(),
   departmentId: z.string(),
-  managerId: z.string(),
   riskLevel: z.string(),
   projectId: z.string(),
 });

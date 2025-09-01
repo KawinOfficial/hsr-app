@@ -9,8 +9,14 @@ import { useNotificationSystem } from "./NotificationSystem.hook";
 import { NofiticationItem } from "@/features/notification/components/notification-item";
 
 const NotificationSystem = () => {
-  const { isOpen, setIsOpen, notifications, isLoading, onOpenApprovals } =
-    useNotificationSystem();
+  const {
+    isOpen,
+    setIsOpen,
+    notifications,
+    isLoading,
+    onOpenApprovals,
+    getNotificationCount,
+  } = useNotificationSystem();
 
   return (
     <>
@@ -18,9 +24,9 @@ const NotificationSystem = () => {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="relative">
             <Bell className="h-4 w-4" />
-            {!!notifications?.length && (
+            {!!getNotificationCount && (
               <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive text-white text-xs rounded-full flex items-center justify-center">
-                {notifications.length > 9 ? "9+" : notifications.length}
+                {getNotificationCount > 9 ? "9+" : getNotificationCount}
               </span>
             )}
           </Button>

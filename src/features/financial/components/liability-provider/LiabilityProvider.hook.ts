@@ -3,8 +3,10 @@ import { useState } from "react";
 import { useLiabilitiesList } from "@/features/financial/hooks/use-liability";
 import { FinancialContext } from "../financial-provider";
 import { useContextSelector } from "use-context-selector";
+import { useSearchParams } from "next/navigation";
 
 export const useLiabilityProvider = () => {
+  const params = useSearchParams();
   const selectedProject = useContextSelector(
     FinancialContext,
     (state) => state?.selectedProject
@@ -13,7 +15,7 @@ export const useLiabilityProvider = () => {
   const [liabilityOpen, setLiabilityOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string>();
   const [page, setPage] = useState(1);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(params.get("id") ?? "");
   const debouncedKeyword = useDebouncedValue(keyword, 500);
 
   const {
@@ -61,5 +63,6 @@ export const useLiabilityProvider = () => {
     handleChangePage,
     handleChangeKeyword,
     refetch,
+    keyword,
   };
 };

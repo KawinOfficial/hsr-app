@@ -37,6 +37,7 @@ const Liability = () => {
     handleChangePage,
     getDocumentTypeName,
     isLoading,
+    keyword,
   } = useLiability();
 
   return (
@@ -54,6 +55,7 @@ const Liability = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
+                value={keyword}
                 placeholder="Search liabilities..."
                 className="pl-10 w-64"
                 onChange={(e) => handleChangeKeyword?.(e.target.value)}

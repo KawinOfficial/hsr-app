@@ -8,11 +8,8 @@ export const UsersContext = createContext<ReturnType<
   typeof useUsersProvider
 > | null>(null);
 
-const UsersProvider = ({
-  children,
-  projectId,
-}: PropsWithChildren<{ projectId?: string }>) => {
-  const context = useUsersProvider({ projectId });
+const UsersProvider = ({ children }: PropsWithChildren) => {
+  const context = useUsersProvider();
   return (
     <UsersContext.Provider value={context}>{children}</UsersContext.Provider>
   );

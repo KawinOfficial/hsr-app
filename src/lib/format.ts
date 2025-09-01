@@ -1,4 +1,5 @@
 import { WorkflowStep } from "@/features/document-types/schemas/Workflow.schema";
+import dayjs from "dayjs";
 
 export const formatCurrency = (amount?: number) => {
   if (!amount) return "0";
@@ -8,8 +9,6 @@ export const formatCurrency = (amount?: number) => {
     maximumFractionDigits: 0,
   }).format(amount);
 };
-
-import dayjs from "dayjs";
 
 export const formatDate = (date: string) => {
   return dayjs(date).format("DD/MM/YYYY");
@@ -36,6 +35,13 @@ export const formatDateInput = (dateStr?: string) => {
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const dd = String(d.getDate()).padStart(2, "0");
   return `${yyyy}-${mm}-${dd}`;
+};
+
+export const formatNumberWithDecimals = (number: number) => {
+  return new Intl.NumberFormat("th-TH", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(number);
 };
 
 export const calculateTotalTimeLimit = (steps: WorkflowStep[]) => {

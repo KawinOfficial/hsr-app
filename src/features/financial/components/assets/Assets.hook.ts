@@ -28,6 +28,7 @@ export const useAssets = () => {
     FinancialContext,
     (context) => context?.documentTypes
   );
+  const keyword = useContextSelector(AssetsContext, (state) => state?.keyword);
 
   function getDocumentTypeName(documentTypeId: string) {
     return documentTypes?.find(
@@ -44,5 +45,6 @@ export const useAssets = () => {
     handleChangePage,
     isLoading,
     getDocumentTypeName,
+    keyword,
   };
 };

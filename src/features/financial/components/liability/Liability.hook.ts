@@ -31,6 +31,10 @@ export const useLiability = () => {
     FinancialContext,
     (context) => context?.documentTypes
   );
+  const keyword = useContextSelector(
+    LiabilityContext,
+    (state) => state?.keyword
+  );
 
   function getDocumentTypeName(documentTypeId: string) {
     return documentTypes?.find(
@@ -47,5 +51,6 @@ export const useLiability = () => {
     handleChangePage,
     handleChangeKeyword,
     getDocumentTypeName,
+    keyword,
   };
 };

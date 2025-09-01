@@ -37,7 +37,11 @@ export async function getProjects({
       .in("projectId", data?.map((item) => item.id) ?? []);
     if (milestonesError) throw new Error(milestonesError.message);
 
-    const team = 30;
+    const { data: teamData, error: teamError } = await supabase
+      .from("EmployeeInfo")
+      .select("id,departmentId", { count: "exact" })
+      .in("departmentId", data?.map((item) => item.departmentId) ?? []);
+    if (teamError) throw new Error(teamError.message);
 
     const formattedData = data?.map((item) => {
       const filteredMilestones = milestonesData?.filter(
@@ -61,6 +65,9 @@ export async function getProjects({
         ? Math.round(((budget - spent) / budget) * 100)
         : 0;
       const progress = totalMilestones ? Math.round((spent / budget) * 100) : 0;
+      const team = teamData.filter(
+        (team) => team.departmentId === item.departmentId
+      )?.length;
 
       return {
         ...item,

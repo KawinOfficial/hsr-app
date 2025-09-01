@@ -482,7 +482,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
             <Button variant="outline" type="reset" onClick={onReset}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!isLoading}>
+            <Button type="submit" disabled={isLoading}>
               <Save className="h-4 w-4 mr-2" />
               {selectedId ? "Update Asset" : "Create Asset"}
             </Button>

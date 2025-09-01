@@ -16,7 +16,6 @@ const defaultValues: CreateProject = {
   startDate: "",
   targetDate: "",
   location: "",
-  managerId: "",
   riskLevel: "Low",
   departmentId: "",
   projectId: "",
@@ -55,9 +54,6 @@ export const useCreateProjectDialog = () => {
     }),
     fieldLocation: methods.register("location", {
       required: "Location is required",
-    }),
-    fieldManagerId: methods.register("managerId", {
-      required: "Project manager is required",
     }),
     fieldRiskLevel: methods.register("riskLevel", {
       required: "Risk level is required",
@@ -98,7 +94,6 @@ export const useCreateProjectDialog = () => {
     setIsOpen,
     closeDialog,
     onSubmit: form.handleSubmit(onSubmit),
-    userOptions: options?.users ?? [],
     departmentOptions: options?.departments ?? [],
   };
 };
