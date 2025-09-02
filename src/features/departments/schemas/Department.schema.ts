@@ -5,7 +5,7 @@ export const DepartmentSchema = z
     id: z.string().optional(),
     name: z.string(),
     description: z.string(),
-    headId: z.string(),
+    headId: z.string().nullable(),
     teamMembers: z.number(),
     budget: z.number(),
     responsibilities: z.string(),
