@@ -109,7 +109,7 @@ const LoginForm = () => {
                 )}
               </div>
 
-              <div className="flex items-center justify-end">
+              <div className="items-center justify-end hidden">
                 <Button
                   type="button"
                   variant="link"
