@@ -23,8 +23,8 @@ export async function getSummary() {
       (sum, milestone) => sum + milestone.actualCost,
       0
     );
-    const critical = data?.filter(
-      (milestone) => milestone.priority === "Critical"
+    const critical = data?.filter((milestone) =>
+      ["Critical", "At Risk"].includes(milestone.status)
     ).length;
     const delayed = data?.filter(
       (milestone) => milestone.status === "Delayed"

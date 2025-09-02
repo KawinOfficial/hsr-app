@@ -5,7 +5,7 @@ export const WorkflowStepSchema = z.object({
   name: z.string(),
   type: z.string(),
   userId: z.string(),
-  timeLimit: z.string(),
+  timeLimit: z.string().optional(),
 });
 
 export const WorkflowSchema = z.object({
@@ -16,6 +16,7 @@ export const WorkflowSchema = z.object({
   steps: z.array(WorkflowStepSchema),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
+  totalDocs: z.number().optional(),
 });
 
 export const WorkflowListSchema = z.object({

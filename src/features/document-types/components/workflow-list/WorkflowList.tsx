@@ -95,13 +95,15 @@ const WorkflowList = () => {
                     </div>
 
                     <div className="space-y-3">
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <div className="text-center p-3 bg-muted/50 rounded-lg space-y-2">
                         <p className="text-xs text-muted-foreground">
-                          Total Executions
+                          Total Document Types
                         </p>
-                        <p className="text-lg font-bold text-rail-blue">0</p>
+                        <p className="text-lg font-bold text-rail-blue">
+                          {workflow.totalDocs}
+                        </p>
                       </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <div className="text-center p-3 bg-muted/50 rounded-lg space-y-2">
                         <p className="text-xs text-muted-foreground">
                           Total Time Limit
                         </p>

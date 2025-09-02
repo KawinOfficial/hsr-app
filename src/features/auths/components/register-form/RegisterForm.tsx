@@ -18,7 +18,6 @@ import { FormProvider } from "react-hook-form";
 import { PersonalForm } from "@/features/auths/components/personal-form";
 import { WorkForm } from "@/features/auths/components/work-form";
 import { SecurityForm } from "@/features/auths/components/security-form";
-import { TermsAgreements } from "@/features/auths/components/terms-agreements";
 
 const RegisterForm = () => {
   const {

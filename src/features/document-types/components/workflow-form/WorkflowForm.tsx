@@ -180,7 +180,14 @@ const WorkflowForm = ({ id, onClose }: UseWorkflowForm) => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Time Limit</FormLabel>
-                            <Select {...field} onValueChange={field.onChange}>
+                            <Select
+                              {...field}
+                              onValueChange={field.onChange}
+                              disabled={
+                                methods.watch(`steps.${index}.type`) ===
+                                "notification"
+                              }
+                            >
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select time limit" />

@@ -7,11 +7,12 @@ export async function updateCategory(id: string, request: NextRequest) {
     if (!id) throw new Error("Category ID is required");
 
     await checkUserAuth();
-    const { name, description, budgetLimit, isActive } = await request.json();
+    const { name, description, budget, isActive } = await request.json();
+    const updatedAt = new Date().toISOString();
 
     const { data, error } = await supabase
       .from("Category")
-      .update({ name, description, budgetLimit, isActive })
+      .update({ name, description, budget, isActive, updatedAt })
       .eq("id", id);
     if (error) throw new Error(error.message);
 

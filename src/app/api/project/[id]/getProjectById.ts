@@ -14,16 +14,37 @@ export async function getProjectById(id: string) {
 
     if (error) throw new Error(error.message);
 
-    // TODO: Remove this after backend is implemented
-    const budget = 1000000;
-    const spent = 500000;
-    const progress = 50;
-    const variance = budget ? Math.round(((budget - spent) / budget) * 100) : 0;
+    const { data: milestonesData, error: milestonesError } = await supabase
+      .from("Milestone")
+      .select("*")
+      .eq("projectId", id);
+    if (milestonesError) throw new Error(milestonesError.message);
+
+    const { data: teamData, error: teamError } = await supabase
+      .from("EmployeeInfo")
+      .select("id,departmentId", { count: "exact" })
+      .eq("departmentId", data?.departmentId);
+    if (teamError) throw new Error(teamError.message);
+
+    const filteredMilestones = milestonesData;
+    const budget = Number(data?.budget);
+    const totalMilestones = filteredMilestones?.length;
+    const completedMilestones = filteredMilestones?.filter(
+      (milestone) => milestone.status === "Completed"
+    )?.length;
     const milestones = {
-      total: 10,
-      completed: 5,
+      total: totalMilestones,
+      completed: completedMilestones,
     };
-    const team = 30;
+    const spent = filteredMilestones?.reduce(
+      (acc, milestone) => acc + Number(milestone.actualCost),
+      0
+    );
+    const variance = budget ? Math.round(((budget - spent) / budget) * 100) : 0;
+    const progress = totalMilestones ? Math.round((spent / budget) * 100) : 0;
+    const team = teamData.filter(
+      (team) => team.departmentId === data?.departmentId
+    )?.length;
 
     return NextResponse.json({
       data: {

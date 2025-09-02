@@ -28,9 +28,23 @@ export async function getWorkflowList({
     const { data, error, count } = await query;
     if (error) throw new Error(error.message);
 
+    const { data: documentTypesData, error: documentTypesError } =
+      await supabase
+        .from("DocumentTypes")
+        .select("id,workflowId", { count: "exact" })
+        .in("workflowId", data?.map((item) => item.id) ?? []);
+    if (documentTypesError) throw new Error(documentTypesError.message);
+
+    const formattedData = data?.map((item) => ({
+      ...item,
+      totalDocs:
+        documentTypesData?.filter((dt) => dt.workflowId === item.id)?.length ??
+        0,
+    }));
+
     return NextResponse.json({
       status: "success",
-      data: data,
+      data: formattedData,
       pagination: {
         totalItems: count,
         totalPages: Math.ceil((count ?? 0) / limit),

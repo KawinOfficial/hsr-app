@@ -37,10 +37,10 @@ const UserList = ({ className }: UserListProps) => {
 
   return (
     <Card className={cn("mt-6 mx-6", className)}>
-      <CardContent>
-        <div className="h-[calc(88vh-10rem)] overflow-y-auto">
+      <CardContent className="px-0">
+        <div className="h-[calc(88vh-10rem)] overflow-y-auto rounded-lg">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-muted">
               <TableRow>
                 <TableHead>User</TableHead>
                 <TableHead>Role & Department</TableHead>
