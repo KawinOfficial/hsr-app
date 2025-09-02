@@ -81,7 +81,6 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
   function onSubmit(data: MilestoneForm) {
     const payload = {
       ...data,
-      projectId: projectId ?? "",
     };
     if (!id) {
       createMilestone(payload, {

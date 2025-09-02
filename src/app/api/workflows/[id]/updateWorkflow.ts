@@ -7,10 +7,11 @@ export async function updateWorkflow(id: string, request: NextRequest) {
     await checkUserAuth();
 
     const { name, description, steps } = await request.json();
+    const updatedAt = new Date().toISOString();
 
     const { data, error } = await supabase
       .from("ApprovalWorkflow")
-      .update({ name, description, steps })
+      .update({ name, description, steps, updatedAt })
       .eq("id", id);
     if (error) throw new Error(error.message);
 

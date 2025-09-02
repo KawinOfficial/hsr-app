@@ -37,13 +37,15 @@ const WorkflowDialog = () => {
         </DialogHeader>
         <div className="space-y-6 mt-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-muted/50 rounded-lg">
-              <p className="text-sm text-muted-foreground">Total Executions</p>
+            <div className="text-center p-4 bg-muted/50 rounded-lg space-y-2">
+              <p className="text-sm text-muted-foreground">
+                Total Document Types
+              </p>
               <p className="text-2xl font-bold text-rail-blue">
-                {/* {selectedWorkflow.totalExecutions} */}0
+                {selectedWorkflow.totalDocs}
               </p>
             </div>
-            <div className="text-center p-4 bg-muted/50 rounded-lg">
+            <div className="text-center p-4 bg-muted/50 rounded-lg space-y-2">
               <p className="text-sm text-muted-foreground">Total Time Limit</p>
               <p className="text-2xl font-bold text-success-green">
                 {calculateTotalTimeLimit(selectedWorkflow.steps)}
@@ -90,7 +92,9 @@ const WorkflowDialog = () => {
                           <p className="text-sm text-muted-foreground">
                             Time Limit
                           </p>
-                          <p>{step.timeLimit} hours</p>
+                          <p>
+                            {step.timeLimit ? step.timeLimit + " hours" : "-"}
+                          </p>
                         </div>
                       </div>
                     </CardContent>

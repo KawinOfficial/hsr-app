@@ -95,8 +95,8 @@ const DocumentList = () => {
               <TableHead>Document Type</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Workflow</TableHead>
-              <TableHead>Approval Levels</TableHead>
-              <TableHead>Processing Time</TableHead>
+              <TableHead className="text-center">Approval Levels</TableHead>
+              <TableHead className="text-center">Processing Time</TableHead>
               <TableHead>Total Docs</TableHead>
               <TableHead className="text-center">Status</TableHead>
               <TableHead className="text-center">Actions</TableHead>
@@ -133,8 +133,10 @@ const DocumentList = () => {
                       </p>
                     </div>
                   </TableCell>
-                  <TableCell>{docType.workflow?.steps.length ?? 0}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
+                    {docType.workflow?.steps.length ?? 0}
+                  </TableCell>
+                  <TableCell className="text-center">
                     {calculateTotalTimeLimit(docType.workflow?.steps ?? [])}
                   </TableCell>
                   <TableCell>
