@@ -25,10 +25,10 @@ const stepHeaders = [
     title: "Account Security",
     description: "Set up your account password and security",
   },
-  {
-    title: "Terms & Agreement",
-    description: "Review and accept the terms and conditions",
-  },
+  // {
+  //   title: "Terms & Agreement",
+  //   description: "Review and accept the terms and conditions",
+  // },
 ];
 
 const defaultValues = {
@@ -51,9 +51,9 @@ const defaultValues = {
   confirmPassword: "",
 
   // Step 4 - Agreement
-  agreeTerms: false,
-  agreePrivacy: false,
-  agreeCode: false,
+  agreeTerms: true,
+  agreePrivacy: true,
+  agreeCode: true,
 };
 
 export const useRegisterForm = () => {
@@ -103,10 +103,10 @@ export const useRegisterForm = () => {
           watch("confirmPassword") &&
           watch("password") === watch("confirmPassword")
         );
-      case 4:
-        return (
-          watch("agreeTerms") && watch("agreePrivacy") && watch("agreeCode")
-        );
+      // case 4:
+      //   return (
+      //     watch("agreeTerms") && watch("agreePrivacy") && watch("agreeCode")
+      //   );
       default:
         return false;
     }

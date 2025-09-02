@@ -139,7 +139,7 @@ const RegisterForm = () => {
                   />
                 )}
                 {currentStep === 3 && <SecurityForm />}
-                {currentStep === 4 && <TermsAgreements />}
+                {/* {currentStep === 4 && <TermsAgreements />} */}
 
                 <div className="flex justify-between mt-6">
                   <Button
@@ -150,7 +150,7 @@ const RegisterForm = () => {
                   >
                     Previous
                   </Button>
-                  {currentStep === 4 ? (
+                  {currentStep === stepHeaders.length ? (
                     <Button
                       type="submit"
                       disabled={!validateStep(currentStep) || isLoading}
