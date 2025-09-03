@@ -47,7 +47,7 @@ export async function updateApprove(req: Request) {
       : isInReview
       ? {
           ...notiData,
-          currentType: "inReview",
+          currentType: "in_review",
           currentUserId: userId,
         }
       : {

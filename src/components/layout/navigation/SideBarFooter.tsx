@@ -37,17 +37,22 @@ const SideBarFooter = () => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="w-full justify-start space-x-3 p-4 !h-auto"
+            className="w-full justify-start space-x-2 py-4 px-3 !h-auto"
           >
             <Avatar className="h-8 w-8">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>ST</AvatarFallback>
+              <AvatarImage src="" />
+              <AvatarFallback className="text-lg">
+                {firstName?.charAt(0)}
+                {lastName?.charAt(0)}
+              </AvatarFallback>
             </Avatar>
             <div className="flex-1 text-left">
-              <p className="text-sm font-medium">
+              <p className="text-sm font-medium truncate max-w-[150px]">
                 {firstName} {lastName}
               </p>
-              <p className="text-xs text-muted-foreground">{email}</p>
+              <p className="text-xs text-muted-foreground truncate max-w-[150px]">
+                {email}
+              </p>
             </div>
             <ChevronDown className="h-4 w-4" />
           </Button>

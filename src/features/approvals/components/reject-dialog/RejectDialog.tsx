@@ -15,8 +15,15 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 const RejectDialog = () => {
-  const { rejectOpen, setRejectOpen, isLoading, selectedItem, handleApprove } =
-    useRejectDialog();
+  const {
+    rejectOpen,
+    setRejectOpen,
+    isLoading,
+    selectedItem,
+    handleApprove,
+    remark,
+    onChangeRemark,
+  } = useRejectDialog();
 
   return (
     <Dialog open={rejectOpen} onOpenChange={setRejectOpen}>
@@ -31,7 +38,7 @@ const RejectDialog = () => {
         </DialogHeader>
         <div>
           <Label>Reason for Rejection</Label>
-          <Textarea />
+          <Textarea value={remark ?? ""} onChange={onChangeRemark} />
         </div>
         <DialogFooter>
           <DialogClose asChild>

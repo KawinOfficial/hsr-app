@@ -14,6 +14,9 @@ export const useApprovalProvider = () => {
   const [rejectOpen, setRejectOpen] = useState(false);
   const [inReviewOpen, setInReviewOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ApprovalDetail | null>(null);
+  const [remark, setRemark] = useState<string | null>(
+    selectedItem?.remark ?? ""
+  );
   const { data: approvals, isLoading, refetch } = useApprovals();
   const { data: documentTypes } = useDocumentTypeOptions();
   const { data: projectOptions } = useProjectOptions();
@@ -33,6 +36,10 @@ export const useApprovalProvider = () => {
     setSelectedItem(item);
   }
 
+  function onChangeRemark(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setRemark(e.target.value);
+  }
+
   function handleOpenInReview(item: ApprovalDetail) {
     setInReviewOpen(true);
     setApproveOpen(false);
@@ -46,7 +53,7 @@ export const useApprovalProvider = () => {
       documentTypesId: selectedItem?.approveItems?.documentTypesId ?? "",
       isRejected: type === "reject",
       isInReview: type === "inReview",
-      remark: type === "reject" ? selectedItem?.remark : "",
+      remark: type === "reject" ? remark : selectedItem?.remark || "",
     };
 
     mutateApprove(payload, {
@@ -82,6 +89,8 @@ export const useApprovalProvider = () => {
     rejectOpen,
     inReviewOpen,
     isLoadingApprove,
+    remark,
+    onChangeRemark,
     setRejectOpen,
     setInReviewOpen,
     setApproveOpen,

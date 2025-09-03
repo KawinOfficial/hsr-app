@@ -25,7 +25,7 @@ const NotificationSystem = () => {
           <Button variant="ghost" size="sm" className="relative">
             <Bell className="h-4 w-4" />
             {!!getNotificationCount && (
-              <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive text-white text-xs rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-[18px] aspect-square bg-destructive text-white text-xs rounded-full flex items-center justify-center">
                 {getNotificationCount > 9 ? "9+" : getNotificationCount}
               </span>
             )}

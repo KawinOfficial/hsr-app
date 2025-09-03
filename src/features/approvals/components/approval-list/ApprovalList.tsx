@@ -51,7 +51,9 @@ const ApprovalList = () => {
                   <CheckCircle className="h-4 w-4 mr-1" />
                   Approve
                 </Button>
-                {approval.currentType === "approval_request" ? (
+                {["approval_request", "in_review"].includes(
+                  approval.currentType
+                ) ? (
                   <Button
                     variant="destructive"
                     size="sm"

@@ -9,7 +9,7 @@ export function getActionColor(action: string) {
     case "completed":
       return "bg-success-green text-white";
     case "in_review":
-      return "bg-construction-orange text-white";
+      return "bg-yellow-500 text-white";
     default:
       return "bg-rail-blue text-white";
   }

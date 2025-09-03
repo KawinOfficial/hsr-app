@@ -8,7 +8,7 @@ export default function Login() {
       <div className="container mx-auto flex min-h-screen items-center justify-center p-4">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-8 text-center lg:text-left">
-            <div className="space-y-4">
+            <div className="space-y-10">
               <div className="flex items-center justify-center lg:justify-start space-x-3">
                 <Train className="h-12 w-12 text-rail-blue" />
                 <div>
@@ -34,7 +34,7 @@ export default function Login() {
             </div>
 
             {/* Project Statistics */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-2 gap-4">
               <Card>
                 <CardContent className="p-4 text-center">
                   <Building2 className="h-8 w-8 text-rail-blue mx-auto mb-2" />
@@ -53,7 +53,7 @@ export default function Login() {
                   <p className="text-sm text-muted-foreground">Team Members</p>
                 </CardContent>
               </Card>
-            </div>
+            </div> */}
           </div>
 
           <LoginForm />

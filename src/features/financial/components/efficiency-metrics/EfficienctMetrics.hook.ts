@@ -33,11 +33,11 @@ export const useEfficiencyMetrics = () => {
 
     // Actual Cost (AC) & Earned Value (EV)
     const acPayments = payments?.data
-      ?.filter((p) => p.status === "N/A") // treat N/A as Completed
+      ?.filter((p) => ["completed"].includes(p.status ?? ""))
       .reduce((sum, p) => sum + gross(p.amount, p.vat, p.tax), 0);
 
     const acAssets = assets?.data
-      ?.filter((a) => a.status === "N/A")
+      ?.filter((a) => ["completed"].includes(a.status ?? ""))
       .reduce((sum, a) => sum + a.amount, 0);
 
     const AC = (acPayments ?? 0) + (acAssets ?? 0);

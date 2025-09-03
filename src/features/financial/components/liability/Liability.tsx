@@ -95,7 +95,9 @@ const Liability = () => {
                   <TableCell className="font-semibold">
                     {liability.liabilityId}
                   </TableCell>
-                  <TableCell>{liability.name}</TableCell>
+                  <TableCell className="truncate max-w-[180px]">
+                    {liability.name}
+                  </TableCell>
                   <TableCell className="truncate max-w-[150px]">
                     {getDocumentTypeName(liability.documentTypesId)}
                   </TableCell>
@@ -120,7 +122,7 @@ const Liability = () => {
                       {liability.status?.replace("_", " ")}
                     </Badge>
                   </TableCell>
-                  <TableCell className="truncate max-w-[150px]">
+                  <TableCell className="truncate max-w-[100px]">
                     {[
                       liability.userCreatedBy?.firstName,
                       liability.userCreatedBy?.lastName,

@@ -22,6 +22,11 @@ export const useRejectDialog = () => {
     ApprovalContext,
     (state) => state?.isLoadingApprove
   );
+  const remark = useContextSelector(ApprovalContext, (state) => state?.remark);
+  const onChangeRemark = useContextSelector(
+    ApprovalContext,
+    (state) => state?.onChangeRemark
+  );
 
   return {
     rejectOpen,
@@ -29,5 +34,7 @@ export const useRejectDialog = () => {
     isLoading,
     selectedItem,
     handleApprove,
+    remark,
+    onChangeRemark,
   };
 };
