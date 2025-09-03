@@ -4,6 +4,7 @@ import { useUpdateProject } from "@/features/project-overview/hooks/use-update-p
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { Project } from "@/features/project-overview/schemas/Project.schema";
+import { formatDateInput } from "@/lib/format";
 
 export interface UseProjectDetailProvider {
   id?: string;
@@ -12,7 +13,7 @@ export interface UseProjectDetailProvider {
 export const useProjectDetailProvider = ({ id }: UseProjectDetailProvider) => {
   const { toast } = useToast();
   const [isEditMode, setIsEditMode] = useState(false);
-  const { data: projectData, isLoading } = useProjectDetail(id ?? "");
+  const { data: projectData, isLoading, refetch } = useProjectDetail(id ?? "");
   const { mutate: updateProject, isPending: isUpdating } = useUpdateProject(
     id ?? ""
   );
@@ -32,6 +33,16 @@ export const useProjectDetailProvider = ({ id }: UseProjectDetailProvider) => {
   };
 
   function handleEdit() {
+    const formattedData = {
+      ...projectData,
+      startDate: projectData?.startDate
+        ? formatDateInput(projectData?.startDate)
+        : undefined,
+      targetDate: projectData?.targetDate
+        ? formatDateInput(projectData?.targetDate)
+        : undefined,
+    };
+    reset(formattedData);
     setIsEditMode(true);
   }
 
@@ -52,6 +63,7 @@ export const useProjectDetailProvider = ({ id }: UseProjectDetailProvider) => {
           description: "Your project has been created successfully.",
         });
         setIsEditMode(false);
+        refetch();
       },
       onError: (error) => {
         const errorMessage =

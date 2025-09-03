@@ -2,7 +2,7 @@ export function getStatusColor(status: string) {
   const formatStatus = status.toLowerCase();
   switch (formatStatus) {
     case "on track":
-      return "bg-success-green text-white";
+      return "bg-green-500 text-white";
     case "not started":
       return "bg-muted text-muted-foreground";
     case "in progress":
@@ -14,7 +14,7 @@ export function getStatusColor(status: string) {
     case "planning":
       return "bg-rail-blue text-white";
     case "completed":
-      return "bg-rail-gold text-white";
+      return "bg-green-500 text-white";
     default:
       return "bg-muted text-muted-foreground";
   }

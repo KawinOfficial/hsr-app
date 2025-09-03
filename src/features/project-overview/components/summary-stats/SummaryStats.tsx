@@ -13,7 +13,7 @@ const SummaryStats = () => {
     {
       title: "Total Budget",
       value: formatCurrency(totalBudget),
-      subtitle: "Across {projects.length} projects",
+      subtitle: `Across ${projects?.data?.length ?? 0} projects`,
       icon: DollarSign,
     },
     {
@@ -30,7 +30,7 @@ const SummaryStats = () => {
     },
     {
       title: "On Track Projects",
-      value: `${onTrackCount}/${projects?.length ?? 0}`,
+      value: `${onTrackCount}/${projects?.data?.length ?? 0}`,
       subtitle: "Projects meeting timeline",
       icon: CheckCircle,
     },
@@ -46,7 +46,7 @@ const SummaryStats = () => {
             </CardTitle>
             <stat.icon className="h-5 w-5 text-rail-blue" />
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-1">
             <div className="text-2xl font-bold">{stat.value}</div>
             <p className="text-xs text-muted-foreground">{stat.subtitle}</p>
           </CardContent>

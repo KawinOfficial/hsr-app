@@ -64,7 +64,9 @@ export async function getProjects({
       const variance = budget
         ? Math.round(((budget - spent) / budget) * 100)
         : 0;
-      const progress = totalMilestones ? Math.round((spent / budget) * 100) : 0;
+      const progress = totalMilestones
+        ? Math.round((completedMilestones / totalMilestones) * 100)
+        : 0;
       const team = teamData.filter(
         (team) => team.departmentId === item.departmentId
       )?.length;

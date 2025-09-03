@@ -29,5 +29,12 @@ export const useProjectInformation = () => {
     );
   }
 
-  return { isEditMode, project, methods, isLoading, getDepartmentName };
+  return {
+    isEditMode,
+    project,
+    methods,
+    isLoading,
+    getDepartmentName,
+    departmentOptions: options?.departments ?? [],
+  };
 };

@@ -5,20 +5,21 @@ import {
   MILESTONE_PRIORITY,
   MILESTONE_STATUS,
 } from "@/features/milestones/constants/options";
+import { ProjectDetailContext } from "@/features/project-overview/components/project-detail-provider";
 
 export const useMilestonesTracker = () => {
   const milestonesData = useContextSelector(
     MilestonesContext,
     (state) => state?.milestonesData
   );
+  const projectData = useContextSelector(
+    ProjectDetailContext,
+    (state) => state?.projectData
+  );
 
   function calculateOverallProgress() {
     if (!milestonesData) return 0;
-    const totalProgress = milestonesData.data?.reduce(
-      (sum, m) => sum + m.progress,
-      0
-    );
-    return Math.round(totalProgress / milestonesData.data?.length) || 0;
+    return projectData?.progress || 0;
   }
 
   const getCount = useMemo(() => {
