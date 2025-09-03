@@ -181,7 +181,14 @@ const ProjectInformation = () => {
                     control={methods?.control}
                     name="startDate"
                     render={({ field }) => (
-                      <Input type="date" className="mt-1" {...field} />
+                      <Input
+                        type="date"
+                        className="mt-1"
+                        {...field}
+                        onClick={(e) => {
+                          e.currentTarget.showPicker();
+                        }}
+                      />
                     )}
                   />
                 ) : (
@@ -199,7 +206,14 @@ const ProjectInformation = () => {
                     control={methods?.control}
                     name="targetDate"
                     render={({ field }) => (
-                      <Input type="date" className="mt-1" {...field} />
+                      <Input
+                        type="date"
+                        className="mt-1"
+                        {...field}
+                        onClick={(e) => {
+                          e.currentTarget.showPicker();
+                        }}
+                      />
                     )}
                   />
                 ) : (

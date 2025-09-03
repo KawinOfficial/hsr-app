@@ -202,12 +202,26 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
 
         <div>
           <Label htmlFor="milestone-start">Start Date</Label>
-          <Input id="milestone-start" type="date" {...form.fieldStart} />
+          <Input
+            id="milestone-start"
+            type="date"
+            {...form.fieldStart}
+            onClick={(e) => {
+              e.currentTarget.showPicker();
+            }}
+          />
         </div>
 
         <div>
           <Label htmlFor="milestone-target">Target Date</Label>
-          <Input id="milestone-target" type="date" {...form.fieldTarget} />
+          <Input
+            id="milestone-target"
+            type="date"
+            {...form.fieldTarget}
+            onClick={(e) => {
+              e.currentTarget.showPicker();
+            }}
+          />
         </div>
 
         <div className="col-span-2">

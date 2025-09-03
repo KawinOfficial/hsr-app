@@ -83,7 +83,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                             key={option.value}
                             value={option.value ?? ""}
                           >
-                            {option.label}
+                            {option.labelWithId}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -239,6 +239,9 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                         {...field}
                         type="date"
                         disabled={!canEdit}
+                        onClick={(e) => {
+                          e.currentTarget.showPicker();
+                        }}
                       />
                     </FormControl>
                     <FormMessage />

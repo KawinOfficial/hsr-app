@@ -84,7 +84,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                             key={option.value}
                             value={option.value ?? ""}
                           >
-                            {option.label}
+                            {option.labelWithId}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -260,6 +260,9 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                           {...field}
                           type="date"
                           disabled={!canEdit}
+                          onClick={(e) => {
+                            e.currentTarget.showPicker();
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -279,6 +282,9 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                           value={field.value ?? ""}
                           type="date"
                           disabled={!canEdit}
+                          onClick={(e) => {
+                            e.currentTarget.showPicker();
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -350,6 +356,9 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                                 type="date"
                                 className="h-auto py-1"
                                 disabled={!canEdit}
+                                onClick={(e) => {
+                                  e.currentTarget.showPicker();
+                                }}
                               />
                             </FormControl>
                             <FormMessage />

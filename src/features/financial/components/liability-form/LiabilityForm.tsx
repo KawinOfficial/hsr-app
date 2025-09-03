@@ -95,7 +95,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                             key={option.value}
                             value={option.value ?? ""}
                           >
-                            {option.label}
+                            {option.labelWithId}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -271,6 +271,9 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                         {...field}
                         type="date"
                         disabled={!canEdit}
+                        onClick={(e) => {
+                          e.currentTarget.showPicker();
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -360,6 +363,9 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                                       type="date"
                                       className="h-auto py-1"
                                       disabled={!canEdit}
+                                      onClick={(e) => {
+                                        e.currentTarget.showPicker();
+                                      }}
                                     />
                                   </FormControl>
                                   <FormMessage />

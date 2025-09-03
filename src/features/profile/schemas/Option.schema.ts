@@ -46,6 +46,7 @@ export const ProjectOptionsSchema = z.array(ProjectSchema).transform((data) =>
     ...item,
     value: item.id,
     label: item.name,
+    labelWithId: `${item.name} (${item.projectId})`,
   }))
 );
 
