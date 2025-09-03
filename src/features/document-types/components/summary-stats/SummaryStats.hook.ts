@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useContextSelector } from "use-context-selector";
 import { DocumentContext } from "@/features/document-types/components/document-provider";
+import { useTotalDocument } from "@/features/document-types/hooks/use-total-document";
 
 export const useSummaryStats = () => {
   const documentTypes = useContextSelector(
@@ -11,7 +12,7 @@ export const useSummaryStats = () => {
     DocumentContext,
     (state) => state?.workflows
   );
-
+  const { data: totalDocument } = useTotalDocument();
   const avgProcessingTime = useMemo(() => {
     if (!workflows || workflows.length === 0) return 0;
     const stepTimes = workflows.map((workflow) => {
@@ -31,5 +32,5 @@ export const useSummaryStats = () => {
     return `${avgTime} hour${avgTime !== 1 ? "s" : ""}`;
   }, [workflows]);
 
-  return { documentTypes, workflows, avgProcessingTime };
+  return { documentTypes, workflows, avgProcessingTime, totalDocument };
 };

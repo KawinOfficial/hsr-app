@@ -12,24 +12,22 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Plus, Edit, Search } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { useCategoryList } from "./CategoryList.hook";
-import { Category } from "@/features/category/schemas/Category.schema";
 import { Pagination } from "@/components/pagination";
 import { TableEmpty, TableLoading } from "@/components/table";
 import DeleteDialog from "../delete-dialog/DeleteDialog";
 
-const getCategoryUtilization = (category: Category) => {
-  return (0 / category.budget) * 100;
-};
+// const getCategoryUtilization = (category: Category) => {
+//   return (0 / category.budget) * 100;
+// };
 
-const getUtilizationColor = (percentage: number) => {
-  if (percentage >= 90) return "text-destructive";
-  if (percentage >= 75) return "text-warning-amber";
-  return "text-success-green";
-};
+// const getUtilizationColor = (percentage: number) => {
+//   if (percentage >= 90) return "text-destructive";
+//   if (percentage >= 75) return "text-warning-amber";
+//   return "text-success-green";
+// };
 
 const CategoryList = () => {
   const {
@@ -70,8 +68,8 @@ const CategoryList = () => {
               <TableHead>Category</TableHead>
               <TableHead>Description</TableHead>
               <TableHead className="text-right">Budget Limit</TableHead>
-              <TableHead>Spent / Committed</TableHead>
-              <TableHead>Utilization</TableHead>
+              {/* <TableHead>Spent / Committed</TableHead>
+              <TableHead>Utilization</TableHead> */}
               <TableHead className="text-center">Status</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
@@ -102,11 +100,10 @@ const CategoryList = () => {
                   <TableCell className="font-semibold text-right">
                     {formatCurrency(category.budget)}
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <div className="space-y-1">
                       <div className="text-sm font-medium text-construction-orange">
                         {formatCurrency(0)}
-                        {/* {formatCurrency(category.spent)} */}
                       </div>
                       <div className="text-xs text-muted-foreground">
                         Committed: {formatCurrency(0)}
@@ -132,7 +129,7 @@ const CategoryList = () => {
                         className="h-2"
                       />
                     </div>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="text-center">
                     <Badge
                       variant={category.isActive ? "default" : "secondary"}

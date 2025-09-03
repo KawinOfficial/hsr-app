@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Workflow, Activity, Clock } from "lucide-react";
 
 const SummaryStats = () => {
-  const { documentTypes, workflows, avgProcessingTime } = useSummaryStats();
+  const { documentTypes, workflows, avgProcessingTime, totalDocument } =
+    useSummaryStats();
 
   if (!documentTypes || !workflows)
     return (
@@ -41,9 +42,6 @@ const SummaryStats = () => {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{workflows.length}</div>
-          <p className="text-xs text-muted-foreground">
-            {workflows.length} templates
-          </p>
         </CardContent>
       </Card>
 
@@ -55,8 +53,9 @@ const SummaryStats = () => {
           <Activity className="h-5 w-5 text-construction-orange" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{0}</div>
-          <p className="text-xs text-muted-foreground">0 pending</p>
+          <div className="text-2xl font-bold">
+            {totalDocument?.totalCount ?? 0}
+          </div>
         </CardContent>
       </Card>
 

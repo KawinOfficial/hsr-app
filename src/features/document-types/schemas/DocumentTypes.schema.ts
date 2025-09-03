@@ -1,6 +1,15 @@
 import { PaginationSchema } from "@/types/pagination";
 import { z } from "zod";
 
+export const TotalDocumentSchema = z.object({
+  paymentCount: z.number(),
+  assetCount: z.number(),
+  liabilityCount: z.number(),
+  totalCount: z.number(),
+});
+
+export type TotalDocument = z.infer<typeof TotalDocumentSchema>;
+
 export const DocumentTypeSchema = z.object({
   id: z.string().optional(),
   documentId: z.string(),
@@ -11,6 +20,7 @@ export const DocumentTypeSchema = z.object({
   isActive: z.boolean(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
+  totalDocuments: TotalDocumentSchema.optional(),
 });
 
 export const DocumentListSchema = z.object({

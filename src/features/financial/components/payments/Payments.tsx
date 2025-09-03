@@ -90,8 +90,12 @@ const Payments = () => {
                   <TableCell className="font-semibold">
                     {payment.paymentId}
                   </TableCell>
-                  <TableCell>{payment.name}</TableCell>
-                  <TableCell>{payment.vendor}</TableCell>
+                  <TableCell className="truncate max-w-[250px]">
+                    {payment.name}
+                  </TableCell>
+                  <TableCell className="truncate max-w-[150px]">
+                    {payment.vendor}
+                  </TableCell>
                   <TableCell className="font-semibold text-right">
                     {formatCurrency(payment.amount)}
                   </TableCell>

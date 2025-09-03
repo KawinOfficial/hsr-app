@@ -70,18 +70,36 @@ const DocumentDialog = () => {
             <p className="text-sm mt-1">{selectedDocumentType.description}</p>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-5 gap-4">
             <div>
               <Label className="font-medium text-muted-foreground">
                 Total Documents
               </Label>
-              <p className="text-2xl font-bold text-rail-blue">0</p>
+              <p className="text-2xl font-bold text-rail-blue">
+                {selectedDocumentType.totalDocuments?.totalCount ?? 0}
+              </p>
             </div>
             <div>
               <Label className="font-medium text-muted-foreground">
-                Pending
+                Payment
               </Label>
-              <p className="text-2xl font-bold text-warning-amber">0</p>
+              <p className="text-2xl font-bold text-warning-amber">
+                {selectedDocumentType.totalDocuments?.paymentCount ?? 0}
+              </p>
+            </div>
+            <div>
+              <Label className="font-medium text-muted-foreground">Asset</Label>
+              <p className="text-2xl font-bold text-warning-amber">
+                {selectedDocumentType.totalDocuments?.assetCount ?? 0}
+              </p>
+            </div>
+            <div>
+              <Label className="font-medium text-muted-foreground">
+                Liability
+              </Label>
+              <p className="text-2xl font-bold text-warning-amber">
+                {selectedDocumentType.totalDocuments?.liabilityCount ?? 0}
+              </p>
             </div>
             <div>
               <Label className="font-medium text-muted-foreground">

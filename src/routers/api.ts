@@ -40,4 +40,5 @@ export const API_ROUTES = {
   approve: "approvals/approve",
   reject: "approvals/reject",
   inReview: "approvals/in-review",
+  totalDocument: "documentTypes/total-document",
 };
