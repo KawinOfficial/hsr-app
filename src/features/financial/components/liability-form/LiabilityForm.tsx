@@ -235,7 +235,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
 
           <Card className="m-0">
             <CardHeader>
-              <CardTitle>Asset Summary</CardTitle>
+              <CardTitle>Liability Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 flex flex-col">
               <FormField
@@ -502,7 +502,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
             </Button>
             <Button type="submit" disabled={isExceedTotalAmount || isLoading}>
               <Save className="h-4 w-4 mr-2" />
-              {selectedId ? "Update Asset" : "Create Asset"}
+              {selectedId ? "Update Liability" : "Create Liability"}
             </Button>
           </div>
         )}
