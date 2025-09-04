@@ -70,9 +70,9 @@ const RegisterForm = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between text-sm">
                 <span>Progress</span>
-                <span>{currentStep} of 4</span>
+                <span>{currentStep} of 3</span>
               </div>
-              <Progress value={(currentStep / 4) * 100} className="h-2" />
+              <Progress value={(currentStep / 3) * 100} className="h-2" />
 
               <div className="space-y-3">
                 {stepHeaders.map(({ title }, index) => (
@@ -138,7 +138,6 @@ const RegisterForm = () => {
                   />
                 )}
                 {currentStep === 3 && <SecurityForm />}
-                {/* {currentStep === 4 && <TermsAgreements />} */}
 
                 <div className="flex justify-between mt-6">
                   <Button
