@@ -161,7 +161,7 @@ const UserDetailDialog = () => {
                         <h4 className="font-medium mb-3 capitalize">
                           {module.replace("-", " ")}
                         </h4>
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-4 gap-4">
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id={`${module}-read`}
@@ -172,33 +172,46 @@ const UserDetailDialog = () => {
                               htmlFor={`${module}-read`}
                               className="text-sm"
                             >
-                              Read Access
+                              Read
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id={`${module}-write`}
-                              checked={perms.write}
+                              checked={perms.create}
                               disabled
                             />
                             <Label
                               htmlFor={`${module}-write`}
                               className="text-sm"
                             >
-                              Write Access
+                              Create
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id={`${module}-admin`}
-                              checked={perms.admin}
+                              checked={perms.update}
                               disabled
                             />
                             <Label
                               htmlFor={`${module}-admin`}
                               className="text-sm"
                             >
-                              Admin Access
+                              Update
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`${module}-admin`}
+                              checked={perms.delete}
+                              disabled
+                            />
+                            <Label
+                              htmlFor={`${module}-admin`}
+                              className="text-sm"
+                            >
+                              Delete
                             </Label>
                           </div>
                         </div>
