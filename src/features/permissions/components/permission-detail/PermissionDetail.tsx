@@ -41,7 +41,7 @@ const PermissionDetail = () => {
 
   return (
     <Dialog open={editOpen} onOpenChange={setEditOpen}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-6 pb-0">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-6 pb-0">
         <form onSubmit={onSubmit} onReset={onReset}>
           <div className="flex justify-between items-center mb-4">
             <DialogHeader>
@@ -102,7 +102,7 @@ const PermissionDetail = () => {
                     <Card key={module} className="p-4">
                       <div className="space-y-3">
                         <h4 className="font-medium capitalize">{module}</h4>
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-4 gap-4">
                           <div className="flex items-center space-x-2">
                             <Controller
                               control={form.control}
@@ -127,38 +127,57 @@ const PermissionDetail = () => {
                               control={form.control}
                               name={`permissions.${
                                 module.toLowerCase() as keyof PermissionsMatrix
-                              }.write`}
+                              }.create`}
                               render={({
                                 field: { value, onChange, ...rest },
                               }) => (
                                 <Switch
-                                  id={`${module}-write`}
+                                  id={`${module}-create`}
                                   checked={!!value}
                                   onCheckedChange={onChange}
                                   {...rest}
                                 />
                               )}
                             />
-                            <Label htmlFor={`${module}-write`}>Write</Label>
+                            <Label htmlFor={`${module}-create`}>Create</Label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <Controller
                               control={form.control}
                               name={`permissions.${
                                 module.toLowerCase() as keyof PermissionsMatrix
-                              }.admin`}
+                              }.update`}
                               render={({
                                 field: { value, onChange, ...rest },
                               }) => (
                                 <Switch
-                                  id={`${module}-admin`}
+                                  id={`${module}-update`}
                                   checked={!!value}
                                   onCheckedChange={onChange}
                                   {...rest}
                                 />
                               )}
                             />
-                            <Label htmlFor={`${module}-admin`}>Admin</Label>
+                            <Label htmlFor={`${module}-update`}>Update</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Controller
+                              control={form.control}
+                              name={`permissions.${
+                                module.toLowerCase() as keyof PermissionsMatrix
+                              }.delete`}
+                              render={({
+                                field: { value, onChange, ...rest },
+                              }) => (
+                                <Switch
+                                  id={`${module}-delete`}
+                                  checked={!!value}
+                                  onCheckedChange={onChange}
+                                  {...rest}
+                                />
+                              )}
+                            />
+                            <Label htmlFor={`${module}-delete`}>Delete</Label>
                           </div>
                         </div>
                       </div>

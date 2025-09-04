@@ -19,20 +19,12 @@ export const LEVELS = [
 
 export const PERMISSIONS = [
   {
-    label: "Dashboard Access",
-    value: "dashboard",
-  },
-  {
     label: "Project Management",
     value: "projects",
   },
   {
     label: "Financial Management",
     value: "financial",
-  },
-  {
-    label: "Reports & Analytics",
-    value: "reports",
   },
   {
     label: "User Management",

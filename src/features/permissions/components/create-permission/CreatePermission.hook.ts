@@ -8,12 +8,9 @@ const defaultValues: PermissionGroup = {
   name: "",
   description: "",
   permissions: {
-    dashboard: { read: true, write: true, admin: true },
-    projects: { read: true, write: true, admin: true },
-    financial: { read: true, write: true, admin: true },
-    reports: { read: true, write: true, admin: true },
-    users: { read: true, write: true, admin: true },
-    settings: { read: true, write: true, admin: true },
+    projects: { read: true, create: true, update: true, delete: true },
+    financial: { read: true, create: true, update: true, delete: true },
+    users: { read: true, create: true, update: true, delete: true },
   },
   isActive: true,
   status: "active",
@@ -25,9 +22,10 @@ export const useCreatePermission = () => {
   const [open, setOpen] = useState(false);
   const { mutate: createPermission } = useCreate();
 
-  const { register, handleSubmit, reset } = useForm<PermissionGroup>({
-    defaultValues,
-  });
+  const { register, handleSubmit, reset, control, watch } =
+    useForm<PermissionGroup>({
+      defaultValues,
+    });
 
   const form = {
     fieldId: register("id"),
@@ -35,6 +33,8 @@ export const useCreatePermission = () => {
     fieldDescription: register("description"),
     fieldPermissions: register("permissions"),
     fieldIsActive: register("isActive"),
+    control,
+    watch,
   };
 
   function onSubmit(data: PermissionGroup) {

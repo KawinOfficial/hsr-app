@@ -54,7 +54,7 @@ const PermissionList = () => {
                           <h5 className="font-medium capitalize">
                             {module.replace("-", " ")}
                           </h5>
-                          <div className="space-y-1">
+                          <div className="grid grid-cols-2 gap-y-2 gap-x-14">
                             <div className="flex items-center justify-between text-sm">
                               <span>Read</span>
                               {perms.read ? (
@@ -64,16 +64,24 @@ const PermissionList = () => {
                               )}
                             </div>
                             <div className="flex items-center justify-between text-sm">
-                              <span>Write</span>
-                              {perms.write ? (
+                              <span>Create</span>
+                              {perms.create ? (
                                 <CheckCircle className="h-4 w-4 text-success-green" />
                               ) : (
                                 <Lock className="h-4 w-4 text-muted-foreground" />
                               )}
                             </div>
                             <div className="flex items-center justify-between text-sm">
-                              <span>Admin</span>
-                              {perms.admin ? (
+                              <span>Update</span>
+                              {perms.update ? (
+                                <CheckCircle className="h-4 w-4 text-success-green" />
+                              ) : (
+                                <Lock className="h-4 w-4 text-muted-foreground" />
+                              )}
+                            </div>
+                            <div className="flex items-center justify-between text-sm">
+                              <span>Delete</span>
+                              {perms.delete ? (
                                 <CheckCircle className="h-4 w-4 text-success-green" />
                               ) : (
                                 <Lock className="h-4 w-4 text-muted-foreground" />

@@ -13,10 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Plus } from "lucide-react";
 import { useCreatePermission } from "./CreatePermission.hook";
-import { PERMISSIONS } from "@/features/permissions/constants/options";
+import { Card } from "@/components/ui/card";
+import { Controller } from "react-hook-form";
+import { Switch } from "@/components/ui/switch";
+import { PermissionsMatrix } from "@/features/permissions/schemas/Permission.schema";
 
 const CreatePermission = () => {
   const { form, onSubmit, onReset, open, setOpen } = useCreatePermission();
@@ -30,7 +32,7 @@ const CreatePermission = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-lg p-6">
+      <DialogContent className="max-w-3xl p-6">
         <form onSubmit={onSubmit} onReset={onReset}>
           <DialogHeader>
             <DialogTitle>Create Permission Group</DialogTitle>
@@ -55,20 +57,95 @@ const CreatePermission = () => {
                 {...form.fieldDescription}
               />
             </div>
-            <div className="space-y-3">
-              <Label className="text-sm font-medium">Permissions</Label>
-              <div className="space-y-2">
-                {PERMISSIONS.map((perm) => (
-                  <div key={perm.value} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={perm.value}
-                      {...form.fieldPermissions}
-                      value={perm.value}
-                    />
-                    <Label htmlFor={perm.value} className="text-sm">
-                      {perm.label}
-                    </Label>
-                  </div>
+            <div>
+              <Label className="text-base font-medium">
+                Permissions Matrix
+              </Label>
+              <div className="mt-4 space-y-4">
+                {Object.entries(form.watch("permissions")).map(([module]) => (
+                  <Card key={module} className="p-4">
+                    <div className="space-y-3">
+                      <h4 className="font-medium capitalize">{module}</h4>
+                      <div className="grid grid-cols-4 gap-4">
+                        <div className="flex items-center space-x-2">
+                          <Controller
+                            control={form.control}
+                            name={`permissions.${
+                              module.toLowerCase() as keyof PermissionsMatrix
+                            }.read`}
+                            render={({
+                              field: { value, onChange, ...rest },
+                            }) => (
+                              <Switch
+                                id={`${module}-read`}
+                                checked={!!value}
+                                onCheckedChange={onChange}
+                                {...rest}
+                              />
+                            )}
+                          />
+                          <Label htmlFor={`${module}-read`}>Read</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Controller
+                            control={form.control}
+                            name={`permissions.${
+                              module.toLowerCase() as keyof PermissionsMatrix
+                            }.create`}
+                            render={({
+                              field: { value, onChange, ...rest },
+                            }) => (
+                              <Switch
+                                id={`${module}-create`}
+                                checked={!!value}
+                                onCheckedChange={onChange}
+                                {...rest}
+                              />
+                            )}
+                          />
+                          <Label htmlFor={`${module}-create`}>Create</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Controller
+                            control={form.control}
+                            name={`permissions.${
+                              module.toLowerCase() as keyof PermissionsMatrix
+                            }.update`}
+                            render={({
+                              field: { value, onChange, ...rest },
+                            }) => (
+                              <Switch
+                                id={`${module}-update`}
+                                checked={!!value}
+                                onCheckedChange={onChange}
+                                {...rest}
+                              />
+                            )}
+                          />
+                          <Label htmlFor={`${module}-update`}>Update</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Controller
+                            control={form.control}
+                            name={`permissions.${
+                              module.toLowerCase() as keyof PermissionsMatrix
+                            }.delete`}
+                            render={({
+                              field: { value, onChange, ...rest },
+                            }) => (
+                              <Switch
+                                id={`${module}-delete`}
+                                checked={!!value}
+                                onCheckedChange={onChange}
+                                {...rest}
+                              />
+                            )}
+                          />
+                          <Label htmlFor={`${module}-delete`}>Delete</Label>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
                 ))}
               </div>
             </div>

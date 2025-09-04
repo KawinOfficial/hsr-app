@@ -2,17 +2,15 @@ import { z } from "zod";
 
 export const PermissionSchema = z.object({
   read: z.boolean(),
-  write: z.boolean(),
-  admin: z.boolean(),
+  create: z.boolean(),
+  update: z.boolean(),
+  delete: z.boolean(),
 });
 
 export const PermissionsMatrixSchema = z.object({
-  dashboard: PermissionSchema,
   projects: PermissionSchema,
   financial: PermissionSchema,
-  reports: PermissionSchema,
   users: PermissionSchema,
-  settings: PermissionSchema,
 });
 
 export const PermissionGroupSchema = z

@@ -9,36 +9,9 @@ const defaultValues: PermissionGroup = {
   description: "",
   status: "active",
   permissions: {
-    dashboard: {
-      read: false,
-      write: false,
-      admin: false,
-    },
-    projects: {
-      read: false,
-      write: false,
-      admin: false,
-    },
-    financial: {
-      read: false,
-      write: false,
-      admin: false,
-    },
-    reports: {
-      read: false,
-      write: false,
-      admin: false,
-    },
-    users: {
-      read: false,
-      write: false,
-      admin: false,
-    },
-    settings: {
-      read: false,
-      write: false,
-      admin: false,
-    },
+    projects: { read: true, create: true, update: true, delete: true },
+    financial: { read: true, create: true, update: true, delete: true },
+    users: { read: true, create: true, update: true, delete: true },
   },
 };
 
