@@ -29,7 +29,14 @@ export const useAssets = () => {
     (context) => context?.documentTypes
   );
   const keyword = useContextSelector(AssetsContext, (state) => state?.keyword);
-
+  const canCreate = useContextSelector(
+    FinancialContext,
+    (context) => context?.canCreate
+  );
+  const canDelete = useContextSelector(
+    FinancialContext,
+    (context) => context?.canDelete
+  );
   function getDocumentTypeName(documentTypeId: string) {
     return documentTypes?.find(
       (documentType) => documentType.id === documentTypeId
@@ -46,5 +53,7 @@ export const useAssets = () => {
     isLoading,
     getDocumentTypeName,
     keyword,
+    canCreate,
+    canDelete,
   };
 };

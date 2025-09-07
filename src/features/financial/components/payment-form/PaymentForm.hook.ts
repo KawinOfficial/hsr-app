@@ -52,6 +52,10 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     ProfileContext,
     (context) => context?.userProfile?.id
   );
+  const canUpdate = useContextSelector(
+    FinancialContext,
+    (context) => context?.canUpdate
+  );
   const id = selectedId ?? "";
   const { data: paymentDetail, isFetching: isLoadingPaymentDetail } =
     usePaymentDetail(id);
@@ -82,9 +86,17 @@ export const usePaymentForm = ({ onClose }: UsePaymentForm) => {
     return (
       (!id || paymentDetail?.createdBy === userId) &&
       !isRejected &&
-      !isCompleted
+      !isCompleted &&
+      canUpdate
     );
-  }, [id, paymentDetail?.createdBy, userId, isRejected, isCompleted]);
+  }, [
+    id,
+    paymentDetail?.createdBy,
+    userId,
+    isRejected,
+    isCompleted,
+    canUpdate,
+  ]);
 
   function createPayload(data: Payment) {
     return {

@@ -57,6 +57,10 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
     ProfileContext,
     (context) => context?.userProfile?.id
   );
+  const canUpdate = useContextSelector(
+    FinancialContext,
+    (context) => context?.canUpdate
+  );
   const id = selectedId ?? "";
   const { data: assetDetail, isFetching: isLoadingAssetDetail } =
     useAssetDetail(id);
@@ -88,7 +92,10 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
   }, [assetDetail?.status]);
   const canEdit = useMemo(() => {
     return (
-      (!id || assetDetail?.createdBy === userId) && !isRejected && !isCompleted
+      (!id || assetDetail?.createdBy === userId) &&
+      !isRejected &&
+      !isCompleted &&
+      canUpdate
     );
   }, [id, assetDetail?.createdBy, userId, isRejected, isCompleted]);
 
