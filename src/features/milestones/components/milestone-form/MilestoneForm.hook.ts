@@ -46,6 +46,10 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
     MilestonesContext,
     (state) => state?.projectId
   );
+  const canEditMilestone = useContextSelector(
+    MilestonesContext,
+    (state) => state?.canEditMilestone
+  );
 
   const { mutate: createMilestone } = useCreateMilestone();
   const { mutate: updateMilestone } = useUpdateMilestone(id ?? "");
@@ -164,5 +168,6 @@ export const useMilestoneForm = ({ id, onClose }: UseMilestoneForm) => {
     onReset,
     projectOptions,
     projectId,
+    canEditMilestone,
   };
 };

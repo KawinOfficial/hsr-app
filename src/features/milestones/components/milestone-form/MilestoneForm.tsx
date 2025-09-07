@@ -30,6 +30,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
     onReset,
     projectOptions,
     projectId,
+    canEditMilestone,
   } = useMilestoneForm({ ...props });
 
   return (
@@ -45,6 +46,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
             id="milestone-title"
             placeholder="Enter milestone title"
             {...form.fieldName}
+            disabled={!canEditMilestone}
           />
         </div>
 
@@ -54,6 +56,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
             id="milestone-id"
             placeholder="Enter milestone id"
             {...form.fieldMilestoneId}
+            disabled={!canEditMilestone}
           />
         </div>
 
@@ -69,7 +72,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
                   field.onChange(value);
                 }}
                 value={field.value || ""}
-                disabled={!!projectId}
+                disabled={!!projectId || !canEditMilestone}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select project" />
@@ -98,6 +101,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
                   if (!value) return;
                   form.setValue("status", value);
                 }}
+                disabled={!canEditMilestone}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select status" />
@@ -121,6 +125,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
             placeholder="Enter milestone description"
             rows={3}
             {...form.fieldDescription}
+            disabled={!canEditMilestone}
           />
         </div>
 
@@ -136,6 +141,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
                   if (!value) return;
                   form.setValue("phase", value);
                 }}
+                disabled={!canEditMilestone}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select phase" />
@@ -164,6 +170,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
                   if (!value) return;
                   form.setValue("priority", value);
                 }}
+                disabled={!canEditMilestone}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select priority" />
@@ -187,6 +194,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
             type="number"
             placeholder="0"
             {...form.fieldBudget}
+            disabled={!canEditMilestone}
           />
         </div>
 
@@ -197,6 +205,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
             type="number"
             placeholder="0"
             {...form.fieldActualCost}
+            disabled={!canEditMilestone}
           />
         </div>
 
@@ -209,6 +218,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
             onClick={(e) => {
               e.currentTarget.showPicker();
             }}
+            disabled={!canEditMilestone}
           />
         </div>
 
@@ -221,6 +231,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
             onClick={(e) => {
               e.currentTarget.showPicker();
             }}
+            disabled={!canEditMilestone}
           />
         </div>
 
@@ -232,38 +243,45 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
                 <Input
                   {...form.register(`deliverables.${index}.name`)}
                   className="flex-1"
+                  disabled={!canEditMilestone}
                 />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onRemoveResponsibility(index)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                {canEditMilestone && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onRemoveResponsibility(index)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
               </div>
             ))}
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full"
-              onClick={onAddResponsibility}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Responsibility
-            </Button>
+            {canEditMilestone && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={onAddResponsibility}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Responsibility
+              </Button>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="py-4 flex justify-end gap-2 sticky -bottom-4 bg-white">
-        <Button variant="outline" type="reset">
-          Cancel
-        </Button>
-        <Button type="submit">
-          <Save className="h-4 w-4 mr-2" />
-          {props.id ? "Update Milestone" : "Create Milestone"}
-        </Button>
-      </div>
+      {canEditMilestone && (
+        <div className="py-4 flex justify-end gap-2 sticky -bottom-4 bg-white">
+          <Button variant="outline" type="reset">
+            Cancel
+          </Button>
+          <Button type="submit">
+            <Save className="h-4 w-4 mr-2" />
+            {props.id ? "Update Milestone" : "Create Milestone"}
+          </Button>
+        </div>
+      )}
     </form>
   );
 };

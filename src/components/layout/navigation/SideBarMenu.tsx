@@ -12,6 +12,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Icon from "@/components/ui/icon";
 import { usePermissions } from "@/hooks/use-permissions";
+import { PermissionsMatrix } from "@/features/permissions/schemas/Permission.schema";
+
+interface NavigationItem {
+  title: string;
+  url?: string;
+  description?: string;
+  permission?: keyof PermissionsMatrix;
+  requiredAction?: "read" | "create" | "update" | "delete";
+}
+
+interface Navigations {
+  title: string;
+  url?: string;
+  iconName: string;
+  items?: NavigationItem[];
+  permission?: keyof PermissionsMatrix;
+  requiredAction?: "read" | "create" | "update" | "delete";
+}
 
 const SideBarMenu = () => {
   const pathname = usePathname();
@@ -22,16 +40,16 @@ const SideBarMenu = () => {
     return pathname.startsWith(url);
   };
 
-  const hasItemPermission = (item: any) => {
+  const hasItemPermission = (item: Navigations | NavigationItem) => {
     if (!item.permission || !item.requiredAction) return true;
     return checkPermission(item.permission, item.requiredAction);
   };
 
-  const filterMenuItems = (items: any[]) => {
+  const filterMenuItems = (items: Navigations[]) => {
     return items.filter((item) => hasItemPermission(item));
   };
 
-  const filterSubItems = (items: any[]) => {
+  const filterSubItems = (items: NavigationItem[]) => {
     return items.filter((subItem) => hasItemPermission(subItem));
   };
 

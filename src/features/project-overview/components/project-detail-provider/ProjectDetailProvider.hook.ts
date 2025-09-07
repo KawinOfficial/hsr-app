@@ -5,6 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { Project } from "@/features/project-overview/schemas/Project.schema";
 import { formatDateInput } from "@/lib/format";
+import { usePermissions } from "@/hooks/use-permissions";
 
 export interface UseProjectDetailProvider {
   id?: string;
@@ -17,6 +18,9 @@ export const useProjectDetailProvider = ({ id }: UseProjectDetailProvider) => {
   const { mutate: updateProject, isPending: isUpdating } = useUpdateProject(
     id ?? ""
   );
+  const { checkPermission } = usePermissions();
+  const canEditProject = checkPermission("projects", "update");
+  const canDeleteProject = checkPermission("projects", "delete");
 
   const methods = useForm<Project>({
     defaultValues: projectData,
@@ -87,5 +91,7 @@ export const useProjectDetailProvider = ({ id }: UseProjectDetailProvider) => {
     isUpdating,
     form,
     methods,
+    canEditProject,
+    canDeleteProject,
   };
 };

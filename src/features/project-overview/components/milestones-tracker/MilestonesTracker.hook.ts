@@ -16,6 +16,14 @@ export const useMilestonesTracker = () => {
     ProjectDetailContext,
     (state) => state?.projectData
   );
+  const canEditProject = useContextSelector(
+    ProjectDetailContext,
+    (state) => state?.canEditProject
+  );
+  const canDeleteMilestone = useContextSelector(
+    ProjectDetailContext,
+    (state) => state?.canDeleteProject
+  );
 
   function calculateOverallProgress() {
     if (!milestonesData) return 0;
@@ -46,5 +54,7 @@ export const useMilestonesTracker = () => {
   return {
     calculateOverallProgress,
     getCount,
+    canEditProject,
+    canDeleteMilestone,
   };
 };

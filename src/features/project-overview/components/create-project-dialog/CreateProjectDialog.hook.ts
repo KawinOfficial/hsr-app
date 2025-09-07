@@ -7,6 +7,7 @@ import { useCreateProject } from "@/features/project-overview/hooks/use-create-p
 import { useToast } from "@/components/ui/use-toast";
 import { useContextSelector } from "use-context-selector";
 import { ProfileContext } from "@/features/profile/components/profile-provider/ProfileProvider";
+import { usePermissions } from "@/hooks/use-permissions";
 
 const defaultValues: CreateProject = {
   name: "",
@@ -24,6 +25,8 @@ const defaultValues: CreateProject = {
 export const useCreateProjectDialog = () => {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
+  const { checkPermission } = usePermissions();
+  const canCreateProject = checkPermission("projects", "create");
 
   const options = useContextSelector(ProfileContext, (state) => state?.options);
 
@@ -89,6 +92,7 @@ export const useCreateProjectDialog = () => {
 
   return {
     form,
+    canCreateProject,
     isOpen,
     isSubmitting,
     setIsOpen,
