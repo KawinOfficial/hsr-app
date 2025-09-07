@@ -1,5 +1,6 @@
 import { useContextSelector } from "use-context-selector";
 import { PaymentContext } from "../payment-provider";
+import { FinancialContext } from "../financial-provider";
 
 export const usePayments = () => {
   const handleViewPayment = useContextSelector(
@@ -27,6 +28,14 @@ export const usePayments = () => {
     (state) => state?.handleChangeKeyword
   );
   const keyword = useContextSelector(PaymentContext, (state) => state?.keyword);
+  const canCreate = useContextSelector(
+    FinancialContext,
+    (state) => state?.canCreate
+  );
+  const canDelete = useContextSelector(
+    FinancialContext,
+    (state) => state?.canDelete
+  );
 
   return {
     handleViewPayment,
@@ -37,5 +46,7 @@ export const usePayments = () => {
     handleChangePage,
     handleChangeKeyword,
     keyword,
+    canCreate,
+    canDelete,
   };
 };

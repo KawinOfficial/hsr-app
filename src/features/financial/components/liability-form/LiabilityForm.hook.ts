@@ -62,6 +62,10 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     ProfileContext,
     (context) => context?.userProfile?.id
   );
+  const canUpdate = useContextSelector(
+    FinancialContext,
+    (context) => context?.canUpdate
+  );
   const id = selectedId ?? "";
   const { data: liabilityDetail, isFetching: isLoadingLiabilityDetail } =
     useLiabilityDetail(id);
@@ -106,9 +110,17 @@ export const useLiabilityForm = ({ onClose }: UseLiabilityForm) => {
     return (
       (!id || liabilityDetail?.createdBy === userId) &&
       !isRejected &&
-      !isCompleted
+      !isCompleted &&
+      canUpdate
     );
-  }, [id, liabilityDetail?.createdBy, userId, isRejected, isCompleted]);
+  }, [
+    id,
+    liabilityDetail?.createdBy,
+    userId,
+    isRejected,
+    isCompleted,
+    canUpdate,
+  ]);
 
   function createPayload(data: Liability) {
     return {

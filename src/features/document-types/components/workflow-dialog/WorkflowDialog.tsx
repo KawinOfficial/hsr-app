@@ -21,6 +21,7 @@ const WorkflowDialog = () => {
     selectedWorkflow,
     findRoleName,
     handleEditWorkflow,
+    canUpdate,
   } = useWorkflowDialog();
 
   if (!selectedWorkflow) return null;
@@ -111,10 +112,12 @@ const WorkflowDialog = () => {
           >
             Close
           </Button>
-          <Button onClick={handleEditWorkflow}>
-            <Edit className="h-4 w-4 mr-2" />
-            Edit Workflow
-          </Button>
+          {canUpdate && (
+            <Button onClick={handleEditWorkflow}>
+              <Edit className="h-4 w-4 mr-2" />
+              Edit Workflow
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

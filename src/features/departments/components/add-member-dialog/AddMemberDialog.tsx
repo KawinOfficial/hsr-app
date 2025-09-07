@@ -47,7 +47,10 @@ const AddmemberDialog = () => {
     onAddMember,
     handleRoleChange,
     roleOptions,
+    canUpdate,
   } = useAddMemberDialog();
+
+  if (!canUpdate) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -38,6 +38,8 @@ const Liability = () => {
     getDocumentTypeName,
     isLoading,
     keyword,
+    canCreate,
+    canDelete,
   } = useLiability();
 
   return (
@@ -61,10 +63,12 @@ const Liability = () => {
                 onChange={(e) => handleChangeKeyword?.(e.target.value)}
               />
             </div>
-            <Button size="sm" onClick={handleOpenLiability}>
-              <Plus className="h-4 w-4 mr-2" />
-              New Liability
-            </Button>
+            {canCreate && (
+              <Button size="sm" onClick={handleOpenLiability}>
+                <Plus className="h-4 w-4 mr-2" />
+                New Liability
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -139,10 +143,12 @@ const Liability = () => {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <DeletePaymentDialog
-                        id={liability.id ?? ""}
-                        type="liability"
-                      />
+                      {canDelete && (
+                        <DeletePaymentDialog
+                          id={liability.id ?? ""}
+                          type="liability"
+                        />
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>

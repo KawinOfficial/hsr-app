@@ -1,5 +1,4 @@
-import { Building2, Train, Users } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Train } from "lucide-react";
 import { LoginForm } from "@/features/auths/components/login-form";
 
 export default function Login() {

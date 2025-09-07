@@ -3,6 +3,7 @@ import { Milestone } from "@/features/milestones/schemas/Milestones.schema";
 import { useMilestone } from "@/features/milestones/hooks/use-milestone";
 import { useDebouncedValue } from "@/hooks/use-debouce";
 import { useProjectOptions } from "@/hooks/use-option";
+import { usePermissions } from "@/hooks/use-permissions";
 
 interface UseMilestonesProvider {
   projectId?: string;
@@ -16,6 +17,11 @@ export const useMilestonesProvider = ({ projectId }: UseMilestonesProvider) => {
   const [status, setStatus] = useState("all");
 
   const debouncedKeyword = useDebouncedValue(keyword, 500);
+
+  const { checkPermission } = usePermissions();
+  const canDeleteMilestone = checkPermission("projects", "delete");
+  const canEditMilestone = checkPermission("projects", "update");
+  const canCreateMilestone = checkPermission("projects", "create");
 
   const query = useMemo(() => {
     return {
@@ -73,5 +79,8 @@ export const useMilestonesProvider = ({ projectId }: UseMilestonesProvider) => {
     isLoading,
     refetch,
     projectId,
+    canDeleteMilestone,
+    canEditMilestone,
+    canCreateMilestone,
   };
 };

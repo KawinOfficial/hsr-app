@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Category } from "@/features/category/schemas/Category.schema";
 import { useCategory } from "@/features/category/hooks/use-category";
 import { useDebouncedValue } from "@/hooks/use-debouce";
+import { usePermissions } from "@/hooks/use-permissions";
 
 export const useCategoryProvider = () => {
   const [createOpen, setCreateOpen] = useState(false);
@@ -15,6 +16,10 @@ export const useCategoryProvider = () => {
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1);
   const debouncedKeyword = useDebouncedValue(keyword, 500);
+  const { checkPermission } = usePermissions();
+  const canCreate = checkPermission("financial", "create");
+  const canUpdate = checkPermission("financial", "update");
+  const canDelete = checkPermission("financial", "delete");
 
   const {
     data: categories,
@@ -60,5 +65,8 @@ export const useCategoryProvider = () => {
     onChangePage,
     handleSearch,
     refetch,
+    canCreate,
+    canUpdate,
+    canDelete,
   };
 };

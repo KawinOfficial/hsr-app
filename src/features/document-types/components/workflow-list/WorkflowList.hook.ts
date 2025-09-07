@@ -1,5 +1,6 @@
 import { useContextSelector } from "use-context-selector";
 import { WorkflowContext } from "@/features/document-types/components/workflow-provider";
+import { DocumentContext } from "../document-provider/DocumentProvider";
 
 export const useWorkflowList = () => {
   const setCreateWorkflowOpen = useContextSelector(
@@ -22,6 +23,10 @@ export const useWorkflowList = () => {
     WorkflowContext,
     (state) => state?.handleSearch
   );
+  const canCreate = useContextSelector(
+    DocumentContext,
+    (state) => state?.canCreate
+  );
 
   return {
     setCreateWorkflowOpen,
@@ -30,5 +35,6 @@ export const useWorkflowList = () => {
     pagination: workflows?.pagination,
     onChangePage,
     handleSearch,
+    canCreate,
   };
 };

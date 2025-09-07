@@ -3,6 +3,8 @@ import { PermissionGroup } from "@/features/permissions/schemas/Permission.schem
 import { useState } from "react";
 import { useCreatePermission as useCreate } from "@/features/permissions/hooks/use-create-permission";
 import { useToast } from "@/hooks/use-toast";
+import { useContextSelector } from "use-context-selector";
+import { PermissionContext } from "../permission-provider";
 
 const defaultValues: PermissionGroup = {
   name: "",
@@ -18,6 +20,10 @@ const defaultValues: PermissionGroup = {
 
 export const useCreatePermission = () => {
   const { toast } = useToast();
+  const canCreate = useContextSelector(
+    PermissionContext,
+    (state) => state?.canCreate
+  );
 
   const [open, setOpen] = useState(false);
   const { mutate: createPermission } = useCreate();
@@ -72,5 +78,6 @@ export const useCreatePermission = () => {
     form,
     onSubmit: handleSubmit(onSubmit),
     onReset,
+    canCreate,
   };
 };

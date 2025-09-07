@@ -9,6 +9,7 @@ import { useDocumentType } from "@/features/document-types/hooks/use-document-ty
 import { useDebouncedValue } from "@/hooks/use-debouce";
 import { Workflow } from "@/features/document-types/schemas/Workflow.schema";
 import { Category } from "@/features/category/schemas/Category.schema";
+import { usePermissions } from "@/hooks/use-permissions";
 
 type SelectedDocumentType = DocumentType & {
   category: Category;
@@ -41,6 +42,11 @@ export const useDocumentProvider = () => {
   const { data: workflows, isLoading: workflowsLoading } = useWorkflowOptions();
   const { data: documentTypes, refetch: refetchDocumentTypes } =
     useDocumentTypeOptions();
+
+  const { checkPermission } = usePermissions();
+  const canCreate = checkPermission("financial", "create");
+  const canUpdate = checkPermission("financial", "update");
+  const canDelete = checkPermission("financial", "delete");
 
   const formatDocumentType = useMemo(() => {
     if (!documentTypesData?.data) return [];
@@ -119,5 +125,8 @@ export const useDocumentProvider = () => {
     isLoading,
     onOpenCreate,
     onOpenEdit,
+    canCreate,
+    canUpdate,
+    canDelete,
   };
 };

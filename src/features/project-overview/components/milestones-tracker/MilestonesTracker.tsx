@@ -9,7 +9,12 @@ import { TrackingList } from "@/features/milestones/components/tracking-list";
 import { CreateProjectMilestoneDialog } from "@/features/project-overview/components/create-proect-milestone-dialog";
 
 const MilestonesTracker = () => {
-  const { calculateOverallProgress, getCount } = useMilestonesTracker();
+  const {
+    calculateOverallProgress,
+    getCount,
+    canEditProject,
+    canDeleteMilestone,
+  } = useMilestonesTracker();
 
   return (
     <>
@@ -22,9 +27,11 @@ const MilestonesTracker = () => {
                 Milestone Tracker
               </CardTitle>
             </div>
-            <div className="flex items-center space-x-2">
-              <CreateProjectMilestoneDialog />
-            </div>
+            {canEditProject && (
+              <div className="flex items-center space-x-2">
+                <CreateProjectMilestoneDialog />
+              </div>
+            )}
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -63,7 +70,7 @@ const MilestonesTracker = () => {
             </div>
           </div>
 
-          <TrackingList />
+          <TrackingList canDeleteMilestone={canDeleteMilestone} />
         </CardContent>
       </Card>
       <MilestoneDialog />

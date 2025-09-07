@@ -35,6 +35,14 @@ export const useDocumentList = () => {
     DocumentContext,
     (state) => state?.categories
   );
+  const canCreate = useContextSelector(
+    DocumentContext,
+    (state) => state?.canCreate
+  );
+  const canDelete = useContextSelector(
+    DocumentContext,
+    (state) => state?.canDelete
+  );
 
   const categoriesOptions = useMemo(() => {
     const options =
@@ -61,5 +69,7 @@ export const useDocumentList = () => {
     handleSearch,
     onChangeCategory,
     categoriesOptions,
+    canCreate,
+    canDelete,
   };
 };

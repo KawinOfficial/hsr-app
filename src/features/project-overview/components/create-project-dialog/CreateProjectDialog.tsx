@@ -42,7 +42,10 @@ const CreateProjectDialog = () => {
     onSubmit,
     setIsOpen,
     departmentOptions,
+    canCreateProject,
   } = useCreateProjectDialog();
+
+  if (!canCreateProject) return null;
 
   return (
     <>

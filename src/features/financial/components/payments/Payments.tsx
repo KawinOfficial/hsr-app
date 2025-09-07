@@ -36,6 +36,8 @@ const Payments = () => {
     handleChangePage,
     handleChangeKeyword,
     keyword,
+    canCreate,
+    canDelete,
   } = usePayments();
 
   return (
@@ -58,10 +60,12 @@ const Payments = () => {
                 onChange={(e) => handleChangeKeyword?.(e.target.value)}
               />
             </div>
-            <Button size="sm" onClick={() => handleOpenPayment?.()}>
-              <Plus className="h-4 w-4 mr-2" />
-              New Payment
-            </Button>
+            {canCreate && (
+              <Button size="sm" onClick={() => handleOpenPayment?.()}>
+                <Plus className="h-4 w-4 mr-2" />
+                New Payment
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -122,7 +126,7 @@ const Payments = () => {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      {payment.canDelete && (
+                      {canDelete && payment.canDelete && (
                         <DeletePaymentDialog
                           id={payment.id ?? ""}
                           type="payment"

@@ -37,6 +37,8 @@ const Assets = () => {
     isLoading,
     getDocumentTypeName,
     keyword,
+    canCreate,
+    canDelete,
   } = useAssets();
 
   return (
@@ -59,10 +61,12 @@ const Assets = () => {
                 onChange={(e) => handleChangeKeyword?.(e.target.value)}
               />
             </div>
-            <Button size="sm" onClick={handleOpenAssets}>
-              <Plus className="h-4 w-4 mr-2" />
-              Register Asset
-            </Button>
+            {canCreate && (
+              <Button size="sm" onClick={handleOpenAssets}>
+                <Plus className="h-4 w-4 mr-2" />
+                Register Asset
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -126,7 +130,7 @@ const Assets = () => {
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
-                        {asset.canDelete && (
+                        {canDelete && asset.canDelete && (
                           <DeletePaymentDialog
                             id={asset?.id ?? ""}
                             type="asset"

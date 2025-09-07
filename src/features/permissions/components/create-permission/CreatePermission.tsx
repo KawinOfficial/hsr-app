@@ -21,7 +21,9 @@ import { Switch } from "@/components/ui/switch";
 import { PermissionsMatrix } from "@/features/permissions/schemas/Permission.schema";
 
 const CreatePermission = () => {
-  const { form, onSubmit, onReset, open, setOpen } = useCreatePermission();
+  const { form, onSubmit, onReset, open, setOpen, canCreate } =
+    useCreatePermission();
+  if (!canCreate) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

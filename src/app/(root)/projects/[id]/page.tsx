@@ -13,12 +13,13 @@ import { MilestonesTracker } from "@/features/project-overview/components/milest
 import { MilestoneDialog } from "@/features/milestones/components/milestone-dialog";
 
 export default function ProjectDetail() {
-  const { isEditMode, handleEdit, handleCancel, handleSave } =
+  const { isEditMode, handleEdit, handleCancel, handleSave, canEditProject } =
     useContextSelector(ProjectDetailContext, (state) => ({
       isEditMode: state?.isEditMode,
       handleEdit: state?.handleEdit,
       handleCancel: state?.handleCancel,
       handleSave: state?.handleSave,
+      canEditProject: state?.canEditProject,
     }));
 
   return (
@@ -35,7 +36,12 @@ export default function ProjectDetail() {
             </Button>
           </div>
         ) : (
-          <Button variant="outline" size="sm" onClick={handleEdit}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleEdit}
+            disabled={!canEditProject}
+          >
             <Edit className="h-4 w-4 mr-2" />
             Edit Project
           </Button>

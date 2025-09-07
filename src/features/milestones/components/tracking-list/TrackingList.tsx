@@ -33,7 +33,11 @@ import { Pagination } from "@/components/pagination";
 import { DeleteDialog } from "@/features/milestones/components/delete-dialog";
 import { TableEmpty, TableLoading } from "@/components/table";
 
-const TrackingList = () => {
+const TrackingList = ({
+  canDeleteMilestone,
+}: {
+  canDeleteMilestone?: boolean;
+}) => {
   const {
     list,
     pagination,
@@ -159,7 +163,7 @@ const TrackingList = () => {
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <DeleteDialog id={milestone.id} />
+                      {canDeleteMilestone && <DeleteDialog id={milestone.id} />}
                     </div>
                   </TableCell>
                 </TableRow>

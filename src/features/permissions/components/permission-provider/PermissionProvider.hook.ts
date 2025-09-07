@@ -3,6 +3,7 @@ import { PermissionGroup } from "@/features/permissions/schemas/Permission.schem
 import { useGetPermission } from "@/features/permissions/hooks/use-permission";
 import { useUpdatePermission } from "@/features/permissions/hooks/use-update-permission";
 import { useToast } from "@/hooks/use-toast";
+import { usePermissions } from "@/hooks/use-permissions";
 
 export const usePermissionProvider = () => {
   const { toast } = useToast();
@@ -12,6 +13,10 @@ export const usePermissionProvider = () => {
 
   const { data: permissionList, isLoading, refetch } = useGetPermission();
   const { mutate: updatePermission } = useUpdatePermission();
+  const { checkPermission } = usePermissions();
+  const canUpdate = checkPermission("users", "update");
+  const canDelete = checkPermission("users", "delete");
+  const canCreate = checkPermission("users", "create");
 
   function handleEdit(group: PermissionGroup) {
     setSelectedPermissionGroup(group);
@@ -53,5 +58,8 @@ export const usePermissionProvider = () => {
     handleSave,
     permissionList,
     isLoading,
+    canUpdate,
+    canDelete,
+    canCreate,
   };
 };
