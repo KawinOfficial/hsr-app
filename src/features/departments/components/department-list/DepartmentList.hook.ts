@@ -18,6 +18,10 @@ export const useDepartmentList = () => {
     DepartmentContext,
     (state) => state?.options
   );
+  const canUpdate = useContextSelector(
+    DepartmentContext,
+    (state) => state?.canUpdate
+  );
 
   function findHeadName(headId: string) {
     return options?.users.find((user) => user.value === headId)?.label;
@@ -28,5 +32,6 @@ export const useDepartmentList = () => {
     handleEditDepartment,
     handleViewMembers,
     findHeadName,
+    canUpdate,
   };
 };

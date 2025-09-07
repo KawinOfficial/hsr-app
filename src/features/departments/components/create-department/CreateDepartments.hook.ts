@@ -26,6 +26,10 @@ export const useCreateDepartment = () => {
     DepartmentContext,
     (state) => state?.refetch
   );
+  const canCreate = useContextSelector(
+    DepartmentContext,
+    (state) => state?.canCreate
+  );
 
   const [open, setOpen] = useState(false);
 
@@ -82,5 +86,6 @@ export const useCreateDepartment = () => {
     onReset,
     onSubmit: handleSubmit(onSubmit),
     isPending,
+    canCreate,
   };
 };

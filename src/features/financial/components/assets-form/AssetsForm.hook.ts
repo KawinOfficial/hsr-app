@@ -97,7 +97,7 @@ export const useAssetsForm = ({ onClose }: UseAssetsForm) => {
       !isCompleted &&
       canUpdate
     );
-  }, [id, assetDetail?.createdBy, userId, isRejected, isCompleted]);
+  }, [id, assetDetail?.createdBy, userId, isRejected, isCompleted, canUpdate]);
 
   function createPayload(data: Asset) {
     return {

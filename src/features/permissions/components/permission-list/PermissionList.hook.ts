@@ -14,6 +14,15 @@ export const usePermissionList = () => {
     PermissionContext,
     (state) => state?.isLoading
   );
+  const canUpdate = useContextSelector(
+    PermissionContext,
+    (state) => state?.canUpdate
+  );
 
-  return { handleEdit, permissionList, isLoading };
+  return {
+    handleEdit,
+    permissionList,
+    isLoading,
+    canUpdate,
+  };
 };

@@ -54,6 +54,7 @@ const MemberListDialog = () => {
     handlePageChange,
     handleRoleChange,
     isLoading,
+    canUpdate,
   } = useMemberListDialog();
 
   return (
@@ -197,10 +198,12 @@ const MemberListDialog = () => {
           <Button variant="outline" onClick={() => setMemberOpen?.(false)}>
             Close
           </Button>
-          <Button onClick={onEditDepartment}>
-            <Settings className="h-4 w-4 mr-2" />
-            Department Settings
-          </Button>
+          {canUpdate && (
+            <Button onClick={onEditDepartment}>
+              <Settings className="h-4 w-4 mr-2" />
+              Department Settings
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

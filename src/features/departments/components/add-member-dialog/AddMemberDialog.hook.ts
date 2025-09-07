@@ -20,6 +20,10 @@ export const useAddMemberDialog = () => {
     DepartmentContext,
     (state) => state?.options
   );
+  const canUpdate = useContextSelector(
+    DepartmentContext,
+    (state) => state?.canUpdate
+  );
 
   const query = useMemo(
     () => ({
@@ -117,5 +121,6 @@ export const useAddMemberDialog = () => {
     onAddMember,
     handleRoleChange,
     roleOptions,
+    canUpdate,
   };
 };

@@ -24,6 +24,10 @@ export const useMemberListDialog = () => {
     DepartmentContext,
     (state) => state?.options
   );
+  const canUpdate = useContextSelector(
+    DepartmentContext,
+    (state) => state?.canUpdate
+  );
 
   const [page, setPage] = useState(1);
   const [roleId, setRoleId] = useState("all");
@@ -72,5 +76,6 @@ export const useMemberListDialog = () => {
     handlePageChange,
     handleRoleChange,
     isLoading,
+    canUpdate,
   };
 };

@@ -10,7 +10,8 @@ import { getStatusColor } from "@/features/permissions/utils/colorStatus";
 import { Loading } from "@/components/loading";
 
 const PermissionList = () => {
-  const { handleEdit, isLoading, permissionList } = usePermissionList();
+  const { handleEdit, isLoading, permissionList, canUpdate } =
+    usePermissionList();
 
   return (
     <div>
@@ -95,14 +96,16 @@ const PermissionList = () => {
                 </div>
 
                 <div className="flex justify-end space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit?.(group)}
-                  >
-                    <Edit className="h-4 w-4 mr-2" />
-                    Edit Permissions
-                  </Button>
+                  {canUpdate && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit?.(group)}
+                    >
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit Permissions
+                    </Button>
+                  )}
                 </div>
               </div>
             </CardContent>

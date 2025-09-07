@@ -26,8 +26,18 @@ import { Controller } from "react-hook-form";
 import { locations } from "@/constants/options";
 
 const CreateDepartments = () => {
-  const { options, form, onSubmit, isPending, open, setOpen, onReset } =
-    useCreateDepartment();
+  const {
+    options,
+    form,
+    onSubmit,
+    isPending,
+    open,
+    setOpen,
+    onReset,
+    canCreate,
+  } = useCreateDepartment();
+
+  if (!canCreate) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

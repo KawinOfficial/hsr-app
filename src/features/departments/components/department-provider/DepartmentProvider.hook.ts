@@ -7,6 +7,7 @@ import { useDepartmentList } from "@/features/departments/hooks/use-department-l
 import { useOptions } from "@/hooks/use-option";
 import { useUpdateDepartment } from "@/features/departments/hooks/use-update-department";
 import { useToast } from "@/hooks/use-toast";
+import { usePermissions } from "@/hooks/use-permissions";
 
 export const useDepartmentProvider = () => {
   const { toast } = useToast();
@@ -19,6 +20,10 @@ export const useDepartmentProvider = () => {
   const { data: options } = useOptions();
   const { mutate: updateDepartment, isPending: isUpdating } =
     useUpdateDepartment();
+
+  const { checkPermission } = usePermissions();
+  const canUpdate = checkPermission("users", "update");
+  const canCreate = checkPermission("users", "create");
 
   function handleEditDepartment(department: Department) {
     setSelectedDepartment(department);
@@ -79,5 +84,7 @@ export const useDepartmentProvider = () => {
     refetch,
     handleUpdateDepartment,
     isUpdating,
+    canUpdate,
+    canCreate,
   };
 };

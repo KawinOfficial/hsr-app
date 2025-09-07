@@ -15,6 +15,7 @@ const DepartmentList = () => {
     handleEditDepartment,
     handleViewMembers,
     findHeadName,
+    canUpdate,
   } = useDepartmentList();
 
   return (
@@ -93,15 +94,17 @@ const DepartmentList = () => {
                     <Users className="h-4 w-4 mr-1" />
                     Members
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => handleEditDepartment?.(dept)}
-                  >
-                    <Edit className="h-4 w-4 mr-1" />
-                    Edit
-                  </Button>
+                  {canUpdate && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => handleEditDepartment?.(dept)}
+                    >
+                      <Edit className="h-4 w-4 mr-1" />
+                      Edit
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
