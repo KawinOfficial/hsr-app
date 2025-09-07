@@ -37,6 +37,9 @@ const CategoryList = () => {
     onEditCategory,
     isLoading,
     onChangePage,
+    canCreate,
+    canDelete,
+    canUpdate,
   } = useCategoryList();
 
   return (
@@ -54,10 +57,12 @@ const CategoryList = () => {
                 className="pl-10 w-64"
               />
             </div>
-            <Button size="sm" onClick={onOpenCreate}>
-              <Plus className="h-4 w-4 mr-2" />
-              New Category
-            </Button>
+            {canCreate && (
+              <Button size="sm" onClick={onOpenCreate}>
+                <Plus className="h-4 w-4 mr-2" />
+                New Category
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -71,7 +76,9 @@ const CategoryList = () => {
               {/* <TableHead>Spent / Committed</TableHead>
               <TableHead>Utilization</TableHead> */}
               <TableHead className="text-center">Status</TableHead>
-              <TableHead className="text-center">Actions</TableHead>
+              {(canUpdate || canDelete) && (
+                <TableHead className="text-center">Actions</TableHead>
+              )}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -137,18 +144,22 @@ const CategoryList = () => {
                       {category.isActive ? "Active" : "Inactive"}
                     </Badge>
                   </TableCell>
-                  <TableCell>
-                    <div className="flex justify-center">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onEditCategory?.(index)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <DeleteDialog id={category.id ?? ""} />
-                    </div>
-                  </TableCell>
+                  {(canUpdate || canDelete) && (
+                    <TableCell>
+                      <div className="flex justify-center">
+                        {canUpdate && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => onEditCategory?.(index)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        )}
+                        {canDelete && <DeleteDialog id={category.id ?? ""} />}
+                      </div>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             )}

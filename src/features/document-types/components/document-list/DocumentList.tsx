@@ -43,6 +43,8 @@ const DocumentList = () => {
     handleSearch,
     onChangeCategory,
     categoriesOptions,
+    canCreate,
+    canDelete,
   } = useDocumentList();
 
   return (
@@ -80,10 +82,12 @@ const DocumentList = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Button size="sm" onClick={onOpenCreate}>
-              <Plus className="h-4 w-4 mr-2" />
-              New Document Type
-            </Button>
+            {canCreate && (
+              <Button size="sm" onClick={onOpenCreate}>
+                <Plus className="h-4 w-4 mr-2" />
+                New Document Type
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -162,9 +166,11 @@ const DocumentList = () => {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
+                      {canDelete && (
+                        <Button variant="ghost" size="sm">
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>

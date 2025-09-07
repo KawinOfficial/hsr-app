@@ -26,6 +26,18 @@ export const useCategoryList = () => {
     CategoryContext,
     (state) => state?.handleSearch
   );
+  const canCreate = useContextSelector(
+    CategoryContext,
+    (state) => state?.canCreate
+  );
+  const canDelete = useContextSelector(
+    CategoryContext,
+    (state) => state?.canDelete
+  );
+  const canUpdate = useContextSelector(
+    CategoryContext,
+    (state) => state?.canUpdate
+  );
 
   return {
     list: categories?.data ?? [],
@@ -35,5 +47,8 @@ export const useCategoryList = () => {
     isLoading,
     onChangePage,
     handleSearch,
+    canCreate,
+    canDelete,
+    canUpdate,
   };
 };

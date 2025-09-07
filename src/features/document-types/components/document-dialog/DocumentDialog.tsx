@@ -23,6 +23,7 @@ const DocumentDialog = () => {
     setDetailViewOpen,
     selectedDocumentType,
     onOpenEdit,
+    canUpdate,
   } = useDocumentDialog();
 
   if (!selectedDocumentType) return null;
@@ -134,10 +135,12 @@ const DocumentDialog = () => {
           <Button variant="outline" onClick={() => setDetailViewOpen?.(false)}>
             Close
           </Button>
-          <Button onClick={onOpenEdit}>
-            <Edit className="h-4 w-4 mr-2" />
-            Edit Document Type
-          </Button>
+          {canUpdate && (
+            <Button onClick={onOpenEdit}>
+              <Edit className="h-4 w-4 mr-2" />
+              Edit Document Type
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

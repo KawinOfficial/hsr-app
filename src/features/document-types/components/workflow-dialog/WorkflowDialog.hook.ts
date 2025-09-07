@@ -1,5 +1,6 @@
 import { useContextSelector } from "use-context-selector";
 import { WorkflowContext } from "@/features/document-types/components/workflow-provider";
+import { DocumentContext } from "../document-provider/DocumentProvider";
 
 export const useWorkflowDialog = () => {
   const workflowDialogOpen = useContextSelector(
@@ -22,6 +23,10 @@ export const useWorkflowDialog = () => {
     WorkflowContext,
     (state) => state?.setEditWorkflowOpen
   );
+  const canUpdate = useContextSelector(
+    DocumentContext,
+    (state) => state?.canUpdate
+  );
 
   function findRoleName(roleId: string) {
     return options?.users.find((role) => role.value === roleId)?.label;
@@ -38,5 +43,6 @@ export const useWorkflowDialog = () => {
     selectedWorkflow,
     findRoleName,
     handleEditWorkflow,
+    canUpdate,
   };
 };

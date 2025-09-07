@@ -22,6 +22,7 @@ const WorkflowList = () => {
     pagination,
     onChangePage,
     handleSearch,
+    canCreate,
   } = useWorkflowList();
 
   return (
@@ -43,10 +44,12 @@ const WorkflowList = () => {
                 onChange={handleSearch}
               />
             </div>
-            <Button size="sm" onClick={() => setCreateWorkflowOpen?.(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              New Workflow
-            </Button>
+            {canCreate && (
+              <Button size="sm" onClick={() => setCreateWorkflowOpen?.(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                New Workflow
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>

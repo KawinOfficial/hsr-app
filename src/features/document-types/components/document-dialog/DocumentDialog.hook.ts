@@ -18,11 +18,16 @@ export const useDocumentDialog = () => {
     DocumentContext,
     (state) => state?.onOpenEdit
   );
+  const canUpdate = useContextSelector(
+    DocumentContext,
+    (state) => state?.canUpdate
+  );
 
   return {
     detailViewOpen,
     setDetailViewOpen,
     selectedDocumentType,
     onOpenEdit,
+    canUpdate,
   };
 };
