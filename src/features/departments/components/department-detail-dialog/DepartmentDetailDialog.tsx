@@ -44,7 +44,7 @@ const DepartmentDetailDialog = () => {
 
   return (
     <Dialog open={departmentEditOpen} onOpenChange={setDepartmentEditOpen}>
-      <DialogContent className="max-w-lg p-6">
+      <DialogContent className="max-w-[90vw] lg:max-w-lg p-4 lg:p-6 max-h-[90vh] overflow-y-auto">
         <form id="edit-department-form" onSubmit={onSubmit} onReset={onReset}>
           <DialogHeader>
             <DialogTitle>Edit Department</DialogTitle>

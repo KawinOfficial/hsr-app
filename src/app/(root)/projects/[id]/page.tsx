@@ -48,7 +48,7 @@ export default function ProjectDetail() {
         )}
       </PageHeader>
 
-      <div className="space-y-6 p-6">
+      <div className="space-y-6 p-4 sm:p-6">
         <ProjectInformation />
 
         <Tabs defaultValue="milestones" className="w-full">
@@ -59,10 +59,10 @@ export default function ProjectDetail() {
               </TabsTrigger>
             ))}
           </TabsList>
-          <TabsContent value="milestones">
+          <TabsContent value="milestones" className="mt-6">
             <MilestonesTracker />
           </TabsContent>
-          <TabsContent value="documents">
+          <TabsContent value="documents" className="mt-6">
             <Document />
           </TabsContent>
         </Tabs>

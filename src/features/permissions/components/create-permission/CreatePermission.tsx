@@ -34,7 +34,7 @@ const CreatePermission = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-3xl p-6">
+      <DialogContent className="max-w-[90vw] lg:max-w-3xl p-4 lg:p-6">
         <form onSubmit={onSubmit} onReset={onReset}>
           <DialogHeader>
             <DialogTitle>Create Permission Group</DialogTitle>
@@ -68,7 +68,7 @@ const CreatePermission = () => {
                   <Card key={module} className="p-4">
                     <div className="space-y-3">
                       <h4 className="font-medium capitalize">{module}</h4>
-                      <div className="grid grid-cols-4 gap-4">
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         <div className="flex items-center space-x-2">
                           <Controller
                             control={form.control}

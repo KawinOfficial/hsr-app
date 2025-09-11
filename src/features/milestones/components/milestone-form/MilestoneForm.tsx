@@ -39,7 +39,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
       onSubmit={onSubmit}
       onReset={onReset}
     >
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="milestone-title">Milestone Title</Label>
           <Input
@@ -118,7 +118,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="lg:col-span-2">
           <Label htmlFor="milestone-description">Description</Label>
           <Textarea
             id="milestone-description"
@@ -235,7 +235,7 @@ const MilestoneForm = ({ ...props }: UseMilestoneForm) => {
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="lg:col-span-2">
           <Label>Key Responsibilities</Label>
           <div className="space-y-2 mt-2">
             {fields.map((field, index) => (

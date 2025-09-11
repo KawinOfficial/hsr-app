@@ -36,7 +36,7 @@ const ChangePasswordDialog = () => {
 
   return (
     <Dialog open={changePasswordOpen} onOpenChange={setChangePasswordOpen}>
-      <DialogContent className="max-w-md p-6">
+      <DialogContent className="max-w-md p-4 lg:p-6">
         <DialogHeader>
           <DialogTitle>Change Password</DialogTitle>
           <DialogDescription>

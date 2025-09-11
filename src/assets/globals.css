@@ -110,10 +110,19 @@
   --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-/* * {
-  @apply border-border;
-}
+/* Responsive utility classes */
+@layer utilities {
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
 
-body {
-  @apply bg-background text-foreground;
-} */
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}

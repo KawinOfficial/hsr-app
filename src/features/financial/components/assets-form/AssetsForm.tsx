@@ -52,12 +52,12 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
     <Form {...methods}>
       <form onSubmit={onSubmit} onReset={onReset}>
         {isLoading && <Loading />}
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-3 grid grid-cols-3 gap-4">
-          <Card className="col-span-2 m-0">
+        <div className="px-4 lg:px-6 py-3 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <Card className="lg:col-span-2 m-0">
             <CardHeader>
               <CardTitle>Asset Information</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-2">
+            <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <FormField
                 control={methods.control}
                 name="projectId"
@@ -130,7 +130,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                 )}
               />
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <FormField
                   control={methods.control}
                   name="name"
@@ -150,7 +150,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                 />
               </div>
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <FormField
                   control={methods.control}
                   name="description"
@@ -295,7 +295,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
             </CardContent>
           </Card>
 
-          <Tabs defaultValue="maintances" className="w-full col-span-3">
+          <Tabs defaultValue="maintances" className="w-full lg:col-span-3">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="maintances">Maintances</TabsTrigger>
               <TabsTrigger value="attachments">Attachments</TabsTrigger>
@@ -317,17 +317,15 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                   {fields.map((field, index) => (
                     <div
                       key={`${field.id}-${index}`}
-                      className="border border-dashed p-3 rounded-md grid grid-cols-3 gap-x-3 gap-y-1 relative"
+                      className="border border-dashed p-3 rounded-md grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative"
                     >
-                      <div className="col-span-2">
+                      <div className="sm:col-span-2 lg:col-span-1">
                         <FormField
                           control={methods.control}
                           name={`maintances.${index}.name`}
                           render={({ field }) => (
-                            <FormItem className="flex gap-2 items-center">
-                              <FormLabel className="truncate w-[140px]">
-                                Name
-                              </FormLabel>
+                            <FormItem className="space-y-1">
+                              <FormLabel className="text-xs">Name</FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
@@ -346,10 +344,8 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                         control={methods.control}
                         name={`maintances.${index}.date`}
                         render={({ field }) => (
-                          <FormItem className="flex gap-2 items-center">
-                            <FormLabel className="truncate w-[140px] text-right">
-                              Date
-                            </FormLabel>
+                          <FormItem className="space-y-1">
+                            <FormLabel className="text-xs">Date</FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
@@ -366,13 +362,13 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                         )}
                       />
 
-                      <div className="col-span-2">
+                      <div className="sm:col-span-2 lg:col-span-1">
                         <FormField
                           control={methods.control}
                           name={`maintances.${index}.description`}
                           render={({ field }) => (
-                            <FormItem className="flex gap-2 items-center">
-                              <FormLabel className="truncate w-[140px]">
+                            <FormItem className="space-y-1">
+                              <FormLabel className="text-xs">
                                 Description
                               </FormLabel>
                               <FormControl>
@@ -393,8 +389,8 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                         control={methods.control}
                         name={`maintances.${index}.cost`}
                         render={({ field }) => (
-                          <FormItem className="flex gap-2 items-center">
-                            <FormLabel className="truncate w-[140px] text-right">
+                          <FormItem className="space-y-1">
+                            <FormLabel className="text-xs">
                               Cost (THB)
                             </FormLabel>
                             <FormControl>
@@ -411,13 +407,13 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                         )}
                       />
 
-                      <div className="col-span-2">
+                      <div className="sm:col-span-2 lg:col-span-1">
                         <FormField
                           control={methods.control}
                           name={`maintances.${index}.maintenanceBy`}
                           render={({ field }) => (
-                            <FormItem className="flex gap-2 items-center">
-                              <FormLabel className="truncate w-[140px]">
+                            <FormItem className="space-y-1">
+                              <FormLabel className="text-xs">
                                 Maintenance By
                               </FormLabel>
                               <FormControl>
@@ -438,9 +434,9 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
                           variant="outline"
                           size="sm"
                           onClick={() => onRemoveMaintenance(index)}
-                          className="max-w-[100px] absolute bottom-2 right-3 text-xs text-destructive"
+                          className="sm:col-span-2 lg:col-span-1 text-xs text-destructive"
                         >
-                          <Trash className="h-2 w-2" />
+                          <Trash className="h-2 w-2 mr-1" />
                           Remove
                         </Button>
                       )}
@@ -487,11 +483,20 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
         </div>
 
         {canEdit && (
-          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
-            <Button variant="outline" type="reset" onClick={onReset}>
+          <div className="flex flex-col sm:flex-row gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <Button
+              variant="outline"
+              type="reset"
+              onClick={onReset}
+              className="w-full sm:w-auto"
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full sm:w-auto"
+            >
               <Save className="h-4 w-4 mr-2" />
               {selectedId ? "Update Asset" : "Create Asset"}
             </Button>
@@ -499,7 +504,7 @@ const AssetsForm = ({ onClose }: UseAssetsForm) => {
         )}
         {isRejected && (
           <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
-            <p className="text-destructive">
+            <p className="text-destructive text-sm">
               Rejected Reason: {assetDetail?.remark}
             </p>
           </div>

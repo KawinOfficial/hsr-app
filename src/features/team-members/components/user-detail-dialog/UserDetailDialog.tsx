@@ -36,8 +36,8 @@ const UserDetailDialog = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="sticky top-0 bg-background border-b py-4 px-6">
+      <DialogContent className="max-w-[90vw] lg:max-w-6xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="sticky top-0 bg-background border-b py-4 px-6 text-left">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-4">
               <Avatar className="h-16 w-16">
@@ -70,12 +70,12 @@ const UserDetailDialog = () => {
         </DialogHeader>
 
         <div className="space-y-6 p-6 pt-4">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle>User Information</CardTitle>
               </CardHeader>
-              <CardContent className="grid grid-cols-2 gap-4">
+              <CardContent className="grid lg:grid-cols-2 gap-4">
                 <div>
                   <p className="font-medium text-muted-foreground">
                     Email Address

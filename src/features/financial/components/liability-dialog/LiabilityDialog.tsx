@@ -15,7 +15,7 @@ const LiabilityDialog = () => {
     useLiabilityDialog();
   return (
     <Dialog open={liabilityOpen} onOpenChange={setLiabilityOpen}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[90vw] lg:max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="sticky top-0 bg-background border-b py-4 px-6">
           <DialogTitle>
             {selectedId ? "Edit Liability" : "Create New Liability"}

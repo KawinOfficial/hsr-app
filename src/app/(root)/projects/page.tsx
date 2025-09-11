@@ -15,7 +15,7 @@ export default function ProjectsOverview() {
           <CreateProjectDialog />
         </PageHeader>
 
-        <div className="px-4 sm:px-6 py-8">
+        <div className="px-4 sm:px-6 py-6 sm:py-8">
           <SummaryStats />
           <ProjectList />
         </div>

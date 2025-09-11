@@ -44,14 +44,14 @@ const Assets = () => {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-2 lg:space-y-0 lg:justify-between">
           <div>
             <CardTitle>Asset Management</CardTitle>
             <CardDescription className="mt-1">
               Register and manage project assets, equipment, and infrastructure
             </CardDescription>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-2 lg:space-y-0 lg:space-x-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -70,17 +70,19 @@ const Assets = () => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="min-h-[60vh] flex flex-col">
+      <CardContent className="min-h-[60vh] flex flex-col max-w-[calc(94vw-1rem)] lg:max-w-none overflow-auto">
         <Table>
           <TableHeader className="bg-muted">
             <TableRow>
-              <TableHead>Asset ID</TableHead>
+              <TableHead className="min-w-[150px]">Asset ID</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Document Type</TableHead>
               <TableHead className="text-right">Value</TableHead>
               <TableHead>Location</TableHead>
               <TableHead>Purchase Date</TableHead>
-              <TableHead className="text-center">Status</TableHead>
+              <TableHead className="text-center min-w-[160px]">
+                Status
+              </TableHead>
               <TableHead>Created By</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>

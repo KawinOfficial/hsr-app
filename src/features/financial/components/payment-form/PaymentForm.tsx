@@ -51,12 +51,12 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
     <Form {...methods}>
       <form onSubmit={onSubmit} onReset={onReset}>
         {isLoading && <Loading />}
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-3 grid grid-cols-3 gap-4">
-          <Card className="col-span-2 m-0">
+        <div className="px-4 lg:px-6 py-3 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <Card className="lg:col-span-2 m-0">
             <CardHeader>
               <CardTitle>Payment Information</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-3">
+            <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <FormField
                 control={methods.control}
                 name="projectId"
@@ -129,7 +129,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 )}
               />
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <FormField
                   control={methods.control}
                   name="name"
@@ -149,7 +149,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
                 />
               </div>
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <FormField
                   control={methods.control}
                   name="description"
@@ -331,7 +331,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
             </CardContent>
           </Card>
 
-          <Tabs defaultValue="attachments" className="w-full col-span-3">
+          <Tabs defaultValue="attachments" className="w-full lg:col-span-3">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="attachments">Attachments</TabsTrigger>
               <TabsTrigger value="history" disabled={!selectedId}>
@@ -376,7 +376,7 @@ const PaymentForm = ({ onClose }: UsePaymentForm) => {
         )}
         {isRejected && (
           <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
-            <p className="text-destructive">
+            <p className="text-destructive text-sm">
               Rejected Reason: {paymentDetail?.remark}
             </p>
           </div>

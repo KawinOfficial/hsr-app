@@ -41,9 +41,9 @@ const PermissionDetail = () => {
 
   return (
     <Dialog open={editOpen} onOpenChange={setEditOpen}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-6 pb-0">
+      <DialogContent className="max-w-[90vw] lg:max-w-3xl max-h-[90vh] overflow-y-auto p-6 pb-0">
         <form onSubmit={onSubmit} onReset={onReset}>
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex flex-col lg:flex-row justify-between items-center mb-4">
             <DialogHeader>
               <DialogTitle>Edit Permission Group</DialogTitle>
               <DialogDescription>
@@ -59,7 +59,7 @@ const PermissionDetail = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid lg:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="edit-role-name">Role Name</Label>
                 <Input id="edit-role-name" {...form.fieldName} />
@@ -102,7 +102,7 @@ const PermissionDetail = () => {
                     <Card key={module} className="p-4">
                       <div className="space-y-3">
                         <h4 className="font-medium capitalize">{module}</h4>
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                           <div className="flex items-center space-x-2">
                             <Controller
                               control={form.control}
@@ -188,7 +188,7 @@ const PermissionDetail = () => {
             </div>
           </div>
 
-          <DialogFooter className="sticky bottom-0 left-0 right-0 bg-white py-4">
+          <DialogFooter className="sticky bottom-0 inset-x-0 bg-white py-4">
             <Button type="reset" variant="outline">
               Cancel
             </Button>

@@ -57,8 +57,8 @@ const CreateProjectDialog = () => {
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-6">
-          <DialogHeader>
+        <DialogContent className="max-w-[90vw] lg:max-w-2xl max-h-[90vh] overflow-y-auto p-4 lg:p-6 space-y-6">
+          <DialogHeader className="text-left">
             <DialogTitle>Create New Project</DialogTitle>
             <DialogDescription>
               Fill in the details below to create a new project. All fields
@@ -68,7 +68,7 @@ const CreateProjectDialog = () => {
 
           <Form {...form}>
             <form onSubmit={onSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="name"
@@ -247,7 +247,7 @@ const CreateProjectDialog = () => {
                   )}
                 />
 
-                <div className="col-span-2">
+                <div className="lg:col-span-2">
                   <FormField
                     control={form.control}
                     name="location"
@@ -278,7 +278,7 @@ const CreateProjectDialog = () => {
                   />
                 </div>
 
-                <div className="col-span-2">
+                <div className="lg:col-span-2">
                   <FormField
                     control={form.control}
                     name="description"

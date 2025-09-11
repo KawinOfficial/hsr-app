@@ -16,7 +16,7 @@ const MilestoneDialog = () => {
 
   return (
     <Dialog open={detailViewOpen} onOpenChange={setDetailViewOpen}>
-      <DialogContent className="max-w-2xl ">
+      <DialogContent className="max-w-[90vw] lg:max-w-2xl ">
         <DialogHeader className="p-4 pb-0">
           <DialogTitle>Milestone Details</DialogTitle>
           <DialogDescription>

@@ -49,7 +49,7 @@ const Profile = () => {
           {/* Personal Information */}
           <Card>
             <CardHeader>
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col space-y-3 lg:space-y-0 lg:flex-row lg:justify-between lg:items-center">
                 <div>
                   <CardTitle>Personal Information</CardTitle>
                   <CardDescription>
@@ -90,7 +90,7 @@ const Profile = () => {
             </CardHeader>
 
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid lg:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="firstName">First Name</Label>
                   <Input {...form.fieldFirstName} disabled={!editMode} />
@@ -100,7 +100,7 @@ const Profile = () => {
                   <Input {...form.fieldLastName} disabled={!editMode} />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid lg:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -114,7 +114,7 @@ const Profile = () => {
                   <Input {...form.fieldPhoneNumber} disabled={!editMode} />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid lg:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="nationality">Nationality</Label>
                   <Controller
@@ -168,7 +168,7 @@ const Profile = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid lg:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="employeeId">Employee ID</Label>
                   <Input {...form.fieldEmployeeId} disabled />
@@ -203,7 +203,7 @@ const Profile = () => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid lg:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="department">Department *</Label>
                   <Controller
@@ -294,7 +294,7 @@ const Profile = () => {
                   ([module, accessList], index) => (
                     <div
                       key={`${module}-${index}`}
-                      className="flex items-center justify-between"
+                      className="flex items-center justify-between space-x-2"
                     >
                       <span className="capitalize">{module}</span>
                       <div className="flex items-center gap-2">

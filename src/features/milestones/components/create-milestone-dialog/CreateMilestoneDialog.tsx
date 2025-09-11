@@ -25,7 +25,7 @@ const CreateMilestoneDialog = () => {
           New Milestone
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl ">
+      <DialogContent className="max-w-[90vw] lg:max-w-2xl ">
         <DialogHeader className="p-4 pb-0">
           <DialogTitle>Create New Milestone</DialogTitle>
           <DialogDescription>

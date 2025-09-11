@@ -63,12 +63,12 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
     <Form {...methods}>
       <form onSubmit={onSubmit} onReset={onReset}>
         {isLoading && <Loading />}
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-3 grid grid-cols-3 gap-4">
-          <Card className="col-span-2 m-0">
+        <div className="px-4 lg:px-6 py-3 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <Card className="lg:col-span-2 m-0">
             <CardHeader>
               <CardTitle>Liability Information</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-2">
+            <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <FormField
                 control={methods.control}
                 name="projectId"
@@ -141,7 +141,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                 )}
               />
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <FormField
                   control={methods.control}
                   name="name"
@@ -161,7 +161,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                 />
               </div>
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <FormField
                   control={methods.control}
                   name="description"
@@ -322,7 +322,10 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
             </CardContent>
           </Card>
 
-          <Tabs defaultValue="paymentSchedules" className="w-full col-span-3">
+          <Tabs
+            defaultValue="paymentSchedules"
+            className="w-full lg:col-span-3"
+          >
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="paymentSchedules">Schedules</TabsTrigger>
               <TabsTrigger value="attachments">Attachments</TabsTrigger>
@@ -336,87 +339,232 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                   <CardTitle>Payment Schedules</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 px-4">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-muted">
-                        <TableHead className="p-2">Due Date</TableHead>
-                        <TableHead className="text-right p-2">Amount</TableHead>
-                        <TableHead className="p-2">Description</TableHead>
-                        <TableHead className="text-center p-2">
-                          Status
-                        </TableHead>
-                        <TableHead></TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {fields.map((payment, index) => (
-                        <TableRow key={`${payment.id}-${index}`}>
-                          <TableCell className="w-[150px] p-2">
-                            <FormField
-                              control={methods.control}
-                              name={`paymentSchedules.${index}.dueDate`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <Input
-                                      {...field}
-                                      type="date"
-                                      className="h-auto py-1"
-                                      disabled={!canEdit}
-                                      onClick={(e) => {
-                                        e.currentTarget.showPicker();
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
+                  {/* Desktop Table View */}
+                  <div className="hidden lg:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-muted">
+                          <TableHead className="p-2">Due Date</TableHead>
+                          <TableHead className="text-right p-2">
+                            Amount
+                          </TableHead>
+                          <TableHead className="p-2">Description</TableHead>
+                          <TableHead className="text-center p-2">
+                            Status
+                          </TableHead>
+                          <TableHead></TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {fields.map((payment, index) => (
+                          <TableRow key={`${payment.id}-${index}`}>
+                            <TableCell className="w-[150px] p-2">
+                              <FormField
+                                control={methods.control}
+                                name={`paymentSchedules.${index}.dueDate`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <Input
+                                        {...field}
+                                        type="date"
+                                        className="h-auto py-1"
+                                        disabled={!canEdit}
+                                        onClick={(e) => {
+                                          e.currentTarget.showPicker();
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </TableCell>
+                            <TableCell className="text-right w-[180px] p-2">
+                              <FormField
+                                control={methods.control}
+                                name={`paymentSchedules.${index}.amount`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <Input
+                                        {...field}
+                                        placeholder="Enter amount"
+                                        className="h-auto py-1 text-right"
+                                        type="number"
+                                        disabled={!canEdit}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </TableCell>
+                            <TableCell className="p-2">
+                              <FormField
+                                control={methods.control}
+                                name={`paymentSchedules.${index}.description`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <Input
+                                        {...field}
+                                        placeholder="Enter description"
+                                        className="h-auto py-1"
+                                        disabled={!canEdit}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </TableCell>
+                            <TableCell className="text-center w-[100px] p-2">
+                              {!methods.watch(
+                                `paymentSchedules.${index}.dueDate`
+                              ) ? (
+                                "-"
+                              ) : (
+                                <Badge variant="outline">
+                                  {calcPaymentScheduleStatus(
+                                    methods.watch(
+                                      `paymentSchedules.${index}.dueDate`
+                                    )
+                                  )}
+                                </Badge>
                               )}
+                            </TableCell>
+                            <TableCell className="text-center w-[50px] p-2">
+                              {canEdit && (
+                                <button
+                                  className="text-destructive disabled:text-muted-foreground disabled:cursor-not-allowed"
+                                  disabled={fields.length === 1}
+                                  onClick={() => onRemovePaymentSchedule(index)}
+                                >
+                                  <Trash className="h-4 w-4 mr-2" />
+                                </button>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                      <TableFooter>
+                        <TableRow>
+                          <TableCell className="text-right p-2">
+                            Total:
+                          </TableCell>
+                          <TableCell className="text-right p-2">
+                            <Input
+                              value={formatCurrency(totalAmount)}
+                              className={cn(
+                                "h-auto py-1 text-right text-black",
+                                {
+                                  "border-red-500 border-2":
+                                    isExceedTotalAmount,
+                                }
+                              )}
+                              readOnly
                             />
                           </TableCell>
-                          <TableCell className="text-right w-[180px] p-2">
-                            <FormField
-                              control={methods.control}
-                              name={`paymentSchedules.${index}.amount`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <Input
-                                      {...field}
-                                      placeholder="Enter amount"
-                                      className="h-auto py-1 text-right"
-                                      type="number"
-                                      disabled={!canEdit}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
+                          <TableCell className="text-right p-2">
+                            {canEdit && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={onAddPaymentSchedule}
+                                className="w-full"
+                              >
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Schedule
+                              </Button>
+                            )}
                           </TableCell>
-                          <TableCell className="p-2">
-                            <FormField
-                              control={methods.control}
-                              name={`paymentSchedules.${index}.description`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <Input
-                                      {...field}
-                                      placeholder="Enter description"
-                                      className="h-auto py-1"
-                                      disabled={!canEdit}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </TableCell>
-                          <TableCell className="text-center w-[100px] p-2">
+                        </TableRow>
+                      </TableFooter>
+                    </Table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="lg:hidden space-y-3">
+                    {fields.map((payment, index) => (
+                      <div
+                        key={`${payment.id}-${index}`}
+                        className="border border-dashed p-3 rounded-md space-y-3 relative"
+                      >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <FormField
+                            control={methods.control}
+                            name={`paymentSchedules.${index}.dueDate`}
+                            render={({ field }) => (
+                              <FormItem className="space-y-1">
+                                <FormLabel className="text-xs">
+                                  Due Date
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    {...field}
+                                    type="date"
+                                    className="h-auto py-1"
+                                    disabled={!canEdit}
+                                    onClick={(e) => {
+                                      e.currentTarget.showPicker();
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={methods.control}
+                            name={`paymentSchedules.${index}.amount`}
+                            render={({ field }) => (
+                              <FormItem className="space-y-1">
+                                <FormLabel className="text-xs">
+                                  Amount (THB)
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    {...field}
+                                    placeholder="Enter amount"
+                                    className="h-auto py-1"
+                                    type="number"
+                                    disabled={!canEdit}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <FormField
+                          control={methods.control}
+                          name={`paymentSchedules.${index}.description`}
+                          render={({ field }) => (
+                            <FormItem className="space-y-1">
+                              <FormLabel className="text-xs">
+                                Description
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  placeholder="Enter description"
+                                  className="h-auto py-1"
+                                  disabled={!canEdit}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <div className="flex justify-between items-center">
+                          <div>
                             {!methods.watch(
                               `paymentSchedules.${index}.dueDate`
                             ) ? (
-                              "-"
+                              <span className="text-sm text-muted-foreground">
+                                -
+                              </span>
                             ) : (
                               <Badge variant="outline">
                                 {calcPaymentScheduleStatus(
@@ -426,49 +574,48 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
                                 )}
                               </Badge>
                             )}
-                          </TableCell>
-                          <TableCell className="text-center w-[50px] p-2">
-                            {canEdit && (
-                              <button
-                                className="text-destructive disabled:text-muted-foreground disabled:cursor-not-allowed"
-                                disabled={fields.length === 1}
-                                onClick={() => onRemovePaymentSchedule(index)}
-                              >
-                                <Trash className="h-4 w-4 mr-2" />
-                              </button>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                    <TableFooter>
-                      <TableRow>
-                        <TableCell className="text-right p-2">Total:</TableCell>
-                        <TableCell className="text-right p-2">
-                          <Input
-                            value={formatCurrency(totalAmount)}
-                            className={cn("h-auto py-1 text-right text-black", {
-                              "border-red-500 border-2": isExceedTotalAmount,
-                            })}
-                            readOnly
-                          />
-                        </TableCell>
-                        <TableCell className="text-right p-2">
+                          </div>
                           {canEdit && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={onAddPaymentSchedule}
-                              className="w-full"
+                            <button
+                              className="text-destructive disabled:text-muted-foreground disabled:cursor-not-allowed text-sm"
+                              disabled={fields.length === 1}
+                              onClick={() => onRemovePaymentSchedule(index)}
                             >
-                              <Plus className="h-4 w-4 mr-2" />
-                              Add Schedule
-                            </Button>
+                              <Trash className="h-4 w-4 mr-1 inline" />
+                              Remove
+                            </button>
                           )}
-                        </TableCell>
-                      </TableRow>
-                    </TableFooter>
-                  </Table>
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="border-t pt-3 space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium">Total:</span>
+                        <Input
+                          value={formatCurrency(totalAmount)}
+                          className={cn(
+                            "h-auto py-1 text-right text-black w-32",
+                            {
+                              "border-red-500 border-2": isExceedTotalAmount,
+                            }
+                          )}
+                          readOnly
+                        />
+                      </div>
+                      {canEdit && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={onAddPaymentSchedule}
+                          className="w-full"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Schedule
+                        </Button>
+                      )}
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -496,11 +643,20 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
           </Tabs>
         </div>
         {canEdit && (
-          <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
-            <Button variant="outline" type="reset" onClick={onReset}>
+          <div className="flex flex-col sm:flex-row gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
+            <Button
+              variant="outline"
+              type="reset"
+              onClick={onReset}
+              className="w-full sm:w-auto"
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={isExceedTotalAmount || isLoading}>
+            <Button
+              type="submit"
+              disabled={isExceedTotalAmount || isLoading}
+              className="w-full sm:w-auto"
+            >
               <Save className="h-4 w-4 mr-2" />
               {selectedId ? "Update Liability" : "Create Liability"}
             </Button>
@@ -508,7 +664,7 @@ const LiabilityForm = ({ onClose }: UseLiabilityForm) => {
         )}
         {isRejected && (
           <div className="flex gap-2 justify-end px-6 py-4 sticky bottom-0 bg-background border-t">
-            <p className="text-destructive">
+            <p className="text-destructive text-sm">
               Rejected Reason: {liabilityDetail?.remark}
             </p>
           </div>

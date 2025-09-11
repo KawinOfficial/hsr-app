@@ -48,7 +48,7 @@ export default function PaymentsPage() {
           onValueChange={onSelectProject}
           value={selectedProject ?? "all"}
         >
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="All project" />
           </SelectTrigger>
           <SelectContent>

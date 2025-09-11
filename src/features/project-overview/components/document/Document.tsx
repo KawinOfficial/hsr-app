@@ -59,41 +59,43 @@ const Document = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Document Name</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Size</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Upload Date</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {documents.map((doc, index) => (
-              <TableRow key={index}>
-                <TableCell className="font-medium">{doc.name}</TableCell>
-                <TableCell>{doc.type}</TableCell>
-                <TableCell>{doc.size}</TableCell>
-                <TableCell>
-                  <Badge variant="outline">{doc.category}</Badge>
-                </TableCell>
-                <TableCell>{doc.uploadDate}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-1">
-                    <Button variant="ghost" size="sm">
-                      <Download className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Document Name</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Size</TableHead>
+                <TableHead>Category</TableHead>
+                <TableHead>Upload Date</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {documents.map((doc) => (
+                <TableRow key={doc.name}>
+                  <TableCell className="font-medium">{doc.name}</TableCell>
+                  <TableCell>{doc.type}</TableCell>
+                  <TableCell>{doc.size}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline">{doc.category}</Badge>
+                  </TableCell>
+                  <TableCell>{doc.uploadDate}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-1">
+                      <Button variant="ghost" size="sm">
+                        <Download className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );

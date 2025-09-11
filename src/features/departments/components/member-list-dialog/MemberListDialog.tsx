@@ -8,14 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Building2,
-  Users,
-  CheckCircle,
-  MapPin,
-  Settings,
-  Eye,
-} from "lucide-react";
+import { Building2, Users, CheckCircle, MapPin, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMemberListDialog } from "./MemberListDialog.hook";
@@ -59,7 +52,7 @@ const MemberListDialog = () => {
 
   return (
     <Dialog open={memberOpen} onOpenChange={setMemberOpen}>
-      <DialogContent className="max-w-5xl max-h-[90vh] p-6 overflow-y-auto space-y-6">
+      <DialogContent className="max-w-[90vw] lg:max-w-5xl p-4 lg:p-6 max-h-[90vh] overflow-y-auto space-y-6">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <Building2 className="h-5 w-5" />
@@ -72,7 +65,7 @@ const MemberListDialog = () => {
 
         <div className="space-y-6">
           {/* Department Summary */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
               <CardContent className="p-4 text-center">
                 <Users className="h-6 w-6 text-rail-blue mx-auto mb-2" />
@@ -124,15 +117,14 @@ const MemberListDialog = () => {
           </div>
 
           {/* Members Table */}
-          <div className="border rounded-lg">
+          <div className="border rounded-lg overflow-auto max-w-[calc(90vw-2rem)] lg:max-w-none">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Member</TableHead>
-                  <TableHead>Role</TableHead>
+                  <TableHead className="min-w-[150px]">Member</TableHead>
+                  <TableHead className="min-w-[160px]">Role</TableHead>
                   <TableHead>Contact</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -175,11 +167,6 @@ const MemberListDialog = () => {
                         <Badge className={getStatusColor(member.status)}>
                           {member.status}
                         </Badge>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button variant="ghost" size="sm">
-                          <Eye className="h-4 w-4" />
-                        </Button>
                       </TableCell>
                     </TableRow>
                   ))

@@ -47,7 +47,7 @@ const SummaryStats = () => {
             <stat.icon className="h-5 w-5 text-rail-blue" />
           </CardHeader>
           <CardContent className="space-y-1">
-            <div className="text-2xl font-bold">{stat.value}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
             <p className="text-xs text-muted-foreground">{stat.subtitle}</p>
           </CardContent>
         </Card>

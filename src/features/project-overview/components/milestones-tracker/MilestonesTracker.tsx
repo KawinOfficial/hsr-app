@@ -20,7 +20,7 @@ const MilestonesTracker = () => {
     <>
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-2 lg:space-y-0 lg:justify-between">
             <div>
               <CardTitle className="flex items-center">
                 <Target className="h-5 w-5 mr-2 text-primary" />
@@ -34,7 +34,7 @@ const MilestonesTracker = () => {
             )}
           </div>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 max-w-[calc(94vw-1rem)] lg:max-w-none">
           {/* Overall Progress */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
@@ -48,21 +48,21 @@ const MilestonesTracker = () => {
 
           {/* Summary Stats */}
           <div className="border-t pt-4">
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
               <div>
-                <p className="text-2xl font-bold text-success-green">
+                <p className="text-xl sm:text-2xl font-bold text-success-green">
                   {getCount.completed}
                 </p>
                 <p className="text-xs text-muted-foreground">Completed</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-rail-blue">
+                <p className="text-xl sm:text-2xl font-bold text-rail-blue">
                   {getCount.inProgress}
                 </p>
                 <p className="text-xs text-muted-foreground">In Progress</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-construction-orange">
+                <p className="text-xl sm:text-2xl font-bold text-construction-orange">
                   {getCount.critical}
                 </p>
                 <p className="text-xs text-muted-foreground">Critical</p>
