@@ -10,198 +10,316 @@ datasource db {
 
 
 
+model ApprovalWorkflow {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name        String
+  workflowId  String
+  description String
+  createdAt   DateTime? @db.Timestamptz
+  updatedAt   DateTime? @default(now()) @db.Timestamptz
+  steps       Json?
+
+  DocumentTypes DocumentTypes[]
+
+  @@map("ApprovalWorkflow")
+}
+
+model Assets {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  updatedAt      DateTime?     @default(now()) @db.Timestamptz
+  createdAt      DateTime      @db.Timestamptz
+  name           String
+  assetId        String
+  description    String
+  amount         Float
+  purchaseDate   DateTime      @db.Timestamptz
+  location       String
+  warrantyDate   DateTime?     @db.Timestamptz
+  documentTypesId String?      @db.Uuid
+  projectId      String?
+  createdBy      String?
+
+  DocumentTypes  DocumentTypes? @relation(fields: [documentTypesId], references: [id])
+  Project        Project?       @relation(fields: [projectId], references: [id])
+  User           User?          @relation(fields: [createdBy], references: [id])
+  MaintenanceHistory MaintenanceHistory[]
+  Notifications  Notifications[]
+  PaymentHistory PaymentHistory[]
+
+  @@map("Assets")
+}
+
+model Category {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  updatedAt   DateTime    @default(now()) @db.Timestamptz
+  createdAt   DateTime    @db.Timestamptz
+  name        String
+  categoryId  String
+  description String
+  isActive    Boolean     @default(true)
+  isDeleted   Boolean     @default(false)
+  budget      Float
+
+  DocumentTypes DocumentTypes[]
+
+  @@map("Category")
+}
+
+model Department {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name            String
+  location        String
+  budget          Float
+  status          String
+  responsibilities String
+  createdAt       DateTime  @default(dbgenerated("CURRENT_TIMESTAMP")) @db.Timestamp(6)
+  updatedAt       DateTime  @default(now()) @db.Timestamp(6)
+  description     String?
+  headId          String?
+
+  User            User?      @relation(fields: [headId], references: [id])
+  EmployeeInfo    EmployeeInfo[]
+  Project         Project[]
+
+  @@map("Department")
+}
+
+model DocumentTypes {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId  String
+  name        String
+  categoryId  String   @db.Uuid
+  description String
+  workflowId  String?
+  isActive    Boolean? @default(true)
+  createdAt   DateTime? @db.Timestamptz
+  updatedAt   DateTime? @default(now()) @db.Timestamptz
+  isDeleted   Boolean? @default(false)
+
+  ApprovalWorkflow ApprovalWorkflow? @relation(fields: [workflowId], references: [id])
+  Category         Category          @relation(fields: [categoryId], references: [id])
+  Assets           Assets[]
+  Liability        Liability[]
+  Payment          Payment[]
+
+  @@map("DocumentTypes")
+}
+
+model EmployeeInfo {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String
+  employeeId   String
+  departmentId String
+  roleId       String
+  managerName  String?
+  workLocation String
+
+  User        User     @relation(fields: [userId], references: [id])
+  Department  Department @relation(fields: [departmentId], references: [id])
+  Role        Role     @relation(fields: [roleId], references: [id])
+
+  @@map("EmployeeInfo")
+}
+
+model Liability {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  updatedAt     DateTime? @default(now()) @db.Timestamptz
+  createdAt     DateTime  @db.Timestamptz
+  name          String
+  description   String
+  liabilityId   String
+  amount        Float
+  dueDate       DateTime  @db.Timestamptz
+  terms         String
+  creditor      String
+  interestRate  Float?
+  documentTypesId String  @db.Uuid
+  projectId     String
+  priority      String
+  createdBy     String?
+
+  DocumentTypes DocumentTypes @relation(fields: [documentTypesId], references: [id])
+  Project       Project       @relation(fields: [projectId], references: [id])
+  User          User?         @relation(fields: [createdBy], references: [id])
+  Notifications Notifications[]
+  PaymentHistory PaymentHistory[]
+  PaymentSchedule PaymentSchedule[]
+
+  @@map("Liability")
+}
+
+model MaintenanceHistory {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  updatedAt   DateTime @default(now()) @db.Timestamptz
+  createdAt   DateTime @db.Timestamptz
+  name        String
+  description String
+  date        DateTime @db.Timestamptz
+  cost        Float
+  maintenanceBy String?
+  assetId     String   @db.Uuid
+
+  Assets      Assets   @relation(fields: [assetId], references: [id])
+
+  @@map("MaintenanceHistory")
+}
+
+model Milestone {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  milestoneId String
+  projectId   String?
+  name        String
+  description String
+  startDate   DateTime @db.Timestamp(6)
+  targetDate  DateTime @db.Timestamp(6)
+  phase       String
+  budget      Float
+  priority    String
+  status      String
+  actualCost  Float?
+  deliverables Json?
+  createdAt   DateTime? @default(now()) @db.Timestamptz
+  updatedAt   DateTime? @default(now()) @db.Timestamptz
+
+  Project     Project?  @relation(fields: [projectId], references: [id])
+
+  @@map("Milestone")
+}
+
+model Notifications {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  updatedAt    DateTime? @default(now()) @db.Timestamptz
+  userIds      Json
+  currentType  String?
+  currentUserId String?
+  paymentId    String?   @db.Uuid
+  assetId      String?   @db.Uuid
+  liabilityId  String?   @db.Uuid
+  remark       String?
+  editedIds    Json?
+
+  Payment      Payment?      @relation(fields: [paymentId], references: [id])
+  User         User?         @relation(fields: [currentUserId], references: [id])
+  Assets       Assets?       @relation(fields: [assetId], references: [id])
+  Liability    Liability?    @relation(fields: [liabilityId], references: [id])
+
+  @@map("Notifications")
+}
+
+model Payment {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime  @db.Timestamptz
+  updatedAt     DateTime? @default(now()) @db.Timestamptz
+  paymentId     String
+  name          String
+  description   String
+  amount        Float
+  paymentDate   DateTime  @db.Timestamptz
+  priority      String
+  vendor        String
+  documentTypesId String  @db.Uuid
+  createdBy     String
+  projectId     String?
+  tax           Float?
+  vat           Float?
+
+  DocumentTypes DocumentTypes @relation(fields: [documentTypesId], references: [id])
+  User          User          @relation(fields: [createdBy], references: [id])
+  Project       Project?      @relation(fields: [projectId], references: [id])
+  Notifications Notifications[]
+  PaymentHistory PaymentHistory[]
+
+  @@map("Payment")
+}
+
+model PaymentHistory {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime @default(now()) @db.Timestamptz
+  paymentId   String?  @db.Uuid
+  assetId     String?  @db.Uuid
+  liabilityId String?  @db.Uuid
+  action      String
+  createdBy   String
+  description String
+  email       String?
+
+  Payment     Payment?     @relation(fields: [paymentId], references: [id])
+  Liability   Liability?   @relation(fields: [liabilityId], references: [id])
+  Assets      Assets?      @relation(fields: [assetId], references: [id])
+
+  @@map("PaymentHistory")
+}
+
+model PaymentSchedule {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  updatedAt   DateTime? @default(now()) @db.Timestamptz
+  createdAt   DateTime  @db.Timestamptz
+  description String
+  amount      Float
+  dueDate     DateTime  @db.Timestamptz
+  liabilityId String    @db.Uuid
+
+  Liability   Liability @relation(fields: [liabilityId], references: [id])
+
+  @@map("PaymentSchedule")
+}
+
+model Project {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  projectId    String
+  name         String
+  description  String
+  startDate    DateTime @db.Timestamp(6)
+  targetDate   DateTime @db.Timestamp(6)
+  status       String
+  riskLevel    String
+  location     String?
+  departmentId String?
+  createdAt    DateTime @db.Timestamptz
+  updatedAt    DateTime? @default(now()) @db.Timestamptz
+  budget       Float?
+
+  Department   Department? @relation(fields: [departmentId], references: [id])
+  Assets       Assets[]
+  Liability    Liability[]
+  Milestone    Milestone[]
+  Payment      Payment[]
+
+  @@map("Project")
+}
+
+model Role {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  permissions Json?
+  createdAt   DateTime? @db.Timestamptz
+  updatedAt   DateTime? @default(now()) @db.Timestamptz
+
+  EmployeeInfo EmployeeInfo[]
+
+  @@map("Role")
+}
+
 model User {
-  id             String           @id @default(uuid())
-  email          String           @unique
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  email          String
   firstName      String
   lastName       String
   phoneNumber    String
   nationality    String
-  otherNationality    String?
   passwordHash   String
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  createdAt      DateTime @default(dbgenerated("CURRENT_TIMESTAMP")) @db.Timestamp(6)
+  updatedAt      DateTime @default(now()) @db.Timestamp(6)
+  otherNationality String?
 
-  employeeInfo   EmployeeInfo?
-  roles          UserRole[]
-  certifications Certification[]
-  projects       ProjectAssignment[]
-}
+  Assets         Assets[]
+  Liability      Liability[]
+  Payment        Payment[]
+  Department     Department[]
+  EmployeeInfo   EmployeeInfo[]
+  Notifications  Notifications[]
 
-model EmployeeInfo {
-  id           String   @id @default(uuid())
-  userId       String   @unique
-  employeeId   String   @unique
-  department   String
-  position     String
-  managerName  String?
-  workLocation String
-  user         User     @relation(fields: [userId], references: [id])
-}
-
-model Role {
-  id          String       @id @default(uuid())
-  name        String       @unique
-  description String?
-  isActive    Boolean      @default(true)
-  permissions Json
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-
-  users       UserRole[]
-}
-
-model UserRole {
-  id      String @id @default(uuid())
-  userId  String
-  roleId  String
-  user    User   @relation(fields: [userId], references: [id])
-  role    Role   @relation(fields: [roleId], references: [id])
-}
-
-
-
-model Certification {
-  id          String   @id @default(uuid())
-  userId      String
-  name        String
-  issuer      String
-  issueDate   DateTime
-  expiryDate  DateTime
-  status      String   // Valid, Expired, Revoked
-
-  user        User     @relation(fields: [userId], references: [id])
-}
-
-model Department {
-  id             String   @id @default(uuid())
-  name           String
-  headName       String
-  location       String
-  budget         Float
-  status         String
-  teamMembers    Int
-  responsibilities String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  projects       Project[]
-}
-
-model Project {
-  id            String    @id @default(uuid())
-  projectId     String    @unique
-  name          String
-  description   String
-  startDate     DateTime
-  endDate       DateTime
-  status        String    // On Track, Delayed, etc.
-  riskLevel     String    // Low, Medium, High
-  budget        Float
-  spent         Float
-  location      String?
-  departmentId  String
-
-  department    Department @relation(fields: [departmentId], references: [id])
-  milestones    Milestone[]
-  assignments   ProjectAssignment[]
-}
-
-model ProjectAssignment {
-  id        String   @id @default(uuid())
-  userId    String
-  projectId String
-
-  user      User     @relation(fields: [userId], references: [id])
-  project   Project  @relation(fields: [projectId], references: [id])
-}
-
-model Milestone {
-  id            String    @id @default(uuid())
-  milestoneId   String    @unique
-  projectId     String
-  name          String
-  description   String
-  startDate     DateTime
-  endDate       DateTime
-  status        String    // Completed, In Progress, etc.
-  progress      Int       // 0-100
-  budget        Float
-  spent         Float
-  costVariance  Float     // +/- %
-  critical      Boolean
-  assignee      String
-  dependencies  String?
-
-  project       Project   @relation(fields: [projectId], references: [id])
-}
-
-model ApprovalWorkflow {
-  id            String   @id @default(uuid())
-  name          String
-  code          String   @unique
-  department    String
-  steps         WorkflowStep[]
-  totalExecutions Int     @default(0)
-  successRate   Float
-  avgDuration   Float     // In days
-  isActive      Boolean   @default(true)
-}
-
-model WorkflowStep {
-  id               String   @id @default(uuid())
-  workflowId       String
-  stepOrder        Int
-  stepName         String
-
-  workflow         ApprovalWorkflow @relation(fields: [workflowId], references: [id])
-}
-
-model FinancialReport {
-  id            String         @id @default(uuid())
-  period        String         // last-6-months, Q1-2024, etc.
-  revenue       Float
-  expenses      Float
-  netIncome     Float
-  roi           Float
-  createdAt     DateTime       @default(now())
-
-  costMetrics   CostMetric?
-  costItems     CostCategory[]
-  risks         RiskItem[]
-}
-
-model CostCategory {
-  id         String   @id @default(uuid())
-  name       String
-  budgeted   Float
-  actual     Float
-  variance   Float
-  forecast   Float
-  trend      String
-  reportId   String
-
-  report     FinancialReport @relation(fields: [reportId], references: [id])
-}
-
-model CostMetric {
-  id            String   @id @default(uuid())
-  reportId      String   @unique
-  CPI           Float
-  SPI           Float
-  EAC           Float
-  VAC           Float
-
-  report        FinancialReport @relation(fields: [reportId], references: [id])
-}
-
-model RiskItem {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  level       String
-  impact      String
-  reportId    String
-
-  report      FinancialReport @relation(fields: [reportId], references: [id])
+  @@map("User")
 }
