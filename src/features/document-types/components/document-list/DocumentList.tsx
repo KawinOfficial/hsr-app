@@ -50,19 +50,19 @@ const DocumentList = () => {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-2 lg:space-y-0 lg:justify-between">
           <div>
             <CardTitle>Document Types</CardTitle>
             <CardDescription>
               Manage document types and their configurations
             </CardDescription>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center space-y-2 md:space-y-0 md:space-x-4 w-full md:w-auto">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search document types..."
-                className="pl-10 w-64"
+                className="pl-10 w-full md:w-64"
                 onChange={handleSearch}
               />
             </div>
@@ -71,7 +71,7 @@ const DocumentList = () => {
               defaultValue="all"
               onValueChange={(value) => onChangeCategory?.(value)}
             >
-              <SelectTrigger className="w-32">
+              <SelectTrigger className="w-full md:w-32">
                 <SelectValue className="line-clamp-1 truncate" />
               </SelectTrigger>
               <SelectContent>
@@ -92,13 +92,13 @@ const DocumentList = () => {
         </div>
       </CardHeader>
 
-      <CardContent className="min-h-[60vh] flex flex-col">
+      <CardContent className="min-h-[60vh] flex flex-col max-w-[calc(94vw-1rem)] lg:max-w-none overflow-auto">
         <Table>
           <TableHeader className="bg-muted">
             <TableRow>
               <TableHead>Document Type</TableHead>
               <TableHead>Category</TableHead>
-              <TableHead>Workflow</TableHead>
+              <TableHead className="min-w-[200px]">Workflow</TableHead>
               <TableHead className="text-center">Approval Levels</TableHead>
               <TableHead className="text-center">Processing Time</TableHead>
               <TableHead className="text-center">Total Docs</TableHead>

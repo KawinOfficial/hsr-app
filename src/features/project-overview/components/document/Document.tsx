@@ -45,9 +45,9 @@ const Document = () => {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex md:items-center flex-col md:flex-row gap-4 md:gap-0 justify-between">
           <div>
-            <CardTitle>Project Documents</CardTitle>
+            <CardTitle>Project Documents (Demo)</CardTitle>
             <CardDescription>
               Files and documents related to this project
             </CardDescription>
@@ -59,16 +59,18 @@ const Document = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-w-[80vw]">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Document Name</TableHead>
+                <TableHead className="min-w-[200px]">Document Name</TableHead>
                 <TableHead>Type</TableHead>
-                <TableHead>Size</TableHead>
+                <TableHead className="min-w-[100px]">Size</TableHead>
                 <TableHead>Category</TableHead>
-                <TableHead>Upload Date</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead className="min-w-[120px]">Upload Date</TableHead>
+                <TableHead className="min-w-[120px] text-center">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
