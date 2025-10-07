@@ -34,7 +34,7 @@ const DepartmentList = () => {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground mb-2">
                       Key Responsibilities
@@ -52,7 +52,7 @@ const DepartmentList = () => {
                     </ul>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid md:grid-cols-2 grid-cols-1 gap-4 text-sm">
                     <div className="space-y-1">
                       <p className="text-muted-foreground">Department Head</p>
                       <p className="font-medium">{findHeadName(dept.headId)}</p>
