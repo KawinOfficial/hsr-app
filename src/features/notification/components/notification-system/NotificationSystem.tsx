@@ -32,7 +32,7 @@ const NotificationSystem = () => {
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-[500px]">
+        <DropdownMenuContent align="end" className="max-w-[90vw] md:w-[500px]">
           <div className="p-3 relative pt-12">
             <div className="flex items-center justify-between  absolute top-3 inset-x-3">
               <h3 className="font-semibold">Notifications</h3>

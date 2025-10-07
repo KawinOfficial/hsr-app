@@ -161,7 +161,7 @@ const UserDetailDialog = () => {
                         <h4 className="font-medium mb-3 capitalize">
                           {module.replace("-", " ")}
                         </h4>
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid md:grid-cols-4 grid-cols-2 gap-4">
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id={`${module}-read`}

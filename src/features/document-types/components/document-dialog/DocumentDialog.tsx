@@ -71,7 +71,7 @@ const DocumentDialog = () => {
             <p className="text-sm mt-1">{selectedDocumentType.description}</p>
           </div>
 
-          <div className="grid grid-cols-5 gap-4">
+          <div className="grid md:grid-cols-5 grid-cols-2 gap-4 ">
             <div>
               <Label className="font-medium text-muted-foreground">
                 Total Documents

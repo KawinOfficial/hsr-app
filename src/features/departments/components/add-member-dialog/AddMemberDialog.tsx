@@ -61,7 +61,7 @@ const AddmemberDialog = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-[90vw] lg:max-w-3xl p-4 lg:p-6 space-y-6">
+      <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto lg:max-w-3xl p-4 lg:p-6 space-y-6">
         <DialogHeader>
           <DialogTitle>Add Member to Department</DialogTitle>
           <DialogDescription>Select team members to add</DialogDescription>
@@ -83,7 +83,7 @@ const AddmemberDialog = () => {
             </Select>
           </div>
 
-          <div className="border rounded-lg max-h-96 overflow-y-auto max-w-[calc(90vw-2rem)] lg:max-w-none">
+          <div className="border rounded-lg max-w-[calc(90vw-2rem)] lg:max-w-none">
             <Table>
               <TableHeader>
                 <TableRow>

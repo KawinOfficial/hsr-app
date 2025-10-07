@@ -45,15 +45,13 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           <div className="lg:hidden space-y-4">
             <div className="space-y-3">
               <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-lg truncate">
-                    {project.name}
-                  </h3>
+                <div className="flex-1 min-w-0 ">
+                  <h3 className="font-semibold text-lg ">{project.name}</h3>
                   <p className="text-sm text-muted-foreground font-medium">
                     Project ID: {project.projectId}
                   </p>
                 </div>
-                <div className="flex flex-col items-end space-y-1 ml-2">
+                <div className="flex flex-col items-end space-y-1">
                   <Badge className={getStatusColor(project.status)}>
                     {project.status}
                   </Badge>

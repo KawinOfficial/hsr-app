@@ -35,7 +35,7 @@ const DocumentForm = ({ onClose }: UseDocumentForm) => {
     <>
       <Form {...methods}>
         <form onSubmit={onSubmit} onReset={onReset}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
             <FormField
               control={methods.control}
               name="name"
@@ -118,7 +118,7 @@ const DocumentForm = ({ onClose }: UseDocumentForm) => {
               )}
             />
 
-            <div className="col-span-2">
+            <div className="md:col-span-2 col-span-1">
               <FormField
                 control={methods.control}
                 name="description"
@@ -134,7 +134,7 @@ const DocumentForm = ({ onClose }: UseDocumentForm) => {
               />
             </div>
 
-            <div className="col-span-2">
+            <div className="md:col-span-2 col-span-1">
               <FormField
                 control={methods.control}
                 name="workflowId"
@@ -171,7 +171,7 @@ const DocumentForm = ({ onClose }: UseDocumentForm) => {
               />
             </div>
 
-            <div className="col-span-2 flex gap-2 justify-end">
+            <div className="md:col-span-2 col-span-1 flex gap-2 justify-end">
               <Button variant="outline" type="reset">
                 Cancel
               </Button>
