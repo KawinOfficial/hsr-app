@@ -1,15 +1,26 @@
 import { useContextSelector } from "use-context-selector";
 import { ProfileContext } from "../profile-provider";
-import { useForm } from "react-hook-form";
+import {
+  useForm,
+  UseFormRegister,
+  Control,
+  UseFormWatch,
+} from "react-hook-form";
 import { Profile } from "@/features/auths/schemas/Profile.schema";
-import { useEffect } from "react";
+import { ProfileFormSchema } from "../../schemas/Option.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useMemo } from "react";
 
-const defaultValues = {
+const defaultValues: Partial<Profile> = {
   firstName: "",
   lastName: "",
   email: "",
   phoneNumber: "",
+  nationality: "",
+  otherNationality: "",
   employeeInfo: {
+    id: "",
+    userId: "",
     employeeId: "",
     roleId: "",
     departmentId: "",
@@ -17,6 +28,12 @@ const defaultValues = {
     workLocation: "",
   },
 };
+
+interface ProfileForm {
+  register: UseFormRegister<Profile>;
+  control: Control<Profile>;
+  watch: UseFormWatch<Profile>;
+}
 
 export const useProfile = () => {
   const userProfile = useContextSelector(
@@ -43,36 +60,42 @@ export const useProfile = () => {
     ProfileContext,
     (state) => state?.onChangePassword
   );
-
   const options = useContextSelector(ProfileContext, (state) => state?.options);
 
-  const { register, reset, control, watch, handleSubmit } = useForm<Profile>({
+  const formMethods = useForm<Profile>({
     defaultValues,
+    mode: "onChange",
+    resolver: zodResolver(ProfileFormSchema),
   });
-  const form = {
-    fieldFirstName: register("firstName"),
-    fieldLastName: register("lastName"),
-    fieldEmail: register("email"),
-    fieldPhoneNumber: register("phoneNumber"),
-    fieldEmployeeId: register("employeeInfo.employeeId"),
-    fieldRoleId: register("employeeInfo.roleId"),
-    fieldDepartmentId: register("employeeInfo.departmentId"),
-    fieldManagerName: register("employeeInfo.managerName"),
-    fieldWorkLocation: register("employeeInfo.workLocation"),
-    fieldNationality: register("nationality"),
-    fieldOtherNationality: register("otherNationality"),
-    watch,
-    control,
+
+  const { register, reset, control, watch, handleSubmit } = formMethods;
+
+  const form: ProfileForm = useMemo(
+    () => ({
+      register,
+      control,
+      watch,
+    }),
+    [register, control, watch]
+  );
+
+  const departments = useMemo(
+    () => options?.departments || [],
+    [options?.departments]
+  );
+
+  const roles = useMemo(() => options?.roles || [], [options?.roles]);
+
+  const onCancel = () => {
+    if (userProfile) {
+      reset(userProfile);
+    }
+    setEditMode?.(false);
   };
 
-  function onCancel() {
-    reset(userProfile);
-    setEditMode?.(false);
-  }
-
-  function onSubmit(data: Profile) {
+  const onSubmit = (data: Profile) => {
     handleSaveProfile?.(data);
-  }
+  };
 
   useEffect(() => {
     if (!userProfile || isFetching) return;
@@ -87,8 +110,8 @@ export const useProfile = () => {
     isFetching,
     onCancel,
     onSubmit: handleSubmit(onSubmit),
-    departments: options?.departments || [],
-    roles: options?.roles || [],
+    departments,
+    roles,
     onChangePassword,
   };
 };
